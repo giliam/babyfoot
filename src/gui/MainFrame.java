@@ -14,7 +14,8 @@ public class MainFrame extends JFrame implements ActionListener {
 	    setLocationRelativeTo(null);
 	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    setContentPane(new MenuPanel(this));
-		setVisible(true);
+	    setResizable(false);
+	    setVisible(true);
 	}
 	
 	public MainFrame(){
