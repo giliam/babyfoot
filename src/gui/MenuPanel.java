@@ -15,6 +15,7 @@ public class MenuPanel extends JPanel implements ActionListener {
 	public MenuPanel(MainFrame f) {
 		window = f;
 		setLayout(new BorderLayout());
+		setBackground(Color.WHITE);
 		//Gestion du header
 	    Header header = new Header();
 	    header.setPreferredSize(new Dimension(800,150));
@@ -23,28 +24,35 @@ public class MenuPanel extends JPanel implements ActionListener {
 	    
 	    //Gauche-droite
 	    JPanel left = new JPanel();
-	    left.setPreferredSize(new Dimension(300,200));
+	    left.setBackground(Color.WHITE);
+	    left.setPreferredSize(new Dimension(250,200));
 	    add(left,BorderLayout.WEST);
 	    
 	    JPanel bottom = new JPanel();
+	    bottom.setBackground(Color.WHITE);
 	    bottom.setPreferredSize(new Dimension(800,300));
 	    add(bottom,BorderLayout.SOUTH);
 	    
 	    JPanel right = new JPanel();
-	    right.setPreferredSize(new Dimension(300,200));
+	    right.setBackground(Color.WHITE);
+	    right.setPreferredSize(new Dimension(250,200));
 	    add(right,BorderLayout.EAST);
 	    //Gestion du menu central
 	    JPanel centralMenu = new JPanel();
-	    centralMenu.setLayout(new GridLayout(4,1));
+	    centralMenu.setBackground(Color.WHITE);
 	    centralMenu.setPreferredSize(new Dimension(400,100));
 	    centralMenu.setMaximumSize(new Dimension(400,100));
 	    add(centralMenu, BorderLayout.CENTER);
 	    
 	    //Gestion des boutons
 	    bNewGame = new JButton("Nouvelle partie");
+	    bNewGame.setPreferredSize(new Dimension(200,50));
 	    bJoinGame = new JButton("Rejoindre une partie");
+	    bJoinGame.setPreferredSize(new Dimension(200,50));
 	    bSettings = new JButton("Options");
+	    bSettings.setPreferredSize(new Dimension(200,50));
 	    bQuit = new JButton("Quitter");
+	    bQuit.setPreferredSize(new Dimension(200,50));
 		
 	    centralMenu.add(bNewGame,new Dimension(0,0));
 	    centralMenu.add(bJoinGame,new Dimension(1,0));
