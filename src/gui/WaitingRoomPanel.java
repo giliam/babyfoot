@@ -12,14 +12,24 @@ public class WaitingRoomPanel extends JPanel implements ActionListener {
 	MainFrame window;
 	public WaitingRoomPanel(MainFrame f) {
 		window = f;
-		
+		setLayout(new BorderLayout());
 		bReturn = new JButton("Retour");
 		bGo = new JButton("Lancer la partie");
 	    bQuit = new JButton("Quitter");
+	    
+	    ChatPanel chat = new ChatPanel(f);
+		chat.setBackground(Color.BLACK);
+		chat.setPreferredSize(new Dimension(300,700));
+		chat.setMinimumSize(new Dimension(300,700));
+		add(chat,BorderLayout.EAST);
 		
-		add(bReturn);
-		add(bGo);
-		add(bQuit);
+		JPanel menu = new JPanel();
+		menu.setBackground(Color.ORANGE);
+		add(menu,BorderLayout.CENTER);
+		
+		menu.add(bReturn);
+		menu.add(bGo);
+		menu.add(bQuit);
 		
 		bReturn.addActionListener(this);
 		bGo.addActionListener(this);
