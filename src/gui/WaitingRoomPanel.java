@@ -32,6 +32,9 @@ public class WaitingRoomPanel extends JPanel implements ActionListener {
 		}else if( e.getSource() == bReturn ){
 			window.setContentPane(new MenuPanel(window));
 		    window.setVisible(true);
+		}else if( e.getSource() == bGo ){
+			window.setContentPane(new GamePanel(window));
+		    window.setVisible(true);
 		}
 	}
 }
