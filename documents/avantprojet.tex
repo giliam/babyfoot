@@ -1,13 +1,11 @@
-\documentclass[a4paper,12pt]{report} % Rapport de MIG SE 2013
-\usepackage[a4paper, margin=2cm]{geometry}
-
-\usepackage[T1]{fontenc}
+\documentclass[a4paper,12pt]{report}
 \usepackage[utf8]{inputenc}
-\usepackage[francais]{babel}
-
+\usepackage[francais]{babel}  % un troisième package
+\usepackage[top=2cm, bottom=2cm, left=2cm, right=2cm]{geometry}
+% Title Page
 % Title Page
 \title{Avant-projet du projet informatique}
-\author{Matthieu Denoux}
+\author{Matthieu Denoux - Groupe 1}
 
 
 \begin{document}
@@ -29,10 +27,31 @@ Un premier menu, dit \emph{menu principal}, permettra de commencer une nouvelle 
 déjà en cours, de modifier les options ou bien de quitter le jeu.
 \subsection{Commencer une partie}
 \paragraph{}
-Si l'on commence une nouvelle partie en ligne, on se retrouve dans une \og salle d'attente \fg. Là, on attend que d'autres joueurs
-rejoignent la partie. 
+Si l'on commence une nouvelle partie en ligne, on se retrouve dans une \og salle d'attente \fg. Là, il est possible de configurer la partie que l'on souhaite lancer, l'ouvrir à d'autres joueurs puis attendre que d'autres joueurs rejoignent la partie. Une fois que les équipes sont complètes, on peut lancer le jeu.
 \subsection{Rejoindre une partie}
 \paragraph{}
+On peut aussi sélectionner une partie dans la liste des parties déjà commencées, dans la limite des places disponibles. On rejoint alors un salon similaire à celui décrit dans la section précédente où l'on attend que la partie soit complète avant que le meneur, celui qui a créé la partie, ne lance le jeu.
+\subsection{Déroulement d'une partie}
+\paragraph{}
+Il y aurait deux gameplays différents : 
+\begin{itemize}
+    \item l'un entièrement manuel verrait le joueur maître de ses possibilités. Ainsi, les touches \og A \fg, \og Z \fg, \og E \fg, \og R \fg permettraient de sélectionner la canne que l'on souhaiterait manier. Les flèches \og Haut \fg et \og Bas \fg permettraient quant à elle de déplacer les cannes tandis que la barre espace commanderait le tir. Je ne pense pas réaliser plusieurs puissances de tir possibles mais cela pourrait consister en une amélioration de la richesse du gameplay.
+    \item l'autre, principalement rencontrée dans les autres jeux de babyfoot trouvés en ligne, serait plus automatisée : les cannes se déplaceraient toutes ensemble de manière synchronisée avec les flèches \og Haut \fg et \og Bas \fg. Le tir pourrait être ou non automatisé selon que j'aurais le temps pour configurer cette fonctionnalité supplémentaire.
+\end{itemize}
 \subsection{Options}
 \paragraph{}
+Un petit menu sera consacré aux options, notamment le type de jeu que l'on souhaite utiliser (manuel ou automatisé, auquel cas jusqu'à quel point) et d'autres options.
+
+
+\chapter{Analyse de la solution envisagée}
+\section{Découpage en modules}
+\paragraph{}
+Je prévois de découper le code en trois modules principaux : 
+\begin{itemize}
+    \item L'interface graphique (rangée dans /gui)
+    \item La partie réseau de l'application (rangée dans /network)
+    \item Le c\oe{}ur algorithmique de l'application (rangée dans /core)
+\end{itemize}
+Chaque partie comportera donc plusieurs classes qui se chargeront chacune d'une des tâches du module parent.
+
 \end{document}          
