@@ -53,5 +53,32 @@ Je prévois de découper le code en trois modules principaux :
     \item Le c\oe{}ur algorithmique de l'application (rangée dans /core)
 \end{itemize}
 Chaque partie comportera donc plusieurs classes qui se chargeront chacune d'une des tâches du module parent.
+\section{L'interface graphique}
+\subsection{MainFrame.java}
+\paragraph{}
+Gère la fenêtre qui englobe tout le reste. On utilisera en fait des JPanel pour modifier le contenu de cette fenêtre. J'empêcherai dans un premier temps de modifier la taille de la fenêtre pour éviter d'avoir des problèmes de dessin du terrain de babyfoot à gérer. Cette classe contient le \textbf{main} du programme.
+\subsection{BPanel.java}
+\paragraph{}
+Classe abstraite présentant certaines actions mécaniques quant aux caractéristiques des JPanel utilisés (header, background color, taille, layoutmanager, etc.). La plupart des panels ci-dessous en héritent.
+\subsection{MenuPanel.java}
+\paragraph{}
+Gère le menu principal affiché à l'ouverture du jeu. Contient les boutons qui mèneront vers les principales actions citées plus haut (nouvelle partie, rejoindre, options, quitter).
+\subsection{NewPanel.java}
+\paragraph{}
+Lorsque l'on lance une nouvelle partie, on obtient cet écran qui contiendra les principales options nécessaires pour configurer une partie puis l'ouvrir à des joueurs extérieurs. Une fois cette partie ouverte, on aboutit à une \emph{salle d'attente}.
+\subsection{ServersPanel.java}
+\paragraph{}
+Gère la liste des parties actuellement en recherche de joueurs lorsque l'on cherche à rejoindre une partie. On sélectionne une partie dans cette liste puis on aboutit à une \emph{salle d'attente}.
+\subsection{WaitingRoomPanel.java}
+\paragraph{}
+Une fois la partie configurée et ouverte, on aboutit dans cette salle d'attente qui attendra que certaines conditions soient réunies pour permettre au jeu d'être commencé. On peut \emph{aussi} y accéder depuis la partie \emph{rejoindre une partie}.
+\subsection{GamePanel.java}
+\paragraph{}
+La partie à proprement parler. Donc le conteneur du dessin du terrain qui gère les éléments extérieurs, les événements et toute autre interaction avec le reste du code. Inclut une zone de dessin.
+\subsection{GameZone.java}
+\paragraph{}
 
+\subsection{MenuPanel.java}
+\paragraph{}
+Gère le menu principal affiché à l'ouverture du jeu. Contient les boutons qui mèneront vers les principales actions citées plus haut (nouvelle partie, rejoindre, options, quitter).
 \end{document}          
