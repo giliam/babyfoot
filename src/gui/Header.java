@@ -1,5 +1,7 @@
 package gui;
 
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.io.File;
@@ -10,6 +12,9 @@ import javax.swing.JPanel;
 public class Header extends JPanel {
 	public Header(){
 		super();
+		setPreferredSize(new Dimension(800,150));
+		setMaximumSize(new Dimension(800,150));
+		setBackground(Color.WHITE);
 	}
 	public void paintComponent(Graphics g){
 		setSize(800,200);

@@ -5,23 +5,15 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
-public class MenuPanel extends JPanel implements ActionListener {
+public class MenuPanel extends BPanel implements ActionListener {
 	JButton bQuit;
 	JButton bNewGame;
 	JButton bJoinGame;
 	JButton bSettings;
-	MainFrame window;
 	
 	public MenuPanel(MainFrame f) {
-		window = f;
-		setLayout(new BorderLayout());
-		setBackground(Color.WHITE);
-		//Gestion du header
-	    Header header = new Header();
-	    header.setPreferredSize(new Dimension(800,150));
-	    header.setMaximumSize(new Dimension(800,150));
-	    add(header,BorderLayout.NORTH);
-	    
+		super(f);
+		
 	    //Gauche-droite
 	    JPanel left = new JPanel();
 	    left.setBackground(Color.WHITE);
@@ -60,6 +52,8 @@ public class MenuPanel extends JPanel implements ActionListener {
 	    centralMenu.add(bQuit,new Dimension(3,0));
 		
 		bNewGame.addActionListener(this);
+		bJoinGame.addActionListener(this);
+		bSettings.addActionListener(this);
 		bQuit.addActionListener(this);
 	}
 	
@@ -67,12 +61,12 @@ public class MenuPanel extends JPanel implements ActionListener {
 		if( e.getSource() == bQuit ){
 			System.exit(0);
 		}else if( e.getSource() == bNewGame ){
-			window.setContentPane(new WaitingRoomPanel(window));
+			window.setContentPane(new NewPanel(window));
 		    window.setVisible(true);
 		}else if( e.getSource() == bJoinGame ){
-			
+			window.setContentPane(new ServersPanel(window));
+		    window.setVisible(true);
 		}else if( e.getSource() == bSettings ){
-			
 		}
 	}
 }

@@ -5,15 +5,15 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
-public class WaitingRoomPanel extends BPanel implements ActionListener {
+public class NewPanel extends BPanel implements ActionListener {
 	JButton bQuit;
 	JButton bGo;
 	JButton bReturn;
-	public WaitingRoomPanel(MainFrame f) {
+	public NewPanel(MainFrame f) {
 		super(f);
-
+		
 		bReturn = new JButton("Retour");
-		bGo = new JButton("Lancer la partie");
+		bGo = new JButton("Ouvrir la partie à d'autres joueurs");
 	    bQuit = new JButton("Quitter");
 	    
 	    ChatPanel chat = new ChatPanel(f);
@@ -42,7 +42,7 @@ public class WaitingRoomPanel extends BPanel implements ActionListener {
 			window.setContentPane(new MenuPanel(window));
 		    window.setVisible(true);
 		}else if( e.getSource() == bGo ){
-			window.setContentPane(new GamePanel(window));
+			window.setContentPane(new WaitingRoomPanel(window));
 		    window.setVisible(true);
 		}
 	}
