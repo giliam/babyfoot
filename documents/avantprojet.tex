@@ -8,14 +8,27 @@
 
 \begin{document}
 \maketitle
-\tableofcontents
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                              %%
+%%   ------------------------   %%
+%%                              %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Présentation du sujet}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%   ------------------------   %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Principe général}
 \paragraph{}
 Le sujet choisi a pour intitulé \textbf{Babyfoot en réseau}. Il s'agit de concevoir un système complet de jeu en réseau.
 Le système serait donc séparé en deux parties, une serveur et une client. Chaque joueur pourrait donc se connecter à une partie
 n'ayant pas encore commencé et une fois le nombre de joueurs réunis (\emph{2 ou 4}), la partie serait lancée. Il faut donc réaliser à la fois 
 le système réseau, l'interface graphique et imaginer un gameplay qui rende le jeu agréable.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%   ------------------------   %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{L'interface graphique}
 \paragraph{}
 Au niveau de l'interface graphique, il faudra réaliser plusieurs fenêtres successives de menus pour parvenir jusqu'au jeu lui-même. Ces fenêtres seront réalisées avec la bibliothèque inclue dans le package standard \textbf{Swing}. J'ai aussi choisi d'utiliser des JFrame et donc de programmer une application à part entière et non une appliquette.
@@ -35,7 +48,18 @@ Il y aurait deux gameplays différents :
 \paragraph{Options}
 Un petit menu sera consacré aux options, notamment le type de jeu que l'on souhaite utiliser (manuel ou automatisé, auquel cas jusqu'à quel point) et d'autres options.
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                              %%
+%%   ------------------------   %%
+%%                              %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Analyse de la solution envisagée}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%   ------------------------   %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Découpage en modules}
 \paragraph{}
 Je prévois de découper le code en trois modules principaux : 
@@ -45,34 +69,69 @@ Je prévois de découper le code en trois modules principaux :
     \item Le c\oe{}ur algorithmique de l'application (rangée dans /core)
 \end{itemize}
 Chaque partie comportera donc plusieurs classes qui se chargeront chacune d'une des tâches du module parent.
-\section{L'interface graphique}
-\subsection{MainFrame.java}
-\paragraph{}
-Gère la fenêtre qui englobe tout le reste. On utilisera en fait des JPanel pour modifier le contenu de cette fenêtre. J'empêcherai dans un premier temps de modifier la taille de la fenêtre pour éviter d'avoir des problèmes de dessin du terrain de babyfoot à gérer. Cette classe contient le \textbf{main} du programme.
-\subsection{BPanel.java}
-\paragraph{}
-Classe abstraite présentant certaines actions mécaniques quant aux caractéristiques des JPanel utilisés (header, background color, taille, layoutmanager, etc.). La plupart des panels ci-dessous en héritent.
-\subsection{MenuPanel.java}
-\paragraph{}
-Gère le menu principal affiché à l'ouverture du jeu. Contient les boutons qui mèneront vers les principales actions citées plus haut (nouvelle partie, rejoindre, options, quitter).
-\subsection{NewPanel.java}
-\paragraph{}
-Lorsque l'on lance une nouvelle partie, on obtient cet écran qui contiendra les principales options nécessaires pour configurer une partie puis l'ouvrir à des joueurs extérieurs. Une fois cette partie ouverte, on aboutit à une \emph{salle d'attente}.
-\subsection{ServersPanel.java}
-\paragraph{}
-Gère la liste des parties actuellement en recherche de joueurs lorsque l'on cherche à rejoindre une partie. On sélectionne une partie dans cette liste puis on aboutit à une \emph{salle d'attente}.
-\subsection{WaitingRoomPanel.java}
-\paragraph{}
-Une fois la partie configurée et ouverte, on aboutit dans cette salle d'attente qui attendra que certaines conditions soient réunies pour permettre au jeu d'être commencé. On peut \emph{aussi} y accéder depuis la partie \emph{rejoindre une partie}.
-\subsection{GamePanel.java}
-\paragraph{}
-La partie à proprement parler. Donc le conteneur du dessin du terrain qui gère les éléments extérieurs, les événements et toute autre interaction avec le reste du code. Inclut une zone de dessin.
-\subsection{GameZone.java}
-\paragraph{}
-Zone de dessin chargée de représenter le terrain, les joueurs, etc.
-\subsection{ChatPanel.java}
-\paragraph{}
-Une partie un peu à part qui est chargée de gérer l'affichage du chat. Celui-ci sera présent à de nombreux endroits : la liste des parties disponibles, la salle d'attente, la création d'une partie et durant le jeu lui-même. Or, tous ces affichages seront
-\section{La partie réseau}
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%   ------------------------   %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{L'interface graphique}
+\paragraph{MainFrame.java}
+Gère la fenêtre qui englobe tout le reste. On utilisera en fait des JPanel pour modifier le contenu de cette fenêtre. J'empêcherai dans un premier temps de modifier la taille de la fenêtre pour éviter d'avoir des problèmes de dessin du terrain de babyfoot à gérer. Cette classe contient le \textbf{main} du programme.
+\paragraph{BPanel.java}
+Classe abstraite présentant certaines actions mécaniques quant aux caractéristiques des JPanel utilisés (header, background color, taille, layoutmanager, etc.). La plupart des panels ci-dessous en héritent.
+\paragraph{ConnectPanel.java}
+Gère le premier écran affiché à l'ouverture du jeu. On y choisit le pseudonyme que l'on souhaite utiliser dans le reste du jeu et qui s'affichera ensuite sur les écrans lors du contact avec d'autres joueurs.
+\paragraph{MenuPanel.java}
+Gère le menu principal affiché après connexion. Contient les boutons qui mèneront vers les principales actions citées plus haut (nouvelle partie, rejoindre, options, quitter).
+\paragraph{NewPanel.java}
+Lorsque l'on lance une nouvelle partie, on obtient cet écran qui contiendra les principales options nécessaires pour configurer une partie puis l'ouvrir à des joueurs extérieurs. Une fois cette partie ouverte, on aboutit à une \emph{salle d'attente}.
+\paragraph{ServersPanel.java}
+Gère la liste des parties actuellement en recherche de joueurs lorsque l'on cherche à rejoindre une partie. On sélectionne une partie dans cette liste puis on aboutit à une \emph{salle d'attente}.
+\paragraph{WaitingRoomPanel.java}
+Une fois la partie configurée et ouverte, on aboutit dans cette salle d'attente qui attendra que certaines conditions soient réunies pour permettre au jeu d'être commencé. On peut \emph{aussi} y accéder depuis la partie \emph{rejoindre une partie}.
+\paragraph{GamePanel.java}
+La partie à proprement parler. Donc le conteneur du dessin du terrain qui gère les éléments extérieurs, les événements et toute autre interaction avec le reste du code. Inclut une zone de dessin.
+\paragraph{GameZone.java}
+Zone de dessin chargée de représenter le terrain, les joueurs, etc.
+\paragraph{ChatPanel.java}
+Une partie un peu à part qui est chargée de gérer l'affichage du chat. Celui-ci sera présent à de nombreux endroits : la liste des parties disponibles, la salle d'attente, la création d'une partie et durant le jeu lui-même. Or, tous ces affichages sont centralisés dans cet unique fichier qui centralise ainsi le traitement.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%   ------------------------   %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{La partie réseau}
+\paragraph{Server.java}
+Gère les différentes requêtes et les redirige vers les autres entités du serveur (chat, jeu, etc.). Contient des thread pour pouvoir gérer simultanément ces différentes actions.
+\paragraph{PlayerServer.java}
+Gère la connexion au serveur d'un des joueurs. L'enregistre dans une liste de joueurs connectés. Peut aussi renvoyer la liste des joueurs connectés actuellement et leur état.
+\paragraph{ChatServer.java}
+S'occupe de gérer la partie serveur du tchat : écoute un port, récupère les messages envoyés par des joueurs ainsi que le salon où ils se trouvaient à ce moment là. Les enregistre dans un fichier ou bien dans une base de données (à voir).
+\paragraph{ChatClient.java}
+S'occupe de gérer la partie client du tchat : une fois instanciée par le ChatPanel, elle permet d'envoyer des données au serveur et de récupérer la liste des messages disponibles dans le salon. Elle permet aussi de changer de salon, d'afficher la liste des salons et celle des joueurs connectés sur le jeu.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%   ------------------------   %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Le c\oe{}ur algorithmique}
+\paragraph{Player.java}
+Le bloc de base du c\oe{}ur algorithmique est le joueur. 
+\paragraph{Game.java}
+Contient les données principales pour une partie, notamment l'état des scores, les joueurs y participant, l'avancement de la partie, etc.
+\paragraph{Database.java}
+Gère la base de données PostGreSQL ou bien textuelle qui pourrait être utilisée par le programme pour stocker des informations. Sera principalement utilisée par le module network.*.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                              %%
+%%   ------------------------   %%
+%%                              %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Échéancier}
+\begin{enumerate}
+    \item \textbf{Fin Décembre} : rédiger l'avant-projet.
+    \item \textbf{Début/Mi Janvier} : obtenir la validation et les annotations sur la structure choisie.
+    \item \textbf{Fin Janvier} : réaliser la partie graphique du programme et avoir regardé les grandes lignes du développement serveur / bases de données. Avoir mis au point les éléments de base du gameplay (interaction joueur/machine).
+    \item \textbf{Fin Février} : développer le serveur et la gestion des différents types de requêtes. Mettre au point le tchat et la gestion des joueurs avec la base de données.
+    \item \textbf{Mi Mars} : dresser les liens entre serveur et jeu. Tester.
+\end{enumerate}
 \end{document}          
