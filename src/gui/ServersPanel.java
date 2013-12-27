@@ -5,6 +5,7 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
+@SuppressWarnings("serial")
 public class ServersPanel extends BPanel implements ActionListener {
 	JButton bQuit;
 	JButton bGo;

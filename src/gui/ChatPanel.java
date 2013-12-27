@@ -5,6 +5,7 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
+@SuppressWarnings("serial")
 public class ChatPanel extends JPanel implements ActionListener {
 	MainFrame window;
 	JButton push;
