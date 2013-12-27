@@ -1,9 +1,7 @@
 \documentclass[a4paper,12pt]{report}
 \usepackage[utf8]{inputenc}
-\usepackage[francais]{babel}  % un troisième package
+\usepackage[francais]{babel}
 \usepackage[top=2cm, bottom=2cm, left=2cm, right=2cm]{geometry}
-% Title Page
-% Title Page
 \title{Avant-projet du projet informatique}
 \author{Matthieu Denoux - Groupe 1}
 
@@ -16,32 +14,26 @@
 \paragraph{}
 Le sujet choisi a pour intitulé \textbf{Babyfoot en réseau}. Il s'agit de concevoir un système complet de jeu en réseau.
 Le système serait donc séparé en deux parties, une serveur et une client. Chaque joueur pourrait donc se connecter à une partie
-n'ayant pas encore comméncé et une fois le nombre de joueurs réunis (\emph{2 ou 4}), la partie serait lancée. Il faut donc réaliser à la fois 
+n'ayant pas encore commencé et une fois le nombre de joueurs réunis (\emph{2 ou 4}), la partie serait lancée. Il faut donc réaliser à la fois 
 le système réseau, l'interface graphique et imaginer un gameplay qui rende le jeu agréable.
 \section{L'interface graphique}
 \paragraph{}
-Au niveau de l'interface graphique, il faudra réaliser plusieurs fenêtres successives de menus pour parvenir jusqu'au jeu lui-même.
-\subsection{Menu principal}
-\paragraph{}
+Au niveau de l'interface graphique, il faudra réaliser plusieurs fenêtres successives de menus pour parvenir jusqu'au jeu lui-même. Ces fenêtres seront réalisées avec la bibliothèque inclue dans le package standard \textbf{Swing}. J'ai aussi choisi d'utiliser des JFrame et donc de programmer une application à part entière et non une appliquette.
+\paragraph{Menu principal}
 Un premier menu, dit \emph{menu principal}, permettra de commencer une nouvelle partie en ligne, de rejoindre une partie
-déjà en cours, de modifier les options ou bien de quitter le jeu.
-\subsection{Commencer une partie}
-\paragraph{}
-Si l'on commence une nouvelle partie en ligne, on se retrouve dans une \og salle d'attente \fg. Là, il est possible de configurer la partie que l'on souhaite lancer, l'ouvrir à d'autres joueurs puis attendre que d'autres joueurs rejoignent la partie. Une fois que les équipes sont complètes, on peut lancer le jeu.
-\subsection{Rejoindre une partie}
-\paragraph{}
+déjà en cours, de modifier les options ou bien de quitter le jeu. Un header sensé unifier les différentes fenêtres sera aussi présent, il donnera en plus une certaine identité graphique au jeu.
+\paragraph{Commencer une partie}
+Si l'on commence une nouvelle partie en ligne, on se retrouve dans une \og salle d'attente \fg. Là, il est possible de configurer la partie que l'on souhaite lancer, l'ouvrir à d'autres joueurs puis d'attendre que d'autres joueurs rejoignent la partie. Une fois que les équipes sont complètes, on peut lancer le jeu.
+\paragraph{Rejoindre une partie}
 On peut aussi sélectionner une partie dans la liste des parties déjà commencées, dans la limite des places disponibles. On rejoint alors un salon similaire à celui décrit dans la section précédente où l'on attend que la partie soit complète avant que le meneur, celui qui a créé la partie, ne lance le jeu.
-\subsection{Déroulement d'une partie}
-\paragraph{}
+\paragraph{Déroulement d'une partie}
 Il y aurait deux gameplays différents : 
 \begin{itemize}
     \item l'un entièrement manuel verrait le joueur maître de ses possibilités. Ainsi, les touches \og A \fg, \og Z \fg, \og E \fg, \og R \fg permettraient de sélectionner la canne que l'on souhaiterait manier. Les flèches \og Haut \fg et \og Bas \fg permettraient quant à elle de déplacer les cannes tandis que la barre espace commanderait le tir. Je ne pense pas réaliser plusieurs puissances de tir possibles mais cela pourrait consister en une amélioration de la richesse du gameplay.
     \item l'autre, principalement rencontrée dans les autres jeux de babyfoot trouvés en ligne, serait plus automatisée : les cannes se déplaceraient toutes ensemble de manière synchronisée avec les flèches \og Haut \fg et \og Bas \fg. Le tir pourrait être ou non automatisé selon que j'aurais le temps pour configurer cette fonctionnalité supplémentaire.
 \end{itemize}
-\subsection{Options}
-\paragraph{}
+\paragraph{Options}
 Un petit menu sera consacré aux options, notamment le type de jeu que l'on souhaite utiliser (manuel ou automatisé, auquel cas jusqu'à quel point) et d'autres options.
-
 
 \chapter{Analyse de la solution envisagée}
 \section{Découpage en modules}
@@ -78,4 +70,9 @@ La partie à proprement parler. Donc le conteneur du dessin du terrain qui gère
 \subsection{GameZone.java}
 \paragraph{}
 Zone de dessin chargée de représenter le terrain, les joueurs, etc.
+\subsection{ChatPanel.java}
+\paragraph{}
+Une partie un peu à part qui est chargée de gérer l'affichage du chat. Celui-ci sera présent à de nombreux endroits : la liste des parties disponibles, la salle d'attente, la création d'une partie et durant le jeu lui-même. Or, tous ces affichages seront
+\section{La partie réseau}
+
 \end{document}          
