@@ -7,25 +7,23 @@ import javax.swing.*;
 
 @SuppressWarnings("serial")
 public class MenuPanel extends BPanel implements ActionListener {
-	JButton bQuit;
-	JButton bNewGame;
-	JButton bJoinGame;
-	JButton bSettings;
+	JButton bQuit = new JButton("Quitter");
+	JButton bNewGame = new JButton("Nouvelle partie");
+	JButton bJoinGame = new JButton("Rejoindre une partie");
+	JButton bSettings = new JButton("Options");
 	
 	public MenuPanel(MainFrame f) {
 		super(f);
-		
+		f.setSize(800,800);
 	    //Gauche-droite
 	    JPanel left = new JPanel();
 	    left.setBackground(Color.WHITE);
 	    left.setPreferredSize(new Dimension(250,200));
 	    add(left,BorderLayout.WEST);
-	    
 	    JPanel bottom = new JPanel();
 	    bottom.setBackground(Color.WHITE);
 	    bottom.setPreferredSize(new Dimension(800,300));
 	    add(bottom,BorderLayout.SOUTH);
-	    
 	    JPanel right = new JPanel();
 	    right.setBackground(Color.WHITE);
 	    right.setPreferredSize(new Dimension(250,200));
@@ -38,13 +36,9 @@ public class MenuPanel extends BPanel implements ActionListener {
 	    add(centralMenu, BorderLayout.CENTER);
 	    
 	    //Gestion des boutons
-	    bNewGame = new JButton("Nouvelle partie");
 	    bNewGame.setPreferredSize(new Dimension(200,50));
-	    bJoinGame = new JButton("Rejoindre une partie");
 	    bJoinGame.setPreferredSize(new Dimension(200,50));
-	    bSettings = new JButton("Options");
 	    bSettings.setPreferredSize(new Dimension(200,50));
-	    bQuit = new JButton("Quitter");
 	    bQuit.setPreferredSize(new Dimension(200,50));
 		
 	    centralMenu.add(bNewGame,new Dimension(0,0));
