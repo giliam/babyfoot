@@ -1,5 +1,6 @@
 package network;
 
-public class PlayerServer {
-
+public class PlayerServer implements Runnable {
+	public void run() {
+	}
 }
