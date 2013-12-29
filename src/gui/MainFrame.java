@@ -13,7 +13,10 @@ public class MainFrame extends JFrame implements ActionListener {
 	    setSize(800, 800);
 	    setLocationRelativeTo(null);
 	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	    setContentPane(new ConnexionPanel(this));
+	    //Quand on veut tester le programme complet
+	    //setContentPane(new ConnexionPanel(this));
+	    //Quand on veut tester l'interface du jeu
+	    setContentPane(new GamePanel(this));
 	    setResizable(false);
 	    setVisible(true);
 	}

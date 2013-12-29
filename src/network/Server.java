@@ -25,24 +25,20 @@ public class Server implements Runnable {
 	
 	public void run() {
 		try {
-			try {
-	            while(true){
-					
-	            	socket = socketserver.accept();
-		            System.out.println("Requête reçue");
-		            
-	            	in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-	    			out = new PrintWriter(socket.getOutputStream());
-	    			tchat = new Thread(new ChatServer(out, in));
-	    			tchat.start();
-	    			tplayer = new Thread(new PlayerServer());
-	    			tplayer.start();
-	            }
-	        } catch (IOException e) {
-	            System.err.println("Erreur serveur");
-	        }
-		} catch (IOException e) {
-			System.err.println(login +"s'est déconnecté ");
-		}
-}
+            while(true){
+				
+            	socket = socketserver.accept();
+	            System.out.println("Requête reçue");
+	            
+            	in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+    			out = new PrintWriter(socket.getOutputStream());
+    			tchat = new Thread(new ChatServer(out, in));
+    			tchat.start();
+    			tplayer = new Thread(new PlayerServer());
+    			tplayer.start();
+            }
+        } catch (IOException e) {
+            System.err.println("Erreur serveur");
+        }
+	}
 }
