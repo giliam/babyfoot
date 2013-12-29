@@ -5,13 +5,17 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 
 import javax.swing.JPanel;
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 
 public class GameZone extends JPanel {
 	private static final long serialVersionUID = 1L;
 	/**
 	 * Taille des buts en pixels et épaisseur des traits
 	 */
-	private static final int goalSize = 2*60;
+	private static final int goalSize = 2*100;
 	private static final int lineStrength = 4;
 	private static final int gapEdge = 2*20;
 	
@@ -27,6 +31,7 @@ public class GameZone extends JPanel {
 		
 		drawLines(g);
 		drawGoals(g);
+		drawPlayers(g);
 	}
 	
 	private void drawGoals(Graphics g){
@@ -52,11 +57,52 @@ public class GameZone extends JPanel {
 		int h = getHeight();
 		int w = getWidth();
 		g.setColor(Color.WHITE);
+		//Milieu de terrain
 		g.fillRect((w-lineStrength)/2,0,lineStrength,h);
+		//gauche
 		g.fillRect(gapEdge,0,lineStrength,h);
+		//haut
 		g.fillRect(0,gapEdge,w,lineStrength);
+		//droite
 		g.fillRect(w-gapEdge-lineStrength,0,lineStrength,h);
+		//bas
 		g.fillRect(0,h-gapEdge-lineStrength,w,lineStrength);
+	}
+	
+	private void drawPlayers(Graphics g){
+		int h = getHeight();
+		int w = getWidth();
+		
+		drawPlayer(g, gapEdge+30, h, 1, Color.RED, false);
+		drawPlayer(g, gapEdge+30+100, h, 2, Color.RED, false);
+		drawPlayer(g, w-lineStrength-gapEdge-230, h, 3, Color.RED, false);
+		drawPlayer(g, (w-lineStrength)/2-70, h, 5, Color.RED, false);
+		
+		drawPlayer(g, w-lineStrength-(gapEdge+30), h, 1, Color.RED, true);
+		drawPlayer(g, w-lineStrength-(gapEdge+30+100), h, 2, Color.RED, true);
+		drawPlayer(g, w-lineStrength-(w-lineStrength-gapEdge-230), h, 3, Color.RED, true);
+		drawPlayer(g, w-lineStrength-((w-lineStrength)/2-70), h, 5, Color.RED, true);
+	}
+	
+	/**
+	 * rightPlayer : true = orienté vers la gauche, false orienté vers la droite. 
+	 */
+	private void drawPlayer(Graphics g, int x, int h, int nb, Color color, boolean rightPlayer ){
+		g.setColor(new Color(192, 192, 192));
+		g.fillRect(x,0,3*lineStrength/2,h);
+		g.setColor(color);
+		for( int i=1; i<=nb;i++){
+			try {
+				Image img = null;
+				if(rightPlayer)
+					img = ImageIO.read(new File("pictures/joueurdroit.png"));
+				else
+					img = ImageIO.read(new File("pictures/joueurgauche.png"));
+				g.drawImage(img, x-10, i*h/(1+nb)-19, this);
+		    } catch (IOException e) {
+		    	e.printStackTrace();
+		    }                
+		}
 	}
 	
 }
