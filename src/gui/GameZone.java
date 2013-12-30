@@ -18,6 +18,8 @@ public class GameZone extends JPanel {
 	private static final int goalSize = 2*100;
 	private static final int lineStrength = 4;
 	private static final int gapEdge = 2*20;
+	private static final int imagePlayerY = 38;
+	private static final int imagePlayerX = 30;
 	
 	public GameZone(){
 	    setPreferredSize(new Dimension(900,700));
@@ -73,21 +75,21 @@ public class GameZone extends JPanel {
 		int h = getHeight();
 		int w = getWidth();
 		
-		drawPlayer(g, gapEdge+30, h, 1, Color.RED, false);
-		drawPlayer(g, gapEdge+30+100, h, 2, Color.RED, false);
-		drawPlayer(g, w-lineStrength-gapEdge-230, h, 3, Color.RED, false);
-		drawPlayer(g, (w-lineStrength)/2-70, h, 5, Color.RED, false);
+		drawPlayer(g, gapEdge+30, 0, h, 1, Color.RED, false, 1);
+		drawPlayer(g, gapEdge+30+100, 0, h, 2, Color.RED, false, 1);
+		drawPlayer(g, w-lineStrength-gapEdge-230, 0, h, 3, Color.RED, false, 1);
+		drawPlayer(g, (w-lineStrength)/2-70, 0, h, 5, Color.RED, false, 1);
 		
-		drawPlayer(g, w-lineStrength-(gapEdge+30), h, 1, Color.RED, true);
-		drawPlayer(g, w-lineStrength-(gapEdge+30+100), h, 2, Color.RED, true);
-		drawPlayer(g, w-lineStrength-(w-lineStrength-gapEdge-230), h, 3, Color.RED, true);
-		drawPlayer(g, w-lineStrength-((w-lineStrength)/2-70), h, 5, Color.RED, true);
+		drawPlayer(g, w-lineStrength-(gapEdge+30), 0, h, 1, Color.RED, true, 1);
+		drawPlayer(g, w-lineStrength-(gapEdge+30+100), 0, h, 2, Color.RED, true, 1);
+		drawPlayer(g, w-lineStrength-(w-lineStrength-gapEdge-230), 0, h, 3, Color.RED, true, 1);
+		drawPlayer(g, w-lineStrength-((w-lineStrength)/2-70), 0, h, 5, Color.RED, true, 1);
 	}
 	
 	/**
 	 * rightPlayer : true = orienté vers la gauche, false orienté vers la droite. 
 	 */
-	private void drawPlayer(Graphics g, int x, int h, int nb, Color color, boolean rightPlayer ){
+	private void drawPlayer(Graphics g, int x, int y, int h, int nb, Color color, boolean rightPlayer, int position ){
 		g.setColor(new Color(192, 192, 192));
 		g.fillRect(x,0,3*lineStrength/2,h);
 		g.setColor(color);
@@ -95,10 +97,15 @@ public class GameZone extends JPanel {
 			try {
 				Image img = null;
 				if(rightPlayer)
-					img = ImageIO.read(new File("pictures/joueurdroit.png"));
+					img = ImageIO.read(new File("pictures/joueurdroit" + String.valueOf(position) + ".png"));
 				else
-					img = ImageIO.read(new File("pictures/joueurgauche.png"));
-				g.drawImage(img, x-10, i*h/(1+nb)-19, this);
+					img = ImageIO.read(new File("pictures/joueurgauche" + String.valueOf(position) + ".png"));
+				if(position==1)
+					g.drawImage(img, x-imagePlayerX/3, y+i*h/(1+nb)-imagePlayerY/2, this);
+				else if(position==2 && !rightPlayer )
+					g.drawImage(img, x-imagePlayerX/3-13, y+i*h/(1+nb)-imagePlayerY/2, this);
+				else if(position==2 && rightPlayer )
+					g.drawImage(img, x-imagePlayerX/3-48, y+i*h/(1+nb)-imagePlayerY/2, this);
 		    } catch (IOException e) {
 		    	e.printStackTrace();
 		    }                

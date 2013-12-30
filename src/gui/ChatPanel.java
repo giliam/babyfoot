@@ -1,5 +1,4 @@
 package gui;
-import core.Chat;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -11,8 +10,6 @@ public class ChatPanel extends JPanel implements ActionListener {
 	JButton push;
 	JTabbedPane onglet;
 	public ChatPanel(MainFrame f) {
-		Chat c = new Chat();
-		
 		window = f;
 		
 		//Création de plusieurs Panneau
@@ -25,7 +22,7 @@ public class ChatPanel extends JPanel implements ActionListener {
 	    onglet.setPreferredSize(new Dimension(300,800));
 	    
 		JTextPane text = new JTextPane();
-		text.setText(c.getText() + c.getText());
+		text.setText("");
 		
 		JScrollPane displayZone = new JScrollPane(text);
 		displayZone.setPreferredSize(new Dimension(280,500));
