@@ -57,10 +57,24 @@ public class Database {
 		return s;
 	}
 	
+	public void addServer(String nom){
+		try {
+			//Création d'un objet Statement
+			Statement state = conn.createStatement();
+			//L'objet ResultSet contient le résultat de la requête SQL
+			ResultSet result = state.executeQuery("INSERT INTO salons(nom) VALUES('" + nom + "')");
+			result.close();
+			state.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	
 	public static void main(String[] args){
 		Database d = new Database();
 		d.connect();
+		d.addServer("Global");
 		System.out.println(d.getServers());
 	}
 }
