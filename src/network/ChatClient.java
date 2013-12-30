@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import core.Utils;
@@ -39,7 +40,7 @@ public class ChatClient implements Runnable {
             System.err.println("Le serveur distant s'est déconnecté !");
         }
     }
-    
+    /*
     public static void main(String[] args){
     	Scanner sc = new Scanner(System.in);
     	Socket socket = null;
@@ -56,9 +57,8 @@ public class ChatClient implements Runnable {
 	    } catch (IOException e) {
 	      System.err.println("Aucun serveur à l'écoute du port "+socket.getLocalPort());
 	    }
-    }
+    }*/
 }
-
 
 class EnvoiMessage implements Runnable {
 	PrintWriter out;
@@ -70,9 +70,13 @@ class EnvoiMessage implements Runnable {
 	public void run() {
 		Scanner sc = new Scanner(System.in);
 		while(true){
-			String message = sc.nextLine();
-			out.println("tchat-principal-" + login + "-30/12/13 12:48-" + Utils.hash("principalsalt" + message + login + "42$1a" ) + "-" + message);
-			out.flush();
+			try {
+				String message = sc.nextLine();
+				out.println("tchat-principal-" + login + "-30/12/13 12:48-" + Utils.hash("principalsalt" + message + login + "42$1a" ) + "-" + message);
+				out.flush();
+			}catch(NoSuchElementException e){
+				
+			}
 		}
 	}
 }
