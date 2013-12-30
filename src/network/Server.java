@@ -15,30 +15,36 @@ public class Server implements Runnable {
 	BufferedReader in;
 	PrintWriter out;
 	String login;
-	Thread tchat, tplayer;
+	ChatServer tchat;
+	PlayerServer tplayer;
 	
-	public Server(Socket s, String log){
-		socket = s;
-		login = log;
+	public Server(ServerSocket s){
+		socketserver = s;
 	}
 	
 	
 	public void run() {
 		try {
             while(true){
-				
             	socket = socketserver.accept();
 	            System.out.println("Requête reçue");
-	            
-            	in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-    			out = new PrintWriter(socket.getOutputStream());
-    			tchat = new Thread(new ChatServer(out, in));
-    			tchat.start();
-    			tplayer = new Thread(new PlayerServer());
-    			tplayer.start();
+    			tchat = new ChatServer(socket);
+    			tplayer = new PlayerServer();
             }
         } catch (IOException e) {
-            System.err.println("Erreur serveur");
+            System.err.println("Erreur serveur à la réception !");
         }
+	}
+	
+	public static void main(String[] args){
+		try{	
+			System.out.println("Lancement du serveur en cours...");
+			Server s = new Server(new ServerSocket(2010));
+			System.out.println("Serveur prêt !");
+			Thread serveur = new Thread(s);
+			serveur.start();
+		} catch (IOException e) {
+	        System.err.println("Erreur serveur au lancement !");
+	    }
 	}
 }
