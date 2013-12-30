@@ -31,6 +31,7 @@ public class ConnexionPanel extends BPanel implements ActionListener {
 			System.exit(0);
 		}else if( e.getSource() == bConnect ){
 			if( !fpseudo.getText().equals("") ){
+				window.chat.setLogin(fpseudo.getText());
 				window.setContentPane(new MenuPanel(window));
 		    	window.setVisible(true);
 			}
