@@ -79,9 +79,11 @@ public class Database {
 				    prepare.setString(2,message);
 				    prepare.setInt(3,(int) System.currentTimeMillis());
 				    prepare.setInt(4,joueur_id);
-				    prepare.executeQuery();
+				    prepare.executeUpdate();
 				    prepare.close();
 					state.close();
+				}else{
+					System.out.println("Ce joueur n'existe pas ! " + resultVerifPlayerExist.getRow());
 				}
 			}else{
 				System.out.println("Ce salon n'existe pas ! " + resultVerifRoomExist.getRow());
