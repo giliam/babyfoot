@@ -59,15 +59,15 @@ public class Database {
 		try {
 			//On vérifie que le salon existe
 			Statement stateVerifRoomExist = link.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-			ResultSet resultVerifRoomExist = stateVerifRoomExist.executeQuery("SELECT salon_id FROM salons WHERE nom = " + serveur );
+			ResultSet resultVerifRoomExist = stateVerifRoomExist.executeQuery("SELECT salon_id FROM salons WHERE nom = '" + serveur + "'" );
 			resultVerifRoomExist.last();
-			if( resultVerifRoomExist.getRow() == 1 ){
+			if( resultVerifRoomExist.getRow() >= 1 ){
 				//On obtient donc l'ID du salon
 				resultVerifRoomExist.first();
 				int salon_id = resultVerifRoomExist.getInt("salon_id");
 				
 				Statement stateVerifPlayerExist = link.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-				ResultSet resultVerifPlayerExist = stateVerifPlayerExist.executeQuery("SELECT joueur_id FROM joueurs WHERE login = " + login );
+				ResultSet resultVerifPlayerExist = stateVerifPlayerExist.executeQuery("SELECT joueur_id FROM joueurs WHERE login = '" + login + "'" );
 				resultVerifPlayerExist.last();
 				if( resultVerifPlayerExist.getRow() == 1 ){
 					//On obtient donc l'ID du joueur
@@ -79,12 +79,12 @@ public class Database {
 				    prepare.setString(2,message);
 				    prepare.setInt(3,(int) System.currentTimeMillis());
 				    prepare.setInt(4,joueur_id);
-				    
+				    prepare.executeQuery();
 				    prepare.close();
 					state.close();
 				}
 			}else{
-				System.out.println("Ce salon n'existe pas !");
+				System.out.println("Ce salon n'existe pas ! " + resultVerifRoomExist.getRow());
 			}
 			resultVerifRoomExist.close();
 			stateVerifRoomExist.close();
@@ -96,7 +96,7 @@ public class Database {
 	public static void main(String[] args){
 		Database d = new Database();
 		d.connect();
-		d.addMessage(String.valueOf(1),"giliam", "salut les poteaux ! ''''");
+		d.addMessage("Global","giliam", "salut les poteaux ! ''''");
 		String[] s = d.getServers();
 		for(int i = 0; i < 2; i++ ){
 			System.out.println(s[i]);
