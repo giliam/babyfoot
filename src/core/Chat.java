@@ -29,6 +29,10 @@ public class Chat {
 	    sc.close();
 	}
 	
+	public void setChat(int id){
+		
+	}
+	
 	public String[] getServers(){
 		return db.getServers();
 	}
