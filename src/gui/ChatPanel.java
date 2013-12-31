@@ -7,7 +7,7 @@ import java.util.Map;
 import javax.swing.*;
 
 @SuppressWarnings("serial")
-public class ChatPanel extends JPanel implements ActionListener, MouseListener {
+public class ChatPanel extends JPanel implements ActionListener, MouseListener, KeyListener {
 	private MainFrame window;
 	private JButton push = new JButton("Envoyer");
 	private JTabbedPane onglet = new JTabbedPane();
@@ -57,14 +57,19 @@ public class ChatPanel extends JPanel implements ActionListener, MouseListener {
 		//On ajoute les listener
 		listServersLayout.addMouseListener(this);
 		push.addActionListener(this);
+		textfield.addKeyListener(this);
+	}
+	
+	private void sendMessage(){
+		if( !textfield.getText().equals("") ){
+			window.chat.sendMessage(textfield.getText());
+			textfield.setText("");
+		}
 	}
 	
 	public void actionPerformed(ActionEvent e) {
 		if( e.getSource() == push ){
-			if( !textfield.getText().equals("") ){
-				window.chat.sendMessage(textfield.getText());
-				textfield.setText("");
-			}
+			sendMessage();
 		}
 	}
 	
@@ -101,5 +106,21 @@ public class ChatPanel extends JPanel implements ActionListener, MouseListener {
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
+	}
+
+	@Override
+	public void keyPressed(KeyEvent event) {
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent event) {
+	}
+
+	@Override
+	public void keyTyped(KeyEvent event) {
+		if( event.getKeyChar() == Event.ENTER ){
+			sendMessage();
+		}
 	}
 }

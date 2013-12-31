@@ -40,7 +40,7 @@ class ReceptionMessageServeur implements Runnable{
 		while(true){
 			try {
 				m = in.readLine();
-				if( !m.equals("") ) {
+				if( m != null ) {
 					String[] datas = m.split("-", 6);
 					String typeRequete = datas[0];
 					if( typeRequete.equals("tchat") ){
