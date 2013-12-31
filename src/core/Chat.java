@@ -9,9 +9,11 @@ import network.ChatClient;
 
 public class Chat {
 	public String login;
-	private Thread tChat;
+	private Thread tChat = null;
 	private Socket socket = null;
-	public Chat(){
+	private Database db;
+	public Chat(Database db){
+		this.db = db;
 		Scanner sc = new Scanner(System.in);
 	    try {
 	        System.out.println("Demande de connexion");
@@ -27,10 +29,16 @@ public class Chat {
 	    sc.close();
 	}
 	
+	public String[] getServers(){
+		return db.getServers();
+	}
+	
 	public void setLogin(String login) {
 		this.login = new String(login);
-		tChat.interrupt();
-		tChat = new Thread(new ChatClient(socket, login));
-        tChat.start();
+		if( tChat != null ){
+			tChat.interrupt();
+			tChat = new Thread(new ChatClient(socket, login));
+	        tChat.start();
+		}
 	}
 }
