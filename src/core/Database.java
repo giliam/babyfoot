@@ -2,6 +2,7 @@ package core;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -27,7 +28,6 @@ public class Database {
 		try {
 			Statement state = link.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
 			ResultSet result = state.executeQuery("SELECT * FROM salons");
-			ResultSetMetaData resultMeta = result.getMetaData();
 			result.last();
 			//On crée le tableau
 			s = new String[result.getRow()];
@@ -55,12 +55,50 @@ public class Database {
 		}
 	}
 	
+	public void addMessage(String serveur, String login, String message) {
+		try {
+			//On vérifie que le salon existe
+			Statement stateVerifRoomExist = link.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+			ResultSet resultVerifRoomExist = stateVerifRoomExist.executeQuery("SELECT salon_id FROM salons WHERE nom = " + serveur );
+			resultVerifRoomExist.last();
+			if( resultVerifRoomExist.getRow() == 1 ){
+				//On obtient donc l'ID du salon
+				resultVerifRoomExist.first();
+				int salon_id = resultVerifRoomExist.getInt("salon_id");
+				
+				Statement stateVerifPlayerExist = link.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+				ResultSet resultVerifPlayerExist = stateVerifPlayerExist.executeQuery("SELECT joueur_id FROM joueurs WHERE login = " + login );
+				resultVerifPlayerExist.last();
+				if( resultVerifPlayerExist.getRow() == 1 ){
+					//On obtient donc l'ID du joueur
+					resultVerifRoomExist.first();
+					int joueur_id = resultVerifRoomExist.getInt("salon_id");
+					Statement state = link.createStatement();
+				    PreparedStatement prepare = link.prepareStatement("INSERT INTO chat(salon_id, message, date, joueur_id) VALUES(?, ?, ?, ? )");
+				    prepare.setInt(1,salon_id);
+				    prepare.setString(2,message);
+				    prepare.setInt(3,(int) System.currentTimeMillis());
+				    prepare.setInt(4,joueur_id);
+				    
+				    prepare.close();
+					state.close();
+				}
+			}else{
+				System.out.println("Ce salon n'existe pas !");
+			}
+			resultVerifRoomExist.close();
+			stateVerifRoomExist.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	public static void main(String[] args){
 		Database d = new Database();
 		d.connect();
+		d.addMessage(String.valueOf(1),"giliam", "salut les poteaux ! ''''");
 		String[] s = d.getServers();
-		for(int i = 0; i < 1; i++ ){
+		for(int i = 0; i < 2; i++ ){
 			System.out.println(s[i]);
 		}
 	}
