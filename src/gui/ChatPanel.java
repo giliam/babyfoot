@@ -12,6 +12,7 @@ public class ChatPanel extends JPanel implements ActionListener, MouseListener {
 	private JButton push = new JButton("Envoyer");
 	private JTabbedPane onglet = new JTabbedPane();
 	private JList<String> listServersLayout;
+	private JTextField textfield;
 	private int[] listServers;
 	private long timeFirstClick;
 	
@@ -31,7 +32,7 @@ public class ChatPanel extends JPanel implements ActionListener, MouseListener {
 		text.setText("");
 		JScrollPane displayZone = new JScrollPane(text);
 		displayZone.setPreferredSize(new Dimension(280,500));
-		JTextField textfield = new  JTextField();
+		textfield = new  JTextField();
 		textfield.setPreferredSize(new Dimension(180,20));
 		push.setPreferredSize(new Dimension(90,25));
 		
@@ -44,7 +45,7 @@ public class ChatPanel extends JPanel implements ActionListener, MouseListener {
 		//On rajoute le gestionnaire d'événements du double-clic sur un élément de la liste
 		JScrollPane listScroller = new JScrollPane(listServersLayout);
 		listScroller.setPreferredSize(new Dimension(250, 80));
-		listServersLayout.addMouseListener(this);
+		
 		//On entre tout ça
 		add(onglet);
 		tPan[0].add(displayZone);
@@ -52,15 +53,25 @@ public class ChatPanel extends JPanel implements ActionListener, MouseListener {
 		tPan[0].add(push);
 		
 		tPan[1].add(listScroller);
+		
+		//On ajoute les listener
+		listServersLayout.addMouseListener(this);
+		push.addActionListener(this);
 	}
 	
 	public void actionPerformed(ActionEvent e) {
+		if( e.getSource() == push ){
+			if( !textfield.getText().equals("") ){
+				window.chat.sendMessage(textfield.getText());
+				textfield.setText("");
+			}
+		}
 	}
 	
 	public String[] format(String[] list){
 		listServers = new int[list.length];
 		for(int i = 0; i<list.length; i++){
-			String[] m = list[i].split("-",2);
+			String[] m = list[i].split(" - ",2);
 			listServers[i] = Integer.valueOf(m[0]);
 			list[i] = m[1];
 		}
