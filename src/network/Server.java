@@ -6,6 +6,8 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import core.Database;
+
 
 public class Server implements Runnable {
 
@@ -16,9 +18,12 @@ public class Server implements Runnable {
 	String login;
 	ChatServer tchat;
 	PlayerServer tplayer;
+	public static Database db;
 	
 	public Server(ServerSocket s){
 		socketserver = s;
+		db = new Database();
+		db.connect();
 	}
 	
 	

@@ -8,7 +8,7 @@ import javax.swing.*;
 @SuppressWarnings("serial")
 public class ConnexionPanel extends BPanel implements ActionListener {
 	JButton bQuit = new JButton("Quitter");
-	JTextField fpseudo = new JTextField("Joueur " + String.valueOf(1));
+	JTextField fpseudo = new JTextField("giliam");
 	JButton bConnect = new JButton("Rejoindre une partie");
 	
 	public ConnexionPanel(MainFrame f) {

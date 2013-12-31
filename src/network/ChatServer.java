@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
+import core.Database;
 import core.Utils;
 
 public class ChatServer {
@@ -40,20 +41,24 @@ class ReceptionMessageServeur implements Runnable{
 			try {
 				m = in.readLine();
 				if( !m.equals("") ) {
-	        		String[] datas = m.split("-", 6);
-	        		String date = datas[3];
-	            	String message = datas[5];
-	            	String login = datas[2];
-	            	String serveur = datas[1];
-	            	String typeRequete = datas[0];
-	            	String hashTag = datas[4];
-	            	if( typeRequete.equals("tchat") && hashTag.equals(Utils.hash(serveur + "salt" + message + login + "42$1a" ) ) ){
-	            		System.out.println("Serveur " + serveur + " - " + date + " - " + login+" : "+message);
-	            	}else if( typeRequete.equals("tchat")){
-	            		System.out.println("Requête non valide par le hash!");
-	            	}else{
-	            		System.out.println("Requête non valide par le type !");
-	            	}
+					String[] datas = m.split("-", 6);
+					String typeRequete = datas[0];
+					if( typeRequete.equals("tchat") ){
+		            	String message = datas[4];
+		            	String login = datas[2];
+		            	String serveur = datas[1];
+		            	String hashTag = datas[3];
+		            	if( hashTag.equals(Utils.hash(serveur + "salt" + message + login + "42$1a" ) ) ){
+		            		Server.db.addMessage(serveur, login, message );
+		            		System.out.println("ENVOI REUSSI");
+		            	}else if( typeRequete.equals("tchat")){
+		            		System.out.println("Requête non valide par le hash!");
+		            	}else{
+		            		System.out.println("Requête non valide par le type !");
+		            	}
+					}else if( typeRequete.equals("listeServeurs") ){
+						//TODO : renvoyer la liste des serveurs.
+					}
 	        	}
 			} catch (IOException e) {
 				e.printStackTrace();

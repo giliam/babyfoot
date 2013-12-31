@@ -12,6 +12,8 @@ public class Chat {
 	private Thread tChat = null;
 	private Socket socket = null;
 	private Database db;
+	private ChatClient cc;
+	
 	public Chat(Database db){
 		this.db = db;
 		Scanner sc = new Scanner(System.in);
@@ -19,7 +21,8 @@ public class Chat {
 	        System.out.println("Demande de connexion");
 	        socket = new Socket("127.0.0.1",2010);
 	        System.out.println("Connexion établie avec le serveur, authentification :");
-	        tChat = new Thread(new ChatClient(socket, ""));
+	        cc = new ChatClient(socket, "");
+	        tChat = new Thread(cc);
 	        tChat.start();
 	    } catch (UnknownHostException e) {
 	      System.err.println("Impossible de se connecter à l'adresse 127.0.0.1 ");
@@ -31,6 +34,11 @@ public class Chat {
 	
 	public void setChat(int id){
 		
+	}
+
+	public void sendMessage(String text){
+		System.out.println("Requête pour envoi de message...");
+		cc.sendMessage(text);
 	}
 	
 	public String[] getServers(){

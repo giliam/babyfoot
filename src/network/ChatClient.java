@@ -29,16 +29,21 @@ public class ChatClient implements Runnable {
         	out = new PrintWriter(socket.getOutputStream());
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             sc = new Scanner(System.in);
-            Thread tEnvoiMessage = new Thread(new EnvoiMessage(out, login));
-            tEnvoiMessage.start();
+            //Thread tEnvoiMessage = new Thread(new EnvoiMessage(out, login));
+            //tEnvoiMessage.start();
             Thread tReceptionMessage = new Thread(new ReceptionMessage(in));
             tReceptionMessage.start();
-        
-           
             
         } catch (IOException e) {
             System.err.println("Le serveur distant s'est déconnecté !");
         }
+    }
+    
+    public void sendMessage(String text){
+    	System.out.println("Envoi de message...");
+    	out.println("tchat-Global-giliam-" + Utils.hash("Globalsalt" + text + "giliam" + "42$1a" ) + "-" + text);
+		out.flush();
+		System.out.println("Envoi réussi...");
     }
     /*
     public static void main(String[] args){
@@ -59,7 +64,7 @@ public class ChatClient implements Runnable {
 	    }
     }*/
 }
-
+/*
 class EnvoiMessage implements Runnable {
 	PrintWriter out;
 	String login;
@@ -72,14 +77,14 @@ class EnvoiMessage implements Runnable {
 		while(true){
 			try {
 				String message = sc.nextLine();
-				out.println("tchat-principal-" + login + "-30/12/13 12:48-" + Utils.hash("principalsalt" + message + login + "42$1a" ) + "-" + message);
+				out.println("tchat-principal-" + login + "-" + Utils.hash("principalsalt" + message + login + "42$1a" ) + "-" + message);
 				out.flush();
 			}catch(NoSuchElementException e){
 				
 			}
 		}
 	}
-}
+}*/
 
 class ReceptionMessage implements Runnable{
 	
