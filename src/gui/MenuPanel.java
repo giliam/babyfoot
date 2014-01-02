@@ -5,6 +5,8 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
+import core.Main;
+
 @SuppressWarnings("serial")
 public class MenuPanel extends BPanel implements ActionListener {
 	JButton bQuit = new JButton("Quitter");
@@ -54,7 +56,7 @@ public class MenuPanel extends BPanel implements ActionListener {
 	
 	public void actionPerformed(ActionEvent e) {
 		if( e.getSource() == bQuit ){
-			System.exit(0);
+			Main.closeWindow();
 		}else if( e.getSource() == bNewGame ){
 			window.setContentPane(new NewPanel(window));
 		    window.setVisible(true);

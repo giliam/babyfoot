@@ -5,6 +5,8 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
+import core.Main;
+
 @SuppressWarnings("serial")
 public class ServersPanel extends BPanel implements ActionListener {
 	JButton bQuit;
@@ -38,7 +40,7 @@ public class ServersPanel extends BPanel implements ActionListener {
 	
 	public void actionPerformed(ActionEvent e) {
 		if( e.getSource() == bQuit ){
-			System.exit(0);
+			Main.closeWindow();
 		}else if( e.getSource() == bReturn ){
 			window.setContentPane(new MenuPanel(window));
 		    window.setVisible(true);

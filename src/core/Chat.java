@@ -53,4 +53,8 @@ public class Chat {
 	        tChat.start();
 		}
 	}
+
+	public String getLogin() {
+		return login;
+	}
 }

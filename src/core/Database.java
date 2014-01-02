@@ -47,8 +47,7 @@ public class Database {
 	public void addServer(String nom){
 		try {
 			Statement state = link.createStatement();
-			ResultSet result = state.executeQuery("INSERT INTO salons(nom) VALUES('" + nom + "')");
-			result.close();
+			state.executeUpdate("INSERT INTO salons(nom) VALUES('" + nom + "')");
 			state.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -95,6 +94,47 @@ public class Database {
 		}
 	}
 	
+	
+	
+	public boolean addPlayer(String login){
+		try {
+			Statement stateVerifPlayerExist = link.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+			ResultSet resultVerifPlayerExist = stateVerifPlayerExist.executeQuery("SELECT joueur_id FROM joueurs WHERE login = '" + login + "'" );
+			resultVerifPlayerExist.last();
+			if( resultVerifPlayerExist.getRow() >= 1 ){
+				return false;
+			}else{
+				Statement state = link.createStatement();
+				state.executeUpdate("INSERT INTO joueurs(login) VALUES('" + login + "')");
+				state.close();
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	
+	
+	public void removePlayer(String login) {
+		try {
+			Statement stateVerifPlayerExist = link.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+			ResultSet resultVerifPlayerExist = stateVerifPlayerExist.executeQuery("SELECT joueur_id FROM joueurs WHERE login = '" + login + "'" );
+			resultVerifPlayerExist.last();
+			if( resultVerifPlayerExist.getRow() == 1 ){
+				Statement state = link.createStatement();
+				state.executeUpdate("DELETE FROM joueurs WHERE login = '" + login + "'");
+				state.close();
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
+	
 	public static void main(String[] args){
 		Database d = new Database();
 		d.connect();
@@ -104,4 +144,8 @@ public class Database {
 			System.out.println(s[i]);
 		}
 	}
+
+	
+
+	
 }

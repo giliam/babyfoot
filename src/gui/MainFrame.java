@@ -1,11 +1,13 @@
 package gui;
 
 import java.awt.event.*;
+
 import javax.swing.*;
 import core.Chat;
+import core.Main;
 
 @SuppressWarnings("serial")
-public class MainFrame extends JFrame implements ActionListener {
+public class MainFrame extends JFrame implements ActionListener, WindowListener {
 	public JPanel pan;
 	public Chat chat;
 	
@@ -15,6 +17,8 @@ public class MainFrame extends JFrame implements ActionListener {
 	    setSize(800, 800);
 	    setLocationRelativeTo(null);
 	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    
+	    addWindowListener(this);
 	    //Quand on veut tester le programme complet
 	    setContentPane(new ConnexionPanel(this));
 	    //Quand on veut tester l'interface du jeu
@@ -29,5 +33,31 @@ public class MainFrame extends JFrame implements ActionListener {
 	
 	public void actionPerformed(ActionEvent arg0) {
 		
+	}
+
+	public void windowActivated(WindowEvent e) {
+	}
+
+	public void windowClosed(WindowEvent e) {
+	}
+
+	public void windowClosing(WindowEvent e) {
+		System.out.println("----" + chat.getLogin());
+		if( !chat.getLogin().equals("") ){
+			System.out.println("SUPPRESSION EN COURS");
+			Main.getDb().removePlayer(chat.getLogin());
+		}
+	}
+
+	public void windowDeactivated(WindowEvent e) {
+	}
+
+	public void windowDeiconified(WindowEvent e) {
+	}
+
+	public void windowIconified(WindowEvent e) {
+	}
+
+	public void windowOpened(WindowEvent e) {
 	}
 }
