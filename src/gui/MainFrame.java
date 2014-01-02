@@ -9,10 +9,8 @@ import core.Main;
 @SuppressWarnings("serial")
 public class MainFrame extends JFrame implements ActionListener, WindowListener {
 	public JPanel pan;
-	public Chat chat;
 	
 	public MainFrame(String title, Chat chat) {
-		this.chat = chat;
 		setTitle(title);
 	    setSize(800, 800);
 	    setLocationRelativeTo(null);
@@ -42,10 +40,10 @@ public class MainFrame extends JFrame implements ActionListener, WindowListener 
 	}
 
 	public void windowClosing(WindowEvent e) {
-		System.out.println("----" + chat.getLogin());
-		if( !chat.getLogin().equals("") ){
+		System.out.println("----" + Main.getPlayer().getLogin());
+		if( !Main.getPlayer().getLogin().equals("") ){
 			System.out.println("SUPPRESSION EN COURS");
-			Main.getDb().removePlayer(chat.getLogin());
+			Main.getPlayer().removePlayer(Main.getPlayer().getLogin());
 		}
 	}
 

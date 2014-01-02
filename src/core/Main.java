@@ -1,28 +1,48 @@
 package core;
 
+import network.Client;
 import gui.MainFrame;
 
 
 public class Main {
+	private static Player player;
 	private static Chat chat;
-	private static Database db;
+	private static Client client;
+	
 	public static void main(String[] args){
-		Main.setDb(new Database());
-		Main.getDb().connect();
-		Main.chat = new Chat(Main.getDb());
-		new MainFrame("Babyfoot en réseau trololol", Main.chat);
+		Main.client = new Client();
+		Main.setChat(new Chat());
+		Main.setPlayer(new Player());
+		new MainFrame("Babyfoot en réseau trololol", Main.getChat());
 	}
-	public static Database getDb() {
-		return db;
-	}
-	public static void setDb(Database db) {
-		Main.db = db;
-	}
+
 	public static void closeWindow() {
-		if( !Main.chat.getLogin().equals("") ){
-			Main.getDb().removePlayer(Main.chat.getLogin());
+		if( !Main.getPlayer().getLogin().equals("") ){
+			Main.getPlayer().removePlayer(Main.getPlayer().getLogin());
 		}
 		System.exit(0);
+	}
+	public static Player getPlayer() {
+		return player;
+	}
+	public static void setPlayer(Player player) {
+		Main.player = player;
+	}
+
+	public static Chat getChat() {
+		return chat;
+	}
+
+	public static void setChat(Chat chat) {
+		Main.chat = chat;
+	}
+	
+	public static Client getClient() {
+		return client;
+	}
+
+	public static void setClient(Client client) {
+		Main.client = client;
 	}
 }
 

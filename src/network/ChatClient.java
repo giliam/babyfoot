@@ -9,6 +9,7 @@ import java.net.UnknownHostException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+import core.Main;
 import core.Utils;
 
 public class ChatClient implements Runnable {
@@ -17,11 +18,9 @@ public class ChatClient implements Runnable {
     private BufferedReader in = null;
     private Thread t3, t4;
     private Scanner sc;
-    private String login;
     
-    public ChatClient(Socket s, String login){
+    public ChatClient(Socket s){
         socket = s;
-        this.login = login;
     }
     
     public void run() {
@@ -41,7 +40,7 @@ public class ChatClient implements Runnable {
     
     public void sendMessage(String text){
     	System.out.println("Envoi de message...");
-    	out.println("tchat-Global-giliam-" + Utils.hash("Globalsalt" + text + "giliam" + "42$1a" ) + "-" + text);
+    	out.println("tchat-Global-giliam-" + Utils.hash("Globalsalt" + text + Main.getPlayer().getLogin() + "42$1a" ) + "-" + text);
 		out.flush();
 		System.out.println("Envoi réussi...");
     }
@@ -63,7 +62,13 @@ public class ChatClient implements Runnable {
 	      System.err.println("Aucun serveur à l'écoute du port "+socket.getLocalPort());
 	    }
     }*/
+
+	public String[] getServers() {
+		out.println("servers-get");
+		return null;
+	}
 }
+
 /*
 class EnvoiMessage implements Runnable {
 	PrintWriter out;

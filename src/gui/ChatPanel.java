@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.swing.*;
 
+import core.Main;
+
 @SuppressWarnings("serial")
 public class ChatPanel extends JPanel implements ActionListener, MouseListener, KeyListener {
 	private MainFrame window;
@@ -37,7 +39,7 @@ public class ChatPanel extends JPanel implements ActionListener, MouseListener, 
 		push.setPreferredSize(new Dimension(90,25));
 		
 		//On s'occupe de la liste des serveurs
-		listServersLayout = new JList<String>(format(window.chat.getServers()));
+		listServersLayout = new JList<String>(format(Main.getChat().getServers()));
 		listServersLayout.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		listServersLayout.setLayoutOrientation(JList.VERTICAL);
 		listServersLayout.setVisibleRowCount(-1);
@@ -62,7 +64,7 @@ public class ChatPanel extends JPanel implements ActionListener, MouseListener, 
 	
 	private void sendMessage(){
 		if( !textfield.getText().equals("") ){
-			window.chat.sendMessage(textfield.getText());
+			Main.getChat().sendMessage(textfield.getText());
 			textfield.setText("");
 		}
 	}
@@ -87,7 +89,7 @@ public class ChatPanel extends JPanel implements ActionListener, MouseListener, 
 	public void mouseClicked(MouseEvent e) {
 		if (e.getClickCount() == 2 && ( timeFirstClick - System.currentTimeMillis() ) < 1000 ) {
 			int index = listServersLayout.locationToIndex(e.getPoint());
-			window.chat.setChat(listServers[index]);
+			Main.getChat().setChat(listServers[index]);
 		}
 		timeFirstClick = System.currentTimeMillis();
 	}
