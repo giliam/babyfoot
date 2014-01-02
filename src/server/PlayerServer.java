@@ -11,7 +11,6 @@ public class PlayerServer extends AbstractServer {
     	String query = datas[1];
     	String login = datas[2];
     	if( query.equals("add") ){
-    		System.out.println("Ajout en cours !");
     		if( Server.db.addPlayer(login) )
     			out.println("true");
     		else

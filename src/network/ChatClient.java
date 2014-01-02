@@ -104,7 +104,6 @@ class ReceptionMessage implements Runnable{
 		while(true){
             try {
             	String message = in.readLine();
-            	System.out.println("Le serveur vous dit :" +message);
             } catch (IOException e) {
                 e.printStackTrace();
             }

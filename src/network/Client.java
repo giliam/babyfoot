@@ -8,7 +8,8 @@ import java.util.Scanner;
 import core.Database;
 
 public class Client {
-	private static Socket socket;
+	private static Socket socketChat;
+	private static Socket socketPlayer;
 	private ChatClient cc;
 	private PlayerClient pc;
 	private Thread tChat;
@@ -17,13 +18,16 @@ public class Client {
 	public Client(){
 		Scanner sc = new Scanner(System.in);
 	    try {
-	        System.out.println("Demande de connexion");
-	        Client.socket = new Socket("127.0.0.1",2010);
-	        System.out.println("Connexion établie avec le serveur, authentification :");
-	        cc = new ChatClient( Client.socket );
+	        System.out.println("Demande de connexion pour le chat");
+	        Client.socketChat = new Socket("127.0.0.1",2010);
+	        System.out.println("Connexion établie avec le serveur pour le chat");
+	        cc = new ChatClient( Client.socketChat );
 	        tChat = new Thread(cc);
 	        tChat.start();
-	        pc = new PlayerClient( Client.socket );
+	        System.out.println("Demande de connexion pour les joueurs");
+	        Client.socketPlayer = new Socket("127.0.0.1",2010);
+	        System.out.println("Connexion établie avec le serveur pour les joueurs");
+	        pc = new PlayerClient( Client.socketPlayer );
 	        tPlayer = new Thread(pc);
 	        tPlayer.start();
 	    } catch (UnknownHostException e) {

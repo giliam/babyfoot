@@ -14,9 +14,8 @@ public class PlayerClient implements Runnable {
 	private Socket socket;
     private PrintWriter out = null;
     private BufferedReader in = null;
-    private Thread t3, t4;
-    private Scanner sc;
     private PlayerReceptionMessage prc;
+    static boolean ok;
     
     public PlayerClient(Socket s){
         socket = s;
@@ -26,10 +25,9 @@ public class PlayerClient implements Runnable {
         try {
         	out = new PrintWriter(socket.getOutputStream());
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            sc = new Scanner(System.in);
             prc = new PlayerReceptionMessage(in);
-            Thread tEnvoiMessage = new Thread(prc);
-            tEnvoiMessage.start();
+            Thread tReceptionMessage = new Thread(prc);
+            tReceptionMessage.start();
             
         } catch (IOException e) {
             System.err.println("Le serveur distant s'est déconnecté !");
@@ -39,7 +37,12 @@ public class PlayerClient implements Runnable {
     public boolean addPlayer(){
     	out.println("player-add-" + Main.getPlayer().getLogin() );
     	out.flush();
-		return prc.message.equals("true");
+    	try {
+			Thread.currentThread().sleep(50);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		return ok;
     }
 
 	public boolean removePlayer(String login) {
@@ -53,6 +56,7 @@ class PlayerReceptionMessage implements Runnable{
 	
 	BufferedReader in;
 	String message;
+	boolean ready;
 	
 	public PlayerReceptionMessage(BufferedReader in){
 		this.in = in;
@@ -61,10 +65,12 @@ class PlayerReceptionMessage implements Runnable{
 	
 	public void run() {
 		System.out.println("Prêt à la réception pour les joueurs !");
+		ready = false;
 		while(true){
             try {
             	message = in.readLine();
-            	System.out.println(message);
+            	System.out.println(message + " anzoenazoien ");
+            	PlayerClient.ok = message.equals("true");
             } catch (IOException e) {
                 e.printStackTrace();
             }
