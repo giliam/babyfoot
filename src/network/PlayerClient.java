@@ -16,6 +16,7 @@ public class PlayerClient implements Runnable {
     private BufferedReader in = null;
     private Thread t3, t4;
     private Scanner sc;
+    private PlayerReceptionMessage prc;
     
     public PlayerClient(Socket s){
         socket = s;
@@ -26,18 +27,49 @@ public class PlayerClient implements Runnable {
         	out = new PrintWriter(socket.getOutputStream());
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             sc = new Scanner(System.in);
-            //Thread tEnvoiMessage = new Thread(new EnvoiMessage(out, login));
-            //tEnvoiMessage.start();
+            prc = new PlayerReceptionMessage(in);
+            Thread tEnvoiMessage = new Thread(prc);
+            tEnvoiMessage.start();
             
         } catch (IOException e) {
             System.err.println("Le serveur distant s'est déconnecté !");
         }
     }
     
-    public void addPlayer(){
-    	System.out.println("Tentative de connexion...");
-    	out.println("player-" + Main.getPlayer().getLogin() );
-		out.flush();
-		System.out.println("Connexion réussie...");
+    public boolean addPlayer(){
+    	out.println("player-add-" + Main.getPlayer().getLogin() );
+    	out.flush();
+		return prc.message.equals("true");
     }
+
+	public boolean removePlayer(String login) {
+		out.println("player-remove-" + Main.getPlayer().getLogin() );
+		out.flush();
+		return true;
+	}
+}
+
+class PlayerReceptionMessage implements Runnable{
+	
+	BufferedReader in;
+	String message;
+	
+	public PlayerReceptionMessage(BufferedReader in){
+		this.in = in;
+		message = "aba";
+	}
+	
+	public void run() {
+		System.out.println("Prêt à la réception pour les joueurs !");
+		while(true){
+            try {
+            	message = in.readLine();
+            	System.out.println(message);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+	}
+	
+	
 }

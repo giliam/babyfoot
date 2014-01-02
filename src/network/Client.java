@@ -23,8 +23,8 @@ public class Client {
 	        cc = new ChatClient( Client.socket );
 	        tChat = new Thread(cc);
 	        tChat.start();
-	        setPc(new PlayerClient( Client.socket ));
-	        tPlayer = new Thread(getPc());
+	        pc = new PlayerClient( Client.socket );
+	        tPlayer = new Thread(pc);
 	        tPlayer.start();
 	    } catch (UnknownHostException e) {
 	      System.err.println("Impossible de se connecter à l'adresse 127.0.0.1 ");

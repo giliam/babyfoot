@@ -2,6 +2,7 @@ package server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -17,11 +18,13 @@ public class Server implements Runnable {
 	BufferedReader in;
 	PrintWriter out;
 	String login;
-	ChatServer tchat;
-	PlayerServer tplayer;
+	public static ChatServer tchat;
+	public static PlayerServer tplayer;
 	public static Database db;
 	
 	public Server(ServerSocket s){
+		tplayer = new PlayerServer();
+		tchat = new ChatServer();
 		socketserver = s;
 		db = new Database();
 		db.connect();
@@ -32,9 +35,11 @@ public class Server implements Runnable {
 		try {
             while(true){
             	socket = socketserver.accept();
-	            System.out.println("Requête reçue");
-    			tchat = new ChatServer(socket);
-    			tplayer = new PlayerServer();
+            	in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+    			out = new PrintWriter(socket.getOutputStream());
+    			Thread allocator = new Thread(new Allocator(in, out));
+    			allocator.start();
+    			System.out.println("Requête reçue");
             }
         } catch (IOException e) {
             System.err.println("Erreur serveur à la réception !");
@@ -51,5 +56,37 @@ public class Server implements Runnable {
 		} catch (IOException e) {
 	        System.err.println("Erreur serveur au lancement !");
 	    }
+	}
+}
+
+
+class Allocator implements Runnable{
+	BufferedReader in;
+	PrintWriter out;
+	public Allocator( BufferedReader in, PrintWriter out ){
+		this.in = in;
+		this.out = out;
+	}
+	
+	public void run(){
+		String m;
+		while(true){
+			try {
+				m = in.readLine();
+				if( m != null ) {
+					String[] datas = m.split("-", 10);
+					String typeRequete = datas[0];
+					if( typeRequete.equals("player") ){
+						Server.tplayer.setDatas(datas);
+						Server.tplayer.handle(in, out);
+					}else if( typeRequete.equals("listeServeurs") ){
+						//TODO : renvoyer la liste des serveurs.
+						
+					}
+	        	}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }

@@ -17,11 +17,12 @@ public class Player {
 	
 	public boolean addPlayer(String login){
 		this.setLogin(login);
-		Main.getClient().getPc().addPlayer();
-		return true;
+		return Main.getClient().getPc().addPlayer();
 	}
 
 	public void removePlayer(String login) {
+		if(Main.getClient().getPc().removePlayer(login))
+			this.setLogin("");
 	}
 
 	public String getLogin() {

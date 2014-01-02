@@ -110,5 +110,4 @@ class ReceptionMessage implements Runnable{
             }
         }
 	}
-	
 }
