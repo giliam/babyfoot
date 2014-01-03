@@ -39,7 +39,6 @@ public class Server implements Runnable {
     			out = new PrintWriter(socket.getOutputStream());
     			Thread allocator = new Thread(new Allocator(in, out));
     			allocator.start();
-    			System.out.println("Requête reçue");
             }
         } catch (IOException e) {
             System.err.println("Erreur serveur à la réception !");
@@ -70,11 +69,12 @@ class Allocator implements Runnable{
 	
 	public void run(){
 		String m;
-		while(true){
-			try {
+		try {
+			while(true){
 				m = in.readLine();
 				if( m != null ) {
-					String[] datas = m.split("-", 10);
+					System.out.println(m);
+					String[] datas = m.split("-", 6);
 					String typeRequete = datas[0];
 					if( typeRequete.equals("player") ){
 						Server.tplayer.setDatas(datas);
@@ -87,9 +87,9 @@ class Allocator implements Runnable{
 						Server.tchat.handle(in, out);
 					}
 	        	}
-			} catch (IOException e) {
-				e.printStackTrace();
 			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 }

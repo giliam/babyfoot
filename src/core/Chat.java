@@ -15,8 +15,9 @@ public class Chat {
 		
 	}
 	
-	public void setChat(int id){
-		
+	public void setServer(int id){
+		String[] servers = Utils.format(Main.getClient().getCc().getServers());
+		server = servers[id];
 	}
 
 	public void sendMessage(String text){
@@ -26,6 +27,11 @@ public class Chat {
 	
 	public String[] getServers(){
 		return Main.getClient().getCc().getServers();
+	}
+	
+	public String[] getMessages(){
+		System.out.println(server);
+		return Main.getClient().getCc().getMessages(server);
 	}
 	
 	public void logIn(){

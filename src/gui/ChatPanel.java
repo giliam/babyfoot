@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.swing.*;
 
 import core.Main;
+import core.Utils;
 
 @SuppressWarnings("serial")
 public class ChatPanel extends JPanel implements ActionListener, MouseListener, KeyListener {
@@ -15,8 +16,8 @@ public class ChatPanel extends JPanel implements ActionListener, MouseListener, 
 	private JTabbedPane onglet = new JTabbedPane();
 	private JList<String> listServersLayout;
 	private JTextField textfield;
-	private int[] listServers;
 	private long timeFirstClick;
+	private JTextPane text = new JTextPane();
 	
 	public ChatPanel(MainFrame f) {
 		window = f;
@@ -30,16 +31,15 @@ public class ChatPanel extends JPanel implements ActionListener, MouseListener, 
 	    onglet.setPreferredSize(new Dimension(300,800));
 	    
 	    //On s'occupe de la partie tchat en lui-même
-		JTextPane text = new JTextPane();
-		text.setText("");
+	    updateMessages();
 		JScrollPane displayZone = new JScrollPane(text);
 		displayZone.setPreferredSize(new Dimension(280,500));
-		textfield = new  JTextField();
+		textfield = new JTextField();
 		textfield.setPreferredSize(new Dimension(180,20));
 		push.setPreferredSize(new Dimension(90,25));
 		
 		//On s'occupe de la liste des serveurs
-		listServersLayout = new JList<String>(format(Main.getChat().getServers()));
+		listServersLayout = new JList<String>(Utils.format(Main.getChat().getServers()));
 		listServersLayout.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		listServersLayout.setLayoutOrientation(JList.VERTICAL);
 		listServersLayout.setVisibleRowCount(-1);
@@ -65,6 +65,7 @@ public class ChatPanel extends JPanel implements ActionListener, MouseListener, 
 	private void sendMessage(){
 		if( !textfield.getText().equals("") ){
 			Main.getChat().sendMessage(textfield.getText());
+			updateMessages();
 			textfield.setText("");
 		}
 	}
@@ -75,21 +76,21 @@ public class ChatPanel extends JPanel implements ActionListener, MouseListener, 
 		}
 	}
 	
-	public String[] format(String[] list){
-		listServers = new int[list.length];
-		for(int i = 0; i<list.length; i++){
-			String[] m = list[i].split(" - ",2);
-			listServers[i] = Integer.valueOf(m[0]);
-			list[i] = m[1];
+	public void updateMessages(){
+		String[] datas = Main.getChat().getMessages();
+		String s = "";
+		for( int i = 0; i < datas.length; i++ ){
+			s += datas[i] + "\n";
 		}
-		return list;
+		text.setText(s);
 	}
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getClickCount() == 2 && ( timeFirstClick - System.currentTimeMillis() ) < 1000 ) {
-			int index = listServersLayout.locationToIndex(e.getPoint());
-			Main.getChat().setChat(listServers[index]);
+			Main.getChat().setServer(listServersLayout.locationToIndex(e.getPoint()));
+			updateMessages();
+			
 		}
 		timeFirstClick = System.currentTimeMillis();
 	}

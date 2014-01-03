@@ -26,6 +26,20 @@ public class ChatServer extends AbstractServer {
 		    	}else{
 		    		System.out.println("Requête non valide par le type !");
 		    	}
+			}else if( query.equals("get")){
+				String serveur = datas[2];
+				out.println("chat-beginning");
+    			out.flush();
+	    		String[] messages = Server.db.getMessages( serveur );
+	    		out.println(messages.length);
+	    		out.flush();
+	    		for( int i = 0; i<messages.length; i++ ){
+	    			out.println(messages[i]);
+	    			out.flush();
+	    		}
+	    		out.println("chat-end");
+    			out.flush();
+				
 			}
 		}else if( task.equals("servers") ){
 			if( query.equals("get")){

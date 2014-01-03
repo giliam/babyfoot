@@ -38,7 +38,7 @@ public class PlayerClient implements Runnable {
     	out.println("player-add-" + Main.getPlayer().getLogin() );
     	out.flush();
     	try {
-			Thread.currentThread().sleep(50);
+			Thread.currentThread().sleep(150);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

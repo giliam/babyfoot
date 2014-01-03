@@ -19,9 +19,10 @@ public class ChatClient implements Runnable {
     private Thread t3, t4;
     private Scanner sc;
     public ChatReceptionMessage rc;
-    public static String[] s;
+    public static String[][] s;
     
     public ChatClient(Socket s){
+    	ChatClient.s = new String[2][];
         socket = s;
     }
     
@@ -65,7 +66,6 @@ public class ChatClient implements Runnable {
     }*/
 
 	public String[] getServers() {
-		System.out.println("anegoaeg");
 		out.println("servers-get");
 		out.flush();
 		try {
@@ -73,10 +73,18 @@ public class ChatClient implements Runnable {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		for( int i = 0; i < ChatClient.s.length; i++ ){
-			System.out.println(ChatClient.s[i]);
+		return ChatClient.s[0];
+	}
+
+	public String[] getMessages(String server) {
+		out.println("chat-get-" + server);
+		out.flush();
+		try {
+			Thread.currentThread().sleep(100);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
-		return ChatClient.s;
+		return ChatClient.s[1];
 	}
 }
 
@@ -111,20 +119,24 @@ class ChatReceptionMessage implements Runnable{
 	public void run() {
 		int mode = 0;
 		int n = 0;
+		int type = 0;
 		System.out.println("Prêt à la réception pour le chat !");
 		while(true){
             try {
             	String message = in.readLine();
-            	if( message.equals("server-beginning") && mode == 0 ){
+            	if( ( message.equals("server-beginning") ||message.equals("chat-beginning") ) && mode == 0 ){
+            		if( message.equals("chat-beginning") )
+            			type = 1;
             		mode = 1;
             	}else if( mode == 1 ){
-            		ChatClient.s = new String[Integer.valueOf(message)];
+            		ChatClient.s[type] = new String[Integer.valueOf(message)];
             		mode = 2;
-            	}else if( mode == 2 ){
-            		ChatClient.s[n++] = message;
-            	}else if( message.equals("server-end") && mode == 2 ){
+            	}else if( ( message.equals("server-end")||message.equals("chat-end")) && mode == 2 ){
             		mode = 0;
             		n = 0;
+            		type = 0;
+            	}else if( mode == 2 ){
+            		ChatClient.s[type][n++] = message;
             	}
             } catch (IOException e) {
                 e.printStackTrace();
