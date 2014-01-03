@@ -31,4 +31,13 @@ public abstract class Utils {
 	public static void main( String[] args ){
 		System.out.println(Utils.hash("bobabcdefghijklmnopqrstuvwxyz1234567890.!:;,"));
 	}
+	
+	public static String[] format(String[] list){
+		for(int i = 0; i<list.length; i++){
+			System.out.println(list[i]);
+			String[] m = list[i].split(" - ",2);
+			list[i] = m[1];
+		}
+		return list;
+	}
 }
