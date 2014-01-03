@@ -19,7 +19,7 @@ public class GamePanel extends JPanel implements ActionListener {
 		f.setSize(1200,700);
 		setLayout(new BorderLayout());
 
-		ChatPanel chat = new ChatPanel(f);
+		ChatPanel chat = new ChatPanel();
 		chat.setBackground(Color.BLACK);
 		chat.setPreferredSize(new Dimension(300,700));
 		chat.setMinimumSize(new Dimension(300,700));

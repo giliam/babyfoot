@@ -11,7 +11,6 @@ import core.Utils;
 
 @SuppressWarnings("serial")
 public class ChatPanel extends JPanel implements ActionListener, MouseListener, KeyListener {
-	private MainFrame window;
 	private JButton push = new JButton("Envoyer");
 	private JTabbedPane onglet = new JTabbedPane();
 	private JList<String> listServersLayout;
@@ -19,9 +18,7 @@ public class ChatPanel extends JPanel implements ActionListener, MouseListener, 
 	private long timeFirstClick;
 	private JTextPane text = new JTextPane();
 	
-	public ChatPanel(MainFrame f) {
-		window = f;
-		
+	public ChatPanel() {
 		//Création de plusieurs Panneau
 		JPanel[] tPan = { new JPanel(), new JPanel() };
 		tPan[0].setBackground(Color.BLACK);

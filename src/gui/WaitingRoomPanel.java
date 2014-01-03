@@ -19,7 +19,7 @@ public class WaitingRoomPanel extends BPanel implements ActionListener {
 		bGo = new JButton("Lancer la partie");
 	    bQuit = new JButton("Quitter");
 	    
-	    ChatPanel chat = new ChatPanel(f);
+	    ChatPanel chat = new ChatPanel();
 		chat.setBackground(Color.BLACK);
 		chat.setPreferredSize(new Dimension(300,700));
 		chat.setMinimumSize(new Dimension(300,700));
