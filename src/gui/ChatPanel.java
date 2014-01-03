@@ -90,6 +90,7 @@ public class ChatPanel extends JPanel implements ActionListener, MouseListener, 
 		if (e.getClickCount() == 2 && ( timeFirstClick - System.currentTimeMillis() ) < 1000 ) {
 			Main.getChat().setServer(listServersLayout.locationToIndex(e.getPoint()));
 			updateMessages();
+			onglet.setSelectedIndex(0);
 			
 		}
 		timeFirstClick = System.currentTimeMillis();
