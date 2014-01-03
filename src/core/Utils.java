@@ -2,6 +2,8 @@ package core;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 
 public abstract class Utils {
 	public static String hash(String s){
@@ -32,12 +34,17 @@ public abstract class Utils {
 		System.out.println(Utils.hash("bobabcdefghijklmnopqrstuvwxyz1234567890.!:;,"));
 	}
 	
-	public static String[] format(String[] list){
+	public static String[] formatStringArray(String[] list){
 		for(int i = 0; i<list.length; i++){
-			System.out.println(list[i]);
 			String[] m = list[i].split(" - ",2);
 			list[i] = m[1];
 		}
 		return list;
+	}
+	
+	public static String formatDate(String date){
+		Date d = new Date((long)Integer.valueOf(date));
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM hh:mm:ss");
+		return formatter.format(d);
 	}
 }
