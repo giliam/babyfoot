@@ -67,9 +67,8 @@ class PlayerReceptionMessage implements Runnable{
 		System.out.println("Prêt à la réception pour les joueurs !");
 		try {
 			while(true){
-	            
-	            	message = in.readLine();
-	            	PlayerClient.ok = message.equals("true");
+            	message = in.readLine();
+            	PlayerClient.ok = message.equals("true");
 			}
 		} catch (IOException e) {
                 e.printStackTrace();

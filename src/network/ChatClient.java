@@ -16,8 +16,6 @@ public class ChatClient implements Runnable {
 	private Socket socket;
     private PrintWriter out = null;
     private BufferedReader in = null;
-    private Thread t3, t4;
-    private Scanner sc;
     public ChatReceptionMessage rc;
     public static String[][] s;
     
@@ -30,7 +28,6 @@ public class ChatClient implements Runnable {
         try {
         	out = new PrintWriter(socket.getOutputStream());
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            sc = new Scanner(System.in);
             //Thread tEnvoiMessage = new Thread(new EnvoiMessage(out, login));
             //tEnvoiMessage.start();
             rc = new ChatReceptionMessage(in);

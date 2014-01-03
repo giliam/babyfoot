@@ -169,7 +169,7 @@ public class Database {
 				
 				//On récupère l'ensemble des messages que l'on stocke dans un tableau.
 				while(resultGetMessages.next()){
-					s[j++] = resultGetMessages.getString("date") + " - " + resultGetMessages.getString("login") + " : " + resultGetMessages.getString("message");
+					s[j++] = Utils.formatDate(resultGetMessages.getString("date")) + " - " + resultGetMessages.getString("login") + " : " + resultGetMessages.getString("message");
 				}
 				
 				resultGetMessages.close();
