@@ -33,13 +33,14 @@ public class ChatPanel extends JPanel implements ActionListener, MouseListener, 
 	    //On s'occupe de la partie tchat en lui-même
 	    updateMessages();
 		JScrollPane displayZone = new JScrollPane(text);
+		text.setEditable(false);
 		displayZone.setPreferredSize(new Dimension(280,500));
 		textfield = new JTextField();
 		textfield.setPreferredSize(new Dimension(180,20));
 		push.setPreferredSize(new Dimension(90,25));
 		
 		//On s'occupe de la liste des serveurs
-		listServersLayout = new JList<String>(Utils.format(Main.getChat().getServers()));
+		listServersLayout = new JList<String>(Utils.formatStringArray(Main.getChat().getServers()));
 		listServersLayout.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		listServersLayout.setLayoutOrientation(JList.VERTICAL);
 		listServersLayout.setVisibleRowCount(-1);
@@ -47,6 +48,9 @@ public class ChatPanel extends JPanel implements ActionListener, MouseListener, 
 		//On rajoute le gestionnaire d'événements du double-clic sur un élément de la liste
 		JScrollPane listScroller = new JScrollPane(listServersLayout);
 		listScroller.setPreferredSize(new Dimension(250, 80));
+
+		Thread tEnvoiMessage = new Thread(new RefreshChat(this));
+        tEnvoiMessage.start();
 		
 		//On entre tout ça
 		add(onglet);
@@ -125,6 +129,25 @@ public class ChatPanel extends JPanel implements ActionListener, MouseListener, 
 	public void keyTyped(KeyEvent event) {
 		if( event.getKeyChar() == Event.ENTER ){
 			sendMessage();
+		}
+	}
+}
+
+
+class RefreshChat implements Runnable{
+	private ChatPanel cp;
+	public RefreshChat(ChatPanel chatpanel ){
+		cp = chatpanel;
+	}
+	
+	public void run(){
+		while(true){
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			cp.updateMessages();
 		}
 	}
 }

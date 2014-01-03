@@ -16,12 +16,11 @@ public class Chat {
 	}
 	
 	public void setServer(int id){
-		String[] servers = Utils.format(Main.getClient().getCc().getServers());
+		String[] servers = Utils.formatStringArray(Main.getClient().getCc().getServers());
 		server = servers[id];
 	}
 
 	public void sendMessage(String text){
-		System.out.println("Requête pour envoi de message...");
 		Main.getClient().getCc().sendMessage(text);
 	}
 	
@@ -30,7 +29,6 @@ public class Chat {
 	}
 	
 	public String[] getMessages(){
-		System.out.println(server);
 		return Main.getClient().getCc().getMessages(server);
 	}
 	
