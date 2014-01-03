@@ -73,7 +73,6 @@ class Allocator implements Runnable{
 			while(true){
 				m = in.readLine();
 				if( m != null ) {
-					System.out.println(m);
 					String[] datas = m.split("-", 6);
 					String typeRequete = datas[0];
 					if( typeRequete.equals("player") ){
@@ -86,6 +85,8 @@ class Allocator implements Runnable{
 						Server.tchat.setDatas(datas);
 						Server.tchat.handle(in, out);
 					}
+	        	}else{
+	        		break;
 	        	}
 			}
 		} catch (IOException e) {
