@@ -8,7 +8,7 @@ import javax.swing.*;
 import core.Main;
 
 @SuppressWarnings("serial")
-public class ConnexionPanel extends BPanel implements ActionListener {
+public class ConnexionPanel extends BPanel implements ActionListener, KeyListener {
 	JButton bQuit = new JButton("Quitter");
 	JTextField fpseudo = new JTextField("giliam");
 	JLabel error = new JLabel("", (int) Component.CENTER_ALIGNMENT);
@@ -29,22 +29,40 @@ public class ConnexionPanel extends BPanel implements ActionListener {
 		
 	    bConnect.addActionListener(this);
 		bQuit.addActionListener(this);
+		fpseudo.addKeyListener(this);
 	}
 	
 	public void actionPerformed(ActionEvent e) {
 		if( e.getSource() == bQuit ){
 			Main.closeWindow();
 		}else if( e.getSource() == bConnect ){
-			if( !fpseudo.getText().equals("") ){
-				if( Main.getPlayer().addPlayer(fpseudo.getText()) ) {
-					
-					window.setContentPane(new MenuPanel(window));
-			    	window.setVisible(true);
-				}else{
-					error.setForeground(Color.RED);
-					error.setText("Login déjà utilisé ! ");
-				}
+			logIn();
+		}
+	}
+	
+	public void logIn(){
+		if( !fpseudo.getText().equals("") ){
+			if( Main.getPlayer().addPlayer(fpseudo.getText()) ) {
+				
+				window.setContentPane(new MenuPanel(window));
+		    	window.setVisible(true);
+			}else{
+				error.setForeground(Color.RED);
+				error.setText("Login déjà utilisé ! ");
 			}
+		}
+	}
+	
+	public void keyPressed(KeyEvent event) {
+		
+	}
+
+	public void keyReleased(KeyEvent event) {
+	}
+
+	public void keyTyped(KeyEvent event) {
+		if( event.getKeyChar() == Event.ENTER ){
+			logIn();
 		}
 	}
 }
