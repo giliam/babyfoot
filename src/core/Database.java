@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
 
 public class Database {
 	Connection link;
@@ -143,6 +144,44 @@ public class Database {
 		for(int i = 0; i < 2; i++ ){
 			System.out.println(s[i]);
 		}
+	}
+
+	public String[] getMessages(String serveur) {
+		try {
+			//On vérifie que le salon existe
+			Statement stateVerifRoomExist = link.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+			ResultSet resultVerifRoomExist = stateVerifRoomExist.executeQuery("SELECT salon_id FROM salons WHERE nom = '" + serveur + "'" );
+			resultVerifRoomExist.last();
+			if( resultVerifRoomExist.getRow() >= 1 ){
+				//On récupère l'ID
+				resultVerifRoomExist.first();
+				int salon_id = resultVerifRoomExist.getInt("salon_id");
+				
+				//On crée la requête
+				Statement stateGetMessages = link.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+				ResultSet resultGetMessages = stateGetMessages.executeQuery("SELECT message, date, login FROM chat as c LEFT JOIN joueurs ON joueurs.joueur_id = c.joueur_id WHERE salon_id = " + salon_id );
+				resultGetMessages.last();
+				
+				//On crée le tableau
+				String[] s = new String[resultGetMessages.getRow()];
+				resultGetMessages.beforeFirst();
+				int j = 0;
+				
+				//On récupère l'ensemble des messages que l'on stocke dans un tableau.
+				while(resultGetMessages.next()){
+					s[j++] = resultGetMessages.getString("date") + " - " + resultGetMessages.getString("login") + " : " + resultGetMessages.getString("message");
+				}
+				
+				resultGetMessages.close();
+				stateGetMessages.close();
+				return s;
+			}else{
+				System.out.println("Ce salon n'existe pas ! " + resultVerifRoomExist.getRow());
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	
