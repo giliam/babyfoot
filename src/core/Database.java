@@ -66,12 +66,12 @@ public class Database {
 				int salon_id = resultVerifRoomExist.getInt("salon_id");
 				
 				Statement stateVerifPlayerExist = link.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-				ResultSet resultVerifPlayerExist = stateVerifPlayerExist.executeQuery("SELECT joueur_id FROM joueurs WHERE login = '" + login + "'" );
+				ResultSet resultVerifPlayerExist = stateVerifPlayerExist.executeQuery("SELECT joueur_id FROM joueurs WHERE online = 1 AND login = '" + login + "'" );
 				resultVerifPlayerExist.last();
 				if( resultVerifPlayerExist.getRow() == 1 ){
 					//On obtient donc l'ID du joueur
 					resultVerifRoomExist.first();
-					int joueur_id = resultVerifRoomExist.getInt("salon_id");
+					int joueur_id = resultVerifPlayerExist.getInt("joueur_id");
 					Statement state = link.createStatement();
 				    PreparedStatement prepare = link.prepareStatement("INSERT INTO chat(salon_id, message, date, joueur_id) VALUES(?, ?, ?, ? )");
 				    prepare.setInt(1,salon_id);
@@ -99,13 +99,13 @@ public class Database {
 	public boolean addPlayer(String login){
 		try {
 			Statement stateVerifPlayerExist = link.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-			ResultSet resultVerifPlayerExist = stateVerifPlayerExist.executeQuery("SELECT joueur_id FROM joueurs WHERE login = '" + login + "'" );
+			ResultSet resultVerifPlayerExist = stateVerifPlayerExist.executeQuery("SELECT joueur_id FROM joueurs WHERE online = 1 AND login = '" + login + "'" );
 			resultVerifPlayerExist.last();
 			if( resultVerifPlayerExist.getRow() >= 1 ){
 				return false;
 			}else{
 				Statement state = link.createStatement();
-				state.executeUpdate("INSERT INTO joueurs(login) VALUES('" + login + "')");
+				state.executeUpdate("INSERT INTO joueurs(login, online) VALUES('" + login + "', 1)");
 				state.close();
 				return true;
 			}
@@ -120,11 +120,11 @@ public class Database {
 	public void removePlayer(String login) {
 		try {
 			Statement stateVerifPlayerExist = link.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-			ResultSet resultVerifPlayerExist = stateVerifPlayerExist.executeQuery("SELECT joueur_id FROM joueurs WHERE login = '" + login + "'" );
+			ResultSet resultVerifPlayerExist = stateVerifPlayerExist.executeQuery("SELECT joueur_id FROM joueurs WHERE online = 1 AND login = '" + login + "'" );
 			resultVerifPlayerExist.last();
 			if( resultVerifPlayerExist.getRow() == 1 ){
 				Statement state = link.createStatement();
-				state.executeUpdate("DELETE FROM joueurs WHERE login = '" + login + "'");
+				state.executeUpdate("UPDATE joueurs SET online = 0 WHERE online = 1 AND login = '" + login + "'");
 				state.close();
 			}
 		}catch(SQLException e){

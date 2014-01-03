@@ -18,6 +18,8 @@ public class ChatClient implements Runnable {
     private BufferedReader in = null;
     private Thread t3, t4;
     private Scanner sc;
+    public ChatReceptionMessage rc;
+    public static String[] s;
     
     public ChatClient(Socket s){
         socket = s;
@@ -30,7 +32,8 @@ public class ChatClient implements Runnable {
             sc = new Scanner(System.in);
             //Thread tEnvoiMessage = new Thread(new EnvoiMessage(out, login));
             //tEnvoiMessage.start();
-            Thread tReceptionMessage = new Thread(new ReceptionMessage(in));
+            rc = new ChatReceptionMessage(in);
+            Thread tReceptionMessage = new Thread(rc);
             tReceptionMessage.start();
             
         } catch (IOException e) {
@@ -39,10 +42,8 @@ public class ChatClient implements Runnable {
     }
     
     public void sendMessage(String text){
-    	System.out.println("Envoi de message...");
-    	out.println("tchat-Global-giliam-" + Utils.hash("Globalsalt" + text + Main.getPlayer().getLogin() + "42$1a" ) + "-" + text);
+    	out.println("chat-add-" + Main.getChat().getServer() + "-" + Main.getPlayer().getLogin() + "-" + Utils.hash( Main.getChat().getServer() + "salt" + text + Main.getPlayer().getLogin() + "42$1a" ) + "-" + text);
 		out.flush();
-		System.out.println("Envoi réussi...");
     }
     /*
     public static void main(String[] args){
@@ -64,8 +65,18 @@ public class ChatClient implements Runnable {
     }*/
 
 	public String[] getServers() {
+		System.out.println("anegoaeg");
 		out.println("servers-get");
-		return null;
+		out.flush();
+		try {
+			Thread.currentThread().sleep(100);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		for( int i = 0; i < ChatClient.s.length; i++ ){
+			System.out.println(ChatClient.s[i]);
+		}
+		return ChatClient.s;
 	}
 }
 
@@ -91,19 +102,30 @@ class EnvoiMessage implements Runnable {
 	}
 }*/
 
-class ReceptionMessage implements Runnable{
-	
+class ChatReceptionMessage implements Runnable{
 	BufferedReader in;
-	
-	public ReceptionMessage(BufferedReader in){
+	public ChatReceptionMessage(BufferedReader in){
 		this.in = in;
 	}
 	
 	public void run() {
-		System.out.println("Prêt à la réception !");
+		int mode = 0;
+		int n = 0;
+		System.out.println("Prêt à la réception pour le chat !");
 		while(true){
             try {
             	String message = in.readLine();
+            	if( message.equals("server-beginning") && mode == 0 ){
+            		mode = 1;
+            	}else if( mode == 1 ){
+            		ChatClient.s = new String[Integer.valueOf(message)];
+            		mode = 2;
+            	}else if( mode == 2 ){
+            		ChatClient.s[n++] = message;
+            	}else if( message.equals("server-end") && mode == 2 ){
+            		mode = 0;
+            		n = 0;
+            	}
             } catch (IOException e) {
                 e.printStackTrace();
             }

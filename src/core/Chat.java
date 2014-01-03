@@ -1,19 +1,18 @@
 package core;
 
-import java.io.IOException;
-import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.Scanner;
-
-import network.ChatClient;
-
 public class Chat {
-	private Thread tChat = null;
-	private Socket socket = null;
-	private Database db;
-	private ChatClient cc;
+	private String server = "Global";
 	
+	public String getServer() {
+		return server;
+	}
+
+	public void setServer(String server) {
+		this.server = server;
+	}
+
 	public Chat(){
+		
 	}
 	
 	public void setChat(int id){
@@ -22,11 +21,11 @@ public class Chat {
 
 	public void sendMessage(String text){
 		System.out.println("Requête pour envoi de message...");
-		cc.sendMessage(text);
+		Main.getClient().getCc().sendMessage(text);
 	}
 	
 	public String[] getServers(){
-		return cc.getServers();
+		return Main.getClient().getCc().getServers();
 	}
 	
 	public void logIn(){

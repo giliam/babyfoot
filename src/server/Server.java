@@ -79,9 +79,12 @@ class Allocator implements Runnable{
 					if( typeRequete.equals("player") ){
 						Server.tplayer.setDatas(datas);
 						Server.tplayer.handle(in, out);
-					}else if( typeRequete.equals("listeServeurs") ){
-						//TODO : renvoyer la liste des serveurs.
-						
+					}else if( typeRequete.equals("servers") ){
+						Server.tchat.setDatas(datas);
+						Server.tchat.handle(in, out);
+					}else if( typeRequete.equals("chat") ){
+						Server.tchat.setDatas(datas);
+						Server.tchat.handle(in, out);
 					}
 	        	}
 			} catch (IOException e) {

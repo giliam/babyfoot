@@ -21,8 +21,8 @@ public class Client {
 	        System.out.println("Demande de connexion pour le chat");
 	        Client.socketChat = new Socket("127.0.0.1",2010);
 	        System.out.println("Connexion établie avec le serveur pour le chat");
-	        cc = new ChatClient( Client.socketChat );
-	        tChat = new Thread(cc);
+	        setCc(new ChatClient( Client.socketChat ));
+	        tChat = new Thread(getCc());
 	        tChat.start();
 	        System.out.println("Demande de connexion pour les joueurs");
 	        Client.socketPlayer = new Socket("127.0.0.1",2010);
@@ -44,5 +44,13 @@ public class Client {
 
 	public void setPc(PlayerClient pc) {
 		this.pc = pc;
+	}
+
+	public ChatClient getCc() {
+		return cc;
+	}
+
+	public void setCc(ChatClient cc) {
+		this.cc = cc;
 	}
 }

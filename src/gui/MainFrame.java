@@ -40,7 +40,6 @@ public class MainFrame extends JFrame implements ActionListener, WindowListener 
 	}
 
 	public void windowClosing(WindowEvent e) {
-		System.out.println("----" + Main.getPlayer().getLogin());
 		if( !Main.getPlayer().getLogin().equals("") ){
 			System.out.println("SUPPRESSION EN COURS");
 			Main.getPlayer().removePlayer(Main.getPlayer().getLogin());
