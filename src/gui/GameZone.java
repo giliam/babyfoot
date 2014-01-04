@@ -2,15 +2,18 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Event;
 import java.awt.Graphics;
 
 import javax.swing.JPanel;
 import java.awt.Image;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
-public class GameZone extends JPanel {
+public class GameZone extends JPanel implements KeyListener {
 	private static final long serialVersionUID = 1L;
 	/**
 	 * Taille des buts en pixels et épaisseur des traits
@@ -21,24 +24,34 @@ public class GameZone extends JPanel {
 	private static final int imagePlayerY = 38;
 	private static final int imagePlayerX = 30;
 	
+	private int h;
+	private int w;
+	
+	public enum RodPositions { GARDIEN , DEFENSE, MILIEU, ATTAQUE };
+	private RodPositions rodPosition = RodPositions.MILIEU;
+	
 	public GameZone(){
 	    setPreferredSize(new Dimension(900,700));
 	    setMinimumSize(new Dimension(900,700));
+	    setFocusable(true);
+	    requestFocus();
+	    addKeyListener(this);
 	}
 	
 
 	public void paint(Graphics g){
+		h = getHeight();
+		w = getWidth();
 		g.setColor(new Color(116,152,29));
 		g.fillRect(0,0,getWidth(),getHeight());
 		
 		drawLines(g);
 		drawGoals(g);
 		drawPlayers(g);
+		drawRodPosition(g);
 	}
 	
 	private void drawGoals(Graphics g){
-		int h = getHeight();
-		int w = getWidth();
 		//Côté gauche
 		g.setColor(Color.RED);
 		//Long côté
@@ -56,8 +69,6 @@ public class GameZone extends JPanel {
 	}
 	
 	private void drawLines(Graphics g){
-		int h = getHeight();
-		int w = getWidth();
 		g.setColor(Color.WHITE);
 		//Milieu de terrain
 		g.fillRect((w-lineStrength)/2,0,lineStrength,h);
@@ -72,9 +83,6 @@ public class GameZone extends JPanel {
 	}
 	
 	private void drawPlayers(Graphics g){
-		int h = getHeight();
-		int w = getWidth();
-		
 		drawPlayer(g, gapEdge+30, 0, h, 1, Color.RED, false, 1);
 		drawPlayer(g, gapEdge+30+100, 0, h, 2, Color.RED, false, 1);
 		drawPlayer(g, w-lineStrength-gapEdge-230, 0, h, 3, Color.RED, false, 1);
@@ -111,5 +119,49 @@ public class GameZone extends JPanel {
 		    }                
 		}
 	}
+	
+	private void drawRodPosition(Graphics g){
+		g.setColor(Color.BLACK);
+		switch(rodPosition){
+			case GARDIEN:
+				g.fillRect(gapEdge+30,600,50,50);
+				break;
+			case DEFENSE:
+				g.fillRect(gapEdge+30+100,600,50,50);
+				break;
+			case MILIEU:
+				g.fillRect((w-lineStrength)/2-70,600,50,50);
+				break;
+			case ATTAQUE:
+				g.fillRect(w-lineStrength-gapEdge-230,600,50,50);
+				break;
+		}
+	}
+
+
+	public void keyPressed(KeyEvent e) {
+	}
+
+
+	public void keyReleased(KeyEvent e) {
+	}
+
+
+	public void keyTyped(KeyEvent e) {
+		if( e.getKeyChar() == 'a' ){
+			rodPosition = RodPositions.GARDIEN;
+			repaint();
+		}else if( e.getKeyChar() == 'z' ){
+			rodPosition = RodPositions.DEFENSE;
+			repaint();
+		}else if( e.getKeyChar() == 'e' ){
+			rodPosition = RodPositions.MILIEU;
+			repaint();
+		}else if( e.getKeyChar() == 'r' ){
+			rodPosition = RodPositions.ATTAQUE;
+			repaint();
+		}
+	}
+
 	
 }
