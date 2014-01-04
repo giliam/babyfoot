@@ -12,10 +12,12 @@ public class NewPanel extends BPanel implements ActionListener {
 	private JButton bQuit = new JButton("Quitter");
 	private JButton bGo = new JButton("Ouvrir la partie à d'autres joueurs");
 	private JButton bReturn = new JButton("Retour");
+	
 	private JRadioButton bNumber1 = new JRadioButton("1 contre 1");
 	private JRadioButton bNumber2 = new JRadioButton("2 contre 2");
+	private JRadioButton bNumber3 = new JRadioButton("1 contre 2");
 	private ButtonGroup bNumberPlayers = new ButtonGroup();
-
+	
 	public NewPanel(MainFrame f) {
 		super(f);
 		
@@ -25,10 +27,12 @@ public class NewPanel extends BPanel implements ActionListener {
 		chat.setMinimumSize(new Dimension(300,700));
 		add(chat,BorderLayout.EAST);
 		
-		bNumber1.setPreferredSize(new Dimension(500,100));
 		bNumber1.setBackground(Color.ORANGE);
-		bNumber2.setPreferredSize(new Dimension(500,100));
 		bNumber2.setBackground(Color.ORANGE);
+		bNumber3.setBackground(Color.ORANGE);
+		bNumber1.setForeground(Color.BLACK);
+		bNumber2.setForeground(Color.BLACK);
+		bNumber3.setForeground(Color.BLACK);
 		
 		JPanel menu = new JPanel();
 		menu.setLayout(new GridLayout());
@@ -39,17 +43,32 @@ public class NewPanel extends BPanel implements ActionListener {
 	    //On ajoute les boutons au groupe
 		bNumberPlayers.add(bNumber1);
 		bNumberPlayers.add(bNumber2);
+	    bNumberPlayers.add(bNumber3);
 	    
-		Box buttonsPlayers = Box.createHorizontalBox();
+	    Box buttonsPlayers = Box.createHorizontalBox();
 		buttonsPlayers.add(new JLabel("Nombre de joueurs : "));
 		buttonsPlayers.add(bNumber1);
 		buttonsPlayers.add(bNumber2);
+		buttonsPlayers.add(bNumber3);
+		
 		Box buttonsBottom = Box.createHorizontalBox();
 	    buttonsBottom.add(bReturn);
 	    buttonsBottom.add(bGo);
 	    buttonsBottom.add(bQuit);
+	    
+	    //Titre
+	    Box buttonsTitle = Box.createHorizontalBox();
+	    Font font = new Font("Arial", Font.BOLD, 40);
+	    JLabel title = new JLabel("Choix des options");
+	    title.setLocation(150,150);
+	    title.setFont(font);
+	    title.setForeground(Color.BLACK);
+	    buttonsTitle.add(title);
+	    
 	    //On crée un conteneur avec gestion verticale
 	    Box menuContent = Box.createVerticalBox();
+	    menuContent.setAlignmentX(LEFT_ALIGNMENT);
+	    menuContent.add(buttonsTitle);
 	    menuContent.add(buttonsPlayers);
 	    menuContent.add(buttonsBottom);
 	    menu.add(menuContent);
