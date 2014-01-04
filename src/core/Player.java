@@ -1,18 +1,14 @@
 package core;
 
-import network.ChatClient;
-
 public class Player {
 	private String login;
-	private Team team;
 	
-	public Player(String l, Team t){
+	public Player(String l){
 		setLogin(l);
-		team = t;
 	}
 	
 	public Player(){
-		this("",new Team());
+		this("");
 	}
 	
 	public boolean addPlayer(String login){
@@ -23,6 +19,10 @@ public class Player {
 	public void removePlayer(String login) {
 		if(Main.getClient().getPc().removePlayer(login))
 			this.setLogin("");
+	}
+	
+	public void addMatch(int type){
+		Main.getClient().getPc().addMatch(type);
 	}
 
 	public String getLogin() {

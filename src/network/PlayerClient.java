@@ -50,6 +50,11 @@ public class PlayerClient implements Runnable {
 		out.flush();
 		return true;
 	}
+
+	public void addMatch(int type) {
+		out.println("match-add-" + Main.getPlayer().getLogin() + "-" + type );
+    	out.flush();
+	}
 }
 
 class PlayerReceptionMessage implements Runnable{
