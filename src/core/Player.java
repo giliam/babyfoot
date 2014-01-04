@@ -21,8 +21,8 @@ public class Player {
 			this.setLogin("");
 	}
 	
-	public void addMatch(int type){
-		Main.getClient().getPc().addMatch(type);
+	public boolean addMatch(int type){
+		return Main.getClient().getPc().addMatch(type);
 	}
 
 	public String getLogin() {

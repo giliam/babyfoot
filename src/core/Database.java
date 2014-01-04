@@ -71,7 +71,7 @@ public class Database {
 				resultVerifPlayerExist.last();
 				if( resultVerifPlayerExist.getRow() == 1 ){
 					//On obtient donc l'ID du joueur
-					resultVerifRoomExist.first();
+					resultVerifPlayerExist.first();
 					int joueur_id = resultVerifPlayerExist.getInt("joueur_id");
 					Statement state = link.createStatement();
 				    PreparedStatement prepare = link.prepareStatement("INSERT INTO chat(salon_id, message, date, joueur_id) VALUES(?, ?, ?, ? )");
@@ -133,18 +133,6 @@ public class Database {
 		}
 	}
 	
-	
-	
-	
-	public static void main(String[] args){
-		Database d = new Database();
-		d.connect();
-		d.addMessage("Global","giliam", "salut les poteaux ! ''''");
-		String[] s = d.getServers();
-		for(int i = 0; i < 2; i++ ){
-			System.out.println(s[i]);
-		}
-	}
 
 	public String[] getMessages(String serveur) {
 		try {
@@ -184,7 +172,41 @@ public class Database {
 		return null;
 	}
 
+	public boolean addMatch(int type, String login) {
+		try {
+			Statement stateVerifPlayerExist = link.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+			ResultSet resultVerifPlayerExist = stateVerifPlayerExist.executeQuery("SELECT joueur_id FROM joueurs WHERE online = 1 AND login = '" + login + "'" );
+			resultVerifPlayerExist.last();
+			if( resultVerifPlayerExist.getRow() != 1 ){
+				System.out.println("DOMMAGE");
+				return false;
+			}else{
+				Statement state = link.createStatement();
+				resultVerifPlayerExist.first();
+				int joueur_id = resultVerifPlayerExist.getInt("joueur_id");
+				state.executeUpdate("INSERT INTO parties(joueur1, type) VALUES(" + joueur_id + ", " + type + ")");
+				state.close();
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		System.out.println("DOMMAGE BUG");
+		return false;
+	}
+
 	
 
 	
+	
+	
+	public static void main(String[] args){
+		Database d = new Database();
+		d.connect();
+		d.addMessage("Global","giliam", "salut les poteaux ! ''''");
+		String[] s = d.getServers();
+		for(int i = 0; i < 2; i++ ){
+			System.out.println(s[i]);
+		}
+	}
 }

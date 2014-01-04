@@ -51,9 +51,15 @@ public class PlayerClient implements Runnable {
 		return true;
 	}
 
-	public void addMatch(int type) {
+	public boolean addMatch(int type) {
 		out.println("match-add-" + Main.getPlayer().getLogin() + "-" + type );
     	out.flush();
+    	try {
+			Thread.currentThread().sleep(150);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		return ok;
 	}
 }
 

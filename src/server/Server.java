@@ -20,9 +20,11 @@ public class Server implements Runnable {
 	String login;
 	public static ChatServer tchat;
 	public static PlayerServer tplayer;
+	public static MatchManagerServer tmatchmanager;
 	public static Database db;
 	
 	public Server(ServerSocket s){
+		tmatchmanager = new MatchManagerServer();
 		tplayer = new PlayerServer();
 		tchat = new ChatServer();
 		socketserver = s;
@@ -78,6 +80,9 @@ class Allocator implements Runnable{
 					if( typeRequete.equals("player") ){
 						Server.tplayer.setDatas(datas);
 						Server.tplayer.handle(in, out);
+					}else if( typeRequete.equals("match") ){
+						Server.tmatchmanager.setDatas(datas);
+						Server.tmatchmanager.handle(in, out);
 					}else if( typeRequete.equals("servers") ){
 						Server.tchat.setDatas(datas);
 						Server.tchat.handle(in, out);
