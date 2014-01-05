@@ -11,6 +11,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Hashtable;
+
 import javax.imageio.ImageIO;
 
 public class GameZone extends JPanel implements KeyListener {
@@ -27,15 +30,30 @@ public class GameZone extends JPanel implements KeyListener {
 	private int h;
 	private int w;
 	
-	public enum RodPositions { GARDIEN , DEFENSE, MILIEU, ATTAQUE };
-	private RodPositions rodPosition = RodPositions.MILIEU;
+	private Hashtable<RodPositions, Integer>[] yDecal;
+	
+	enum RodPositions { GARDIEN , DEFENSE, MILIEU, ATTAQUE };
+	RodPositions rodPosition;
 	
 	public GameZone(){
+		yDecal = new Hashtable[2];
+		yDecal[0] = new Hashtable<RodPositions, Integer>();
+		yDecal[0].put(RodPositions.GARDIEN, 0);
+		yDecal[0].put(RodPositions.DEFENSE, 0);
+		yDecal[0].put(RodPositions.MILIEU, 0);
+		yDecal[0].put(RodPositions.ATTAQUE, 0);
+		yDecal[1] = new Hashtable<RodPositions, Integer>();
+		yDecal[1].put(RodPositions.GARDIEN, 0);
+		yDecal[1].put(RodPositions.DEFENSE, 0);
+		yDecal[1].put(RodPositions.MILIEU, 0);
+		yDecal[1].put(RodPositions.ATTAQUE, 0);
+		
+		rodPosition = RodPositions.MILIEU;
 	    setPreferredSize(new Dimension(900,700));
 	    setMinimumSize(new Dimension(900,700));
+	    addKeyListener(this);
 	    setFocusable(true);
 	    requestFocus();
-	    addKeyListener(this);
 	}
 	
 
@@ -83,21 +101,22 @@ public class GameZone extends JPanel implements KeyListener {
 	}
 	
 	private void drawPlayers(Graphics g){
-		drawPlayer(g, gapEdge+30, 0, h, 1, Color.RED, false, 1);
-		drawPlayer(g, gapEdge+30+100, 0, h, 2, Color.RED, false, 1);
-		drawPlayer(g, w-lineStrength-gapEdge-230, 0, h, 3, Color.RED, false, 1);
-		drawPlayer(g, (w-lineStrength)/2-70, 0, h, 5, Color.RED, false, 1);
+		drawPlayer(g, gapEdge+30, 0, h, 1, Color.RED, false, 1, RodPositions.GARDIEN);
+		drawPlayer(g, gapEdge+30+100, 0, h, 2, Color.RED, false, 1, RodPositions.DEFENSE);
+		drawPlayer(g, (w-lineStrength)/2-70, 0, h, 5, Color.RED, false, 1, RodPositions.MILIEU);
+		drawPlayer(g, w-lineStrength-gapEdge-230, 0, h, 3, Color.RED, false, 1, RodPositions.ATTAQUE);
 		
-		drawPlayer(g, w-lineStrength-(gapEdge+30), 0, h, 1, Color.RED, true, 1);
-		drawPlayer(g, w-lineStrength-(gapEdge+30+100), 0, h, 2, Color.RED, true, 1);
-		drawPlayer(g, w-lineStrength-(w-lineStrength-gapEdge-230), 0, h, 3, Color.RED, true, 1);
-		drawPlayer(g, w-lineStrength-((w-lineStrength)/2-70), 0, h, 5, Color.RED, true, 1);
+		drawPlayer(g, w-lineStrength-(gapEdge+30), 0, h, 1, Color.RED, true, 1, RodPositions.GARDIEN);
+		drawPlayer(g, w-lineStrength-(gapEdge+30+100), 0, h, 2, Color.RED, true, 1, RodPositions.DEFENSE);
+		drawPlayer(g, w-lineStrength-((w-lineStrength)/2-70), 0, h, 5, Color.RED, true, 1, RodPositions.MILIEU);
+		drawPlayer(g, w-lineStrength-(w-lineStrength-gapEdge-230), 0, h, 3, Color.RED, true, 1, RodPositions.ATTAQUE);
 	}
 	
 	/**
 	 * rightPlayer : true = orienté vers la gauche, false orienté vers la droite. 
 	 */
-	private void drawPlayer(Graphics g, int x, int y, int h, int nb, Color color, boolean rightPlayer, int position ){
+	private void drawPlayer(Graphics g, int x, int y, int h, int nb, Color color, boolean rightPlayer, int position, RodPositions rod ){
+		y += yDecal[rightPlayer ? 1 : 0].get(rod);
 		g.setColor(new Color(192, 192, 192));
 		g.fillRect(x,0,3*lineStrength/2,h);
 		g.setColor(color);
@@ -123,6 +142,7 @@ public class GameZone extends JPanel implements KeyListener {
 	private void drawRodPosition(Graphics g){
 		g.setColor(Color.BLACK);
 		switch(rodPosition){
+/*
 			case GARDIEN:
 				g.fillRect(gapEdge+30,600,50,50);
 				break;
@@ -134,12 +154,23 @@ public class GameZone extends JPanel implements KeyListener {
 				break;
 			case ATTAQUE:
 				g.fillRect(w-lineStrength-gapEdge-230,600,50,50);
-				break;
+				break;*/
 		}
 	}
 
 
 	public void keyPressed(KeyEvent e) {
+		if( e.getKeyCode() == 38 ){
+			if( yDecal[0].get(rodPosition) > -45 ){
+				yDecal[0].put(rodPosition, yDecal[0].get(rodPosition)-15);
+				repaint();
+			}
+		}else if( e.getKeyCode() == 40 ){
+			if( yDecal[0].get(rodPosition) < 45 ){
+				yDecal[0].put(rodPosition, yDecal[0].get(rodPosition)+15);
+				repaint();
+			}
+		}
 	}
 
 
