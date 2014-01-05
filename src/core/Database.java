@@ -180,29 +180,76 @@ public class Database {
 	}
 
 	
-	public int findPlayer(String login, int online){
-		try {
-			Statement stateVerifPlayerExist = link.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-			ResultSet resultVerifPlayerExist = stateVerifPlayerExist.executeQuery("SELECT joueur_id FROM joueurs WHERE online = " + online + " AND login = '" + login + "'" );
-			resultVerifPlayerExist.last();
-			if( resultVerifPlayerExist.getRow() != 1 ){
-				return -1;
-			}else{
-				resultVerifPlayerExist.first();
-				return resultVerifPlayerExist.getInt("joueur_id");
-			}
-		}catch(SQLException e){
-			e.printStackTrace();
+	public int findPlayer(String login, int online) throws SQLException {
+		Statement stateVerifPlayerExist = link.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+		ResultSet resultVerifPlayerExist = stateVerifPlayerExist.executeQuery("SELECT joueur_id FROM joueurs WHERE online = " + online + " AND login = '" + login + "'" );
+		resultVerifPlayerExist.last();
+		if( resultVerifPlayerExist.getRow() != 1 ){
+			return -1;
+		}else{
+			resultVerifPlayerExist.first();
+			return resultVerifPlayerExist.getInt("joueur_id");
 		}
-		return -1;
 	}
 	
+	
+
+	public void setRod(String login, int[] positions) {
+		try {
+			int joueur_id = findPlayer(login, 1);
+			if( joueur_id >= 0 ){
+				Statement state = link.createStatement();
+				state.executeUpdate("UPDATE barreposition SET gardien = " + positions[0] + ", defense = " + positions[1] + ", milieu = " + positions[2] + ", attaque = " + positions[3] + " WHERE player_id = " + joueur_id );
+				state.close();
+			}else{
+				System.out.println("Pas de joueur trouvé !");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public int[][] getRodPositions(String login) {
+		try {
+			int joueur_id = findPlayer(login, 1);
+			if( joueur_id >= 0 ){
+				Statement state = link.createStatement();
+				ResultSet result = state.executeQuery("SELECT partie_id, joueur1, joueur2, joueur3, joueur4 FROM parties WHERE etat < " + Utils.MATCH_END + " AND ( joueur1 = " + joueur_id + " OR joueur2 = " + joueur_id + " OR joueur3 = " + joueur_id + " OR joueur4 = " + joueur_id + ")" );
+				result.first();
+				int[] playerPos = {result.getInt("joueur1") == joueur_id ? 1 : ( result.getInt("joueur2") == joueur_id ? 2 : ( result.getInt("joueur3") == joueur_id ? 3 : 4 ) )};
+				int[][] returnT = {playerPos,getRodPositionsFromOnePlayer(result.getInt("joueur1")),getRodPositionsFromOnePlayer(result.getInt("joueur2")),getRodPositionsFromOnePlayer(result.getInt("joueur3")),getRodPositionsFromOnePlayer(result.getInt("joueur4"))};
+				state.close();
+				result.close();
+				return returnT;
+			}else{
+				System.out.println("Pas de joueur trouvé !");
+				return null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public int[] getRodPositionsFromOnePlayer(int joueur_id) {
+		try {
+			Statement state = link.createStatement();
+			ResultSet result = state.executeQuery("SELECT * FROM barreposition WHERE player_id = " + joueur_id );
+			result.first();
+			int[] d = { result.getInt("gardien"), result.getInt("defense"), result.getInt("milieu"), result.getInt("attaque") };
+			state.close();
+			result.close();
+			return d;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 	
 	public static void main(String[] args){
 		Database d = new Database();
 		d.connect();
-		d.addMessage("Global","giliam", "salut les poteaux ! ''''");
 		String[] s = d.getServers();
 		for(int i = 0; i < 2; i++ ){
 			System.out.println(s[i]);
