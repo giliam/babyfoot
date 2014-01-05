@@ -66,13 +66,8 @@ public class Database {
 				resultVerifRoomExist.first();
 				int salon_id = resultVerifRoomExist.getInt("salon_id");
 				
-				Statement stateVerifPlayerExist = link.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-				ResultSet resultVerifPlayerExist = stateVerifPlayerExist.executeQuery("SELECT joueur_id FROM joueurs WHERE online = 1 AND login = '" + login + "'" );
-				resultVerifPlayerExist.last();
-				if( resultVerifPlayerExist.getRow() == 1 ){
-					//On obtient donc l'ID du joueur
-					resultVerifPlayerExist.first();
-					int joueur_id = resultVerifPlayerExist.getInt("joueur_id");
+				int joueur_id = findPlayer(login, 1);
+				if( joueur_id >= 0 ){
 					Statement state = link.createStatement();
 				    PreparedStatement prepare = link.prepareStatement("INSERT INTO chat(salon_id, message, date, joueur_id) VALUES(?, ?, ?, ? )");
 				    prepare.setInt(1,salon_id);
@@ -83,7 +78,7 @@ public class Database {
 				    prepare.close();
 					state.close();
 				}else{
-					System.out.println("Ce joueur n'existe pas ! " + resultVerifPlayerExist.getRow());
+					System.out.println("Ce joueur n'existe pas ! " );
 				}
 			}else{
 				System.out.println("Ce salon n'existe pas ! " + resultVerifRoomExist.getRow());
@@ -99,12 +94,7 @@ public class Database {
 	
 	public boolean addPlayer(String login){
 		try {
-			Statement stateVerifPlayerExist = link.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-			ResultSet resultVerifPlayerExist = stateVerifPlayerExist.executeQuery("SELECT joueur_id FROM joueurs WHERE online = 1 AND login = '" + login + "'" );
-			resultVerifPlayerExist.last();
-			if( resultVerifPlayerExist.getRow() >= 1 ){
-				return false;
-			}else{
+			if( findPlayer(login, 1) >= 0 ){
 				Statement state = link.createStatement();
 				state.executeUpdate("INSERT INTO joueurs(login, online) VALUES('" + login + "', 1)");
 				state.close();
@@ -120,10 +110,8 @@ public class Database {
 	
 	public void removePlayer(String login) {
 		try {
-			Statement stateVerifPlayerExist = link.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-			ResultSet resultVerifPlayerExist = stateVerifPlayerExist.executeQuery("SELECT joueur_id FROM joueurs WHERE online = 1 AND login = '" + login + "'" );
-			resultVerifPlayerExist.last();
-			if( resultVerifPlayerExist.getRow() == 1 ){
+			int joueur_id = findPlayer(login, 1);
+			if( joueur_id >= 0 ){
 				Statement state = link.createStatement();
 				state.executeUpdate("UPDATE joueurs SET online = 0 WHERE online = 1 AND login = '" + login + "'");
 				state.close();
@@ -174,19 +162,15 @@ public class Database {
 
 	public boolean addMatch(int type, String login) {
 		try {
-			Statement stateVerifPlayerExist = link.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-			ResultSet resultVerifPlayerExist = stateVerifPlayerExist.executeQuery("SELECT joueur_id FROM joueurs WHERE online = 1 AND login = '" + login + "'" );
-			resultVerifPlayerExist.last();
-			if( resultVerifPlayerExist.getRow() != 1 ){
-				System.out.println("DOMMAGE");
-				return false;
-			}else{
+			int joueur_id = findPlayer(login, 1);
+			if( joueur_id >= 0 ){
 				Statement state = link.createStatement();
-				resultVerifPlayerExist.first();
-				int joueur_id = resultVerifPlayerExist.getInt("joueur_id");
 				state.executeUpdate("INSERT INTO parties(joueur1, type) VALUES(" + joueur_id + ", " + type + ")");
 				state.close();
 				return true;
+			}else{
+				System.out.println("Pas de joueur trouvé !");
+				return false;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -196,7 +180,22 @@ public class Database {
 	}
 
 	
-
+	public int findPlayer(String login, int online){
+		try {
+			Statement stateVerifPlayerExist = link.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+			ResultSet resultVerifPlayerExist = stateVerifPlayerExist.executeQuery("SELECT joueur_id FROM joueurs WHERE online = " + online + " AND login = '" + login + "'" );
+			resultVerifPlayerExist.last();
+			if( resultVerifPlayerExist.getRow() != 1 ){
+				return -1;
+			}else{
+				resultVerifPlayerExist.first();
+				return resultVerifPlayerExist.getInt("joueur_id");
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return -1;
+	}
 	
 	
 	
