@@ -1,5 +1,20 @@
 ===========
-SETTINGS
+PROCHAINS JOURS
+===========
+	-- Améliorer séparation client/serveur
+	-- Tester connectivité avec les différentes positions des barres
+	-- Ajouter restriction des joueurs à certaines barres
+	-- Améliorer la représentation du choix de la barre
+	
+===========
+GAMEPLAY
+===========
+	-- Pause convenue entre les joueurs ?
+	-- Plusieurs types de gameplay à implémenter
+
+
+===========
+OPTIONS
 ===========
 	-- Sensibilité du déplacement des joueurs : paramétrable.
 	-- Couleur des joueurs et du terrain.
