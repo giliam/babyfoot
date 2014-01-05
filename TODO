@@ -3,3 +3,9 @@ SETTINGS
 ===========
 	-- Sensibilité du déplacement des joueurs : paramétrable.
 	-- Couleur des joueurs et du terrain.
+
+	
+===========
+GESTION D'UNE PARTIE
+===========
+	-- Différents états (100 = fini)
