@@ -23,6 +23,13 @@ public class MatchServer extends AbstractServer {
     		String login = datas[2];
     		int[] positions = {Integer.valueOf(datas[3]),Integer.valueOf(datas[4]),Integer.valueOf(datas[5]),Integer.valueOf(datas[6])};
     		Server.db.setRod(login, positions);
+    	}else if(task.equals("getrod")){
+    		String login = datas[2];
+    		sendRodPositions( Server.db.getRodPositions(login), out );
     	}
+	}
+	
+	public void sendRodPositions(int[][] datas, PrintWriter out){
+		out.println("rodpositions");
 	}
 }
