@@ -78,16 +78,16 @@ class Allocator implements Runnable{
 					String[] datas = m.split("-", 6);
 					String typeRequete = datas[0];
 					if( typeRequete.equals("player") ){
-						Server.tplayer.setDatas(datas);
+						Server.tplayer.setQuery(m);
 						Server.tplayer.handle(in, out);
 					}else if( typeRequete.equals("match") ){
-						Server.tmatch.setDatas(datas);
+						Server.tmatch.setQuery(m);
 						Server.tmatch.handle(in, out);
 					}else if( typeRequete.equals("servers") ){
-						Server.tchat.setDatas(datas);
+						Server.tchat.setQuery(m);
 						Server.tchat.handle(in, out);
 					}else if( typeRequete.equals("chat") ){
-						Server.tchat.setDatas(datas);
+						Server.tchat.setQuery(m);
 						Server.tchat.handle(in, out);
 					}
 	        	}else{

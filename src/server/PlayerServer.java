@@ -8,9 +8,10 @@ import java.net.Socket;
 
 public class PlayerServer extends AbstractServer {
 	public void handle(BufferedReader in, PrintWriter out){
-    	String query = datas[1];
+		String[] datas = query.split("-");
+		String task = datas[1];
     	String login = datas[2];
-    	if( query.equals("add") ){
+    	if( task.equals("add") ){
     		if( Server.db.addPlayer(login) )
     			out.println("true");
     		else

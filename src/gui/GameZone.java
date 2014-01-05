@@ -16,6 +16,8 @@ import java.util.Hashtable;
 
 import javax.imageio.ImageIO;
 
+import core.Main;
+
 public class GameZone extends JPanel implements KeyListener {
 	private static final long serialVersionUID = 1L;
 	/**
@@ -32,21 +34,22 @@ public class GameZone extends JPanel implements KeyListener {
 	
 	private Hashtable<RodPositions, Integer>[] yDecal;
 	
-	enum RodPositions { GARDIEN , DEFENSE, MILIEU, ATTAQUE };
+	public static enum RodPositions { GARDIEN , DEFENSE, MILIEU, ATTAQUE };
 	RodPositions rodPosition;
 	
 	public GameZone(){
+		Main.getPlayer().setLogin("giliam");
 		yDecal = new Hashtable[2];
 		yDecal[0] = new Hashtable<RodPositions, Integer>();
-		yDecal[0].put(RodPositions.GARDIEN, 0);
-		yDecal[0].put(RodPositions.DEFENSE, 0);
-		yDecal[0].put(RodPositions.MILIEU, 0);
-		yDecal[0].put(RodPositions.ATTAQUE, 0);
+		yDecal[0].put(RodPositions.GARDIEN, 50);
+		yDecal[0].put(RodPositions.DEFENSE, 50);
+		yDecal[0].put(RodPositions.MILIEU, 50);
+		yDecal[0].put(RodPositions.ATTAQUE, 50);
 		yDecal[1] = new Hashtable<RodPositions, Integer>();
-		yDecal[1].put(RodPositions.GARDIEN, 0);
-		yDecal[1].put(RodPositions.DEFENSE, 0);
-		yDecal[1].put(RodPositions.MILIEU, 0);
-		yDecal[1].put(RodPositions.ATTAQUE, 0);
+		yDecal[1].put(RodPositions.GARDIEN, 50);
+		yDecal[1].put(RodPositions.DEFENSE, 50);
+		yDecal[1].put(RodPositions.MILIEU, 50);
+		yDecal[1].put(RodPositions.ATTAQUE, 50);
 		
 		rodPosition = RodPositions.MILIEU;
 	    setPreferredSize(new Dimension(900,700));
@@ -116,7 +119,7 @@ public class GameZone extends JPanel implements KeyListener {
 	 * rightPlayer : true = orienté vers la gauche, false orienté vers la droite. 
 	 */
 	private void drawPlayer(Graphics g, int x, int y, int h, int nb, Color color, boolean rightPlayer, int position, RodPositions rod ){
-		y += yDecal[rightPlayer ? 1 : 0].get(rod);
+		y += yDecal[rightPlayer ? 1 : 0].get(rod)-50;
 		g.setColor(new Color(192, 192, 192));
 		g.fillRect(x,0,3*lineStrength/2,h);
 		g.setColor(color);
@@ -161,13 +164,15 @@ public class GameZone extends JPanel implements KeyListener {
 
 	public void keyPressed(KeyEvent e) {
 		if( e.getKeyCode() == 38 ){
-			if( yDecal[0].get(rodPosition) > -45 ){
+			if( yDecal[0].get(rodPosition) > 14 ){
 				yDecal[0].put(rodPosition, yDecal[0].get(rodPosition)-15);
+				Main.getPlayer().setRod(yDecal[0]);
 				repaint();
 			}
 		}else if( e.getKeyCode() == 40 ){
-			if( yDecal[0].get(rodPosition) < 45 ){
+			if( yDecal[0].get(rodPosition) < 70 ){
 				yDecal[0].put(rodPosition, yDecal[0].get(rodPosition)+15);
+				Main.getPlayer().setRod(yDecal[0]);
 				repaint();
 			}
 		}

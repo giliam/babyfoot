@@ -12,10 +12,11 @@ import core.Utils;
 
 public class ChatServer extends AbstractServer {
 	public void handle(BufferedReader in, PrintWriter out){
-		String task = datas[0];
-		String query = datas[1];
-		if( task.equals("chat") ){
-			if( query.equals("add")){
+		String[] datas = query.split("-", 6);
+		String domain = datas[0];
+		String task = datas[1];
+		if( domain.equals("chat") ){
+			if( task.equals("add")){
 				String message = datas[5];
 		    	String login = datas[3];
 		    	String serveur = datas[2];
@@ -26,7 +27,7 @@ public class ChatServer extends AbstractServer {
 		    	}else{
 		    		System.out.println("Requête non valide par le type !");
 		    	}
-			}else if( query.equals("get")){
+			}else if( task.equals("get")){
 				String serveur = datas[2];
 				out.println("chat-beginning");
     			out.flush();
@@ -41,8 +42,8 @@ public class ChatServer extends AbstractServer {
     			out.flush();
 				
 			}
-		}else if( task.equals("servers") ){
-			if( query.equals("get")){
+		}else if( domain.equals("servers") ){
+			if( task.equals("get")){
 				out.println("server-beginning");
     			out.flush();
 	    		String[] servers = Server.db.getServers();

@@ -4,10 +4,10 @@ import java.io.BufferedReader;
 import java.io.PrintWriter;
 
 public abstract class AbstractServer {
-	protected String[] datas;
+	protected String query;
 	
-	public void setDatas(String[] d){
-		datas = d; 
+	public void setQuery(String d){
+		query = d; 
 	}
 	
 	public void handle(BufferedReader in, PrintWriter out){

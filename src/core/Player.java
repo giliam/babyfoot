@@ -1,5 +1,9 @@
 package core;
 
+import gui.GameZone;
+
+import java.util.Hashtable;
+
 public class Player {
 	private String login;
 	
@@ -23,6 +27,11 @@ public class Player {
 	
 	public boolean addMatch(int type){
 		return Main.getClient().getPc().addMatch(type);
+	}
+	
+	public void setRod(Hashtable<GameZone.RodPositions, Integer> rodPositionsHash){
+		int[] rodPositions = { rodPositionsHash.get(GameZone.RodPositions.GARDIEN), rodPositionsHash.get(GameZone.RodPositions.DEFENSE),rodPositionsHash.get(GameZone.RodPositions.MILIEU),rodPositionsHash.get(GameZone.RodPositions.ATTAQUE) };
+		Main.getClient().getMc().setRodPositions(login, rodPositions);
 	}
 
 	public String getLogin() {
