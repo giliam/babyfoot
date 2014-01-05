@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class MatchManagerServer extends AbstractServer {
+public class MatchServer extends AbstractServer {
 	public void handle(BufferedReader in, PrintWriter out){
     	String query = datas[1];
     	if( query.equals("add") ){
@@ -17,7 +17,10 @@ public class MatchManagerServer extends AbstractServer {
     		else
     			out.println("false");
     		out.flush();
-    	}else if(query.equals("remove")){
+    	}else if(query.equals("setrod")){
+    		String login = datas[2];
+    		int[] positions = {Integer.valueOf(datas[3]),Integer.valueOf(datas[4]),Integer.valueOf(datas[5]),Integer.valueOf(datas[6])};
+    		Server.db.setRod(login, positions);
     	}
 	}
 }
