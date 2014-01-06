@@ -1,13 +1,20 @@
 package core;
 
 import gui.GameZone;
+import gui.GameZone.RodPositions;
 
 import java.util.Hashtable;
 
 public class Player {
 	private String login;
+	private Hashtable<GameZone.RodPositions, Boolean> rodAvailables;
 	
 	public Player(String l){
+		rodAvailables = new Hashtable<GameZone.RodPositions, Boolean>();
+		rodAvailables.put(RodPositions.GARDIEN, true);
+		rodAvailables.put(RodPositions.DEFENSE, true);
+		rodAvailables.put(RodPositions.MILIEU, true);
+		rodAvailables.put(RodPositions.ATTAQUE, true);
 		setLogin(l);
 	}
 	
@@ -40,5 +47,13 @@ public class Player {
 
 	public void setLogin(String login) {
 		this.login = login;
+	}
+
+	public Hashtable<GameZone.RodPositions, Boolean> getRodAvailables() {
+		return rodAvailables;
+	}
+
+	public void setRodAvailables(Hashtable<GameZone.RodPositions, Boolean> rodAvailables) {
+		this.rodAvailables = rodAvailables;
 	}
 }

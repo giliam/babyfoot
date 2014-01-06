@@ -28,28 +28,35 @@ public class GameZone extends JPanel implements KeyListener {
 	private static final int gapEdge = 2*20;
 	private static final int imagePlayerY = 38;
 	private static final int imagePlayerX = 30;
+	private static final int movePath = 20;
 	
 	private int h;
 	private int w;
 	
 	private Hashtable<RodPositions, Integer>[] yDecal;
+	private Hashtable<RodPositions, Integer> yDecalDefault;
 	
 	public static enum RodPositions { GARDIEN , DEFENSE, MILIEU, ATTAQUE };
 	RodPositions rodPosition;
 	
 	public GameZone(){
 		Main.getPlayer().setLogin("giliam");
+		yDecalDefault = new Hashtable<RodPositions, Integer>();
+		yDecalDefault.put(RodPositions.GARDIEN, 100);
+		yDecalDefault.put(RodPositions.DEFENSE, 150);
+		yDecalDefault.put(RodPositions.MILIEU, 100);
+		yDecalDefault.put(RodPositions.ATTAQUE, 100);
 		yDecal = new Hashtable[2];
 		yDecal[0] = new Hashtable<RodPositions, Integer>();
-		yDecal[0].put(RodPositions.GARDIEN, 50);
-		yDecal[0].put(RodPositions.DEFENSE, 50);
-		yDecal[0].put(RodPositions.MILIEU, 50);
-		yDecal[0].put(RodPositions.ATTAQUE, 50);
+		yDecal[0].put(RodPositions.GARDIEN, yDecalDefault.get(RodPositions.GARDIEN));
+		yDecal[0].put(RodPositions.DEFENSE, yDecalDefault.get(RodPositions.DEFENSE));
+		yDecal[0].put(RodPositions.MILIEU, yDecalDefault.get(RodPositions.MILIEU));
+		yDecal[0].put(RodPositions.ATTAQUE, yDecalDefault.get(RodPositions.ATTAQUE));
 		yDecal[1] = new Hashtable<RodPositions, Integer>();
-		yDecal[1].put(RodPositions.GARDIEN, 50);
-		yDecal[1].put(RodPositions.DEFENSE, 50);
-		yDecal[1].put(RodPositions.MILIEU, 50);
-		yDecal[1].put(RodPositions.ATTAQUE, 50);
+		yDecal[1].put(RodPositions.GARDIEN, yDecalDefault.get(RodPositions.GARDIEN));
+		yDecal[1].put(RodPositions.DEFENSE, yDecalDefault.get(RodPositions.DEFENSE));
+		yDecal[1].put(RodPositions.MILIEU, yDecalDefault.get(RodPositions.MILIEU));
+		yDecal[1].put(RodPositions.ATTAQUE, yDecalDefault.get(RodPositions.ATTAQUE));
 		
 		rodPosition = RodPositions.MILIEU;
 	    setPreferredSize(new Dimension(900,700));
@@ -119,7 +126,7 @@ public class GameZone extends JPanel implements KeyListener {
 	 * rightPlayer : true = orienté vers la gauche, false orienté vers la droite. 
 	 */
 	private void drawPlayer(Graphics g, int x, int y, int h, int nb, Color color, boolean rightPlayer, int position, RodPositions rod ){
-		y += yDecal[rightPlayer ? 1 : 0].get(rod)-50;
+		y += yDecal[rightPlayer ? 1 : 0].get(rod)-yDecalDefault.get(rod);
 		g.setColor(new Color(192, 192, 192));
 		g.fillRect(x,0,3*lineStrength/2,h);
 		g.setColor(color);
@@ -157,21 +164,43 @@ public class GameZone extends JPanel implements KeyListener {
 				break;
 			case ATTAQUE:
 				g.fillRect(w-lineStrength-gapEdge-230,600,50,50);
-				break;*/
+				break;
+*/
 		}
 	}
 
 
 	public void keyPressed(KeyEvent e) {
+		int limitSup = 38;
+		int limiInf = 83;
+		switch(rodPosition){
+			case GARDIEN:
+				limitSup = -5;
+				limiInf = 215;
+				break;
+			case DEFENSE:
+				limitSup = -10;
+				limiInf = 300;
+				break;
+			case MILIEU:
+				limitSup = 20;
+				limiInf = 180;
+				break;
+			case ATTAQUE:
+				limitSup = -10;
+				limiInf = 220;
+				break;
+		}
+		
 		if( e.getKeyCode() == 38 ){
-			if( yDecal[0].get(rodPosition) > 14 ){
-				yDecal[0].put(rodPosition, yDecal[0].get(rodPosition)-15);
+			if( yDecal[0].get(rodPosition) > (limitSup+movePath) ){
+				yDecal[0].put(rodPosition, yDecal[0].get(rodPosition)-movePath);
 				Main.getPlayer().setRod(yDecal[0]);
 				repaint();
 			}
 		}else if( e.getKeyCode() == 40 ){
-			if( yDecal[0].get(rodPosition) < 70 ){
-				yDecal[0].put(rodPosition, yDecal[0].get(rodPosition)+15);
+			if( yDecal[0].get(rodPosition) < (limiInf-movePath) ){
+				yDecal[0].put(rodPosition, yDecal[0].get(rodPosition)+movePath);
 				Main.getPlayer().setRod(yDecal[0]);
 				repaint();
 			}
@@ -184,18 +213,26 @@ public class GameZone extends JPanel implements KeyListener {
 
 
 	public void keyTyped(KeyEvent e) {
-		if( e.getKeyChar() == 'a' ){
-			rodPosition = RodPositions.GARDIEN;
-			repaint();
-		}else if( e.getKeyChar() == 'z' ){
-			rodPosition = RodPositions.DEFENSE;
-			repaint();
-		}else if( e.getKeyChar() == 'e' ){
-			rodPosition = RodPositions.MILIEU;
-			repaint();
-		}else if( e.getKeyChar() == 'r' ){
-			rodPosition = RodPositions.ATTAQUE;
-			repaint();
+		if( e.getKeyChar() == 'a' || e.getKeyChar() == 'A' ){
+			if( Main.getPlayer().getRodAvailables().get(RodPositions.GARDIEN) ){
+				rodPosition = RodPositions.GARDIEN;
+				repaint();
+			}
+		}else if( e.getKeyChar() == 'z'|| e.getKeyChar() == 'Z' ){
+			if( Main.getPlayer().getRodAvailables().get(RodPositions.DEFENSE) ){
+				rodPosition = RodPositions.DEFENSE;
+				repaint();
+			}
+		}else if( e.getKeyChar() == 'e'|| e.getKeyChar() == 'E' ){
+			if( Main.getPlayer().getRodAvailables().get(RodPositions.MILIEU) ){
+				rodPosition = RodPositions.MILIEU;
+				repaint();
+			}
+		}else if( e.getKeyChar() == 'r'|| e.getKeyChar() == 'R' ){
+			if( Main.getPlayer().getRodAvailables().get(RodPositions.ATTAQUE) ){
+				rodPosition = RodPositions.ATTAQUE;
+				repaint();
+			}
 		}
 	}
 
