@@ -5,8 +5,6 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
-import core.Database;
-
 public class Client {
 	private static Socket socketChat;
 	private static Socket socketPlayer;
