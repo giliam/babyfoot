@@ -48,7 +48,7 @@ public class ConnexionPanel extends BPanel implements ActionListener, KeyListene
 		    	window.setVisible(true);
 			}else{
 				error.setForeground(Color.RED);
-				error.setText("Login déjà utilisé ! ");
+				error.setText("Login déjà utilisé ou contenant un tiret ce qui n'est pas permis ! ");
 			}
 		}
 	}
