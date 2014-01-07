@@ -22,7 +22,7 @@
 \section{Principe général}
 \paragraph{}
 Le sujet choisi a pour intitulé \textbf{Babyfoot en réseau}. Il s'agit de concevoir un système complet de jeu en réseau.
-Le système serait donc séparé en deux parties, une serveur et une client. Chaque joueur pourrait donc se connecter à une partie
+Le système serait donc séparé en deux parties, un serveur et un client. Chaque joueur pourrait donc se connecter à une partie
 n'ayant pas encore commencé et une fois le nombre de joueurs réunis (\emph{2 ou 4}), la partie serait lancée. Il faut donc réaliser à la fois 
 le système réseau, l'interface graphique et imaginer un gameplay qui rende le jeu agréable.
 
@@ -62,13 +62,18 @@ Un petit menu sera consacré aux options, notamment le type de jeu que l'on souh
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Découpage en modules}
 \paragraph{}
-Je prévois de découper le code en trois modules principaux : 
+Je prévois de découper le code en deux grandes parties :
+\begin{itemize}
+    \item Partie client
+    \item Partie serveur
+\end{itemize}
+La partie cliente sera elle-même séparée en plusieurs modules, ce qui n'est pas nécessaire pour le client.
 \begin{itemize}
     \item L'interface graphique (rangée dans /gui)
     \item La partie réseau de l'application (rangée dans /network)
     \item Le c\oe{}ur algorithmique de l'application (rangée dans /core)
 \end{itemize}
-Chaque partie comportera donc plusieurs classes qui se chargeront chacune d'une des tâches du module parent.
+Chaque partie et chaque module comporteront donc plusieurs classes qui se chargeront chacune d'une des tâches du module parent.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -90,7 +95,7 @@ Gère la liste des parties actuellement en recherche de joueurs lorsque l'on che
 \paragraph{WaitingRoomPanel.java}
 Une fois la partie configurée et ouverte, on aboutit dans cette salle d'attente qui attendra que certaines conditions soient réunies pour permettre au jeu d'être commencé. On peut \emph{aussi} y accéder depuis la partie \emph{rejoindre une partie}.
 \paragraph{GamePanel.java}
-La partie à proprement parler. Donc le conteneur du dessin du terrain qui gère les éléments extérieurs, les événements et toute autre interaction avec le reste du code. Inclut une zone de dessin.
+La partie à proprement parler. Donc le conteneur du dessin du terrain qui gère les éléments extérieurs, les événements et toute autre interaction avec le reste du code. Inclut la zone de dessin décrite ci-dessous.
 \paragraph{GameZone.java}
 Zone de dessin chargée de représenter le terrain, les joueurs, etc.
 \paragraph{ChatPanel.java}
@@ -100,15 +105,29 @@ Une partie un peu à part qui est chargée de gérer l'affichage du chat. Celui-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%   ------------------------   %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{La partie réseau}
-\paragraph{Server.java}
-Gère les différentes requêtes et les redirige vers les autres entités du serveur (chat, jeu, etc.). Contient des thread pour pouvoir gérer simultanément ces différentes actions.
-\paragraph{PlayerServer.java}
-Gère la connexion au serveur d'un des joueurs. L'enregistre dans une liste de joueurs connectés. Peut aussi renvoyer la liste des joueurs connectés actuellement et leur état.
-\paragraph{ChatServer.java}
-S'occupe de gérer la partie serveur du tchat : écoute un port, récupère les messages envoyés par des joueurs ainsi que le salon où ils se trouvaient à ce moment là. Les enregistre dans un fichier ou bien dans une base de données (à voir).
+\section{Le réseau}
+\section{Le principe général}
+\paragraph{}
+Des messages sont échangés entre le client et le serveur et ce de façon répétée. Il faut donc utiliser des Thread pour gérer l'émission et la réception de données depuis le serveur et un Thread pour gérer la réception côté client. Le serveur se chargera ensuite d'enregistrer les données statiques 
+\section{La partie client}
+\paragraph{Client.java}
+Un peu à la façon de Server.java dans le package server, cette classe gère la connexion au serveur : il y a en tout trois connexions (une pour le tchat, une pour les joueurs et une pour les données des matchs) afin de pouvoir envoyer plusieurs requêtes simultanément du même client. Toutes les requêtes envoyées sont sous la forme de chaîne de caractères avec l'utilisation de \og - \fg comme séparateurs.
+\paragraph{PlayerClient.java}
+Gère les différentes actions possibles par et sur les joueurs et les requêtes envoyées au serveur pour pouvoir satisfaire le système (connexion d'un joueur, déconnecter un joueur, ajouter un match, etc.). Elle contient aussi un Thread qui écoute l'entrée de la socket.
+\paragraph{MatchClient.java}
+Procède de la même façon que PlayerClient pour les matchs, envoie les requêtes au serveur et 
 \paragraph{ChatClient.java}
 S'occupe de gérer la partie client du tchat : une fois instanciée par le ChatPanel, elle permet d'envoyer des données au serveur et de récupérer la liste des messages disponibles dans le salon. Elle permet aussi de changer de salon, d'afficher la liste des salons et celle des joueurs connectés sur le jeu.
+\section{La partie serveur}
+\paragraph{Server.java}
+Gère les différentes requêtes et les redirige vers les autres entités du serveur (chat, jeu, etc.). Contient un système de Thread pour pouvoir gérer simultanément ces différentes actions, un Thread général qui gère les requêtes.
+\paragraph{PlayerServer.java}
+Gère la connexion au serveur d'un des joueurs. L'enregistre dans une liste de joueurs connectés. Peut aussi renvoyer la liste des joueurs connectés actuellement et leur état.
+\paragraph{MatchServer.java}
+Gère tous les échanges de données sur les matchs. S'occupe ensuite de fournir les informations nécessaires au client sur l'état actuel de la position de la balle par exemple. Nécessitera peut-être, pour des questions de réactivité, d'être multi-threadé.
+\paragraph{ChatServer.java}
+S'occupe de gérer la partie serveur du tchat : écoute un port, récupère les messages envoyés par des joueurs ainsi que le salon où ils se trouvaient à ce moment là. Les enregistre dans un fichier ou bien dans une base de données (à voir).
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%   ------------------------   %%
@@ -117,9 +136,9 @@ S'occupe de gérer la partie client du tchat : une fois instanciée par le ChatP
 \paragraph{Player.java}
 Le bloc de base du c\oe{}ur algorithmique est le joueur. 
 \paragraph{Game.java}
-Contient les données principales pour une partie, notamment l'état des scores, les joueurs y participant, l'avancement de la partie, etc.
+Contient les données principales pour une partie, notamment l'état des scores, les joueurs y participant, l'avancement de la partie, etc. Sera appelée par le serveur.
 \paragraph{Database.java}
-Gère la base de données PostGreSQL ou bien textuelle qui pourrait être utilisée par le programme pour stocker des informations. Sera principalement utilisée par le module network.*.
+Gère la base de données PostGreSQL ou bien textuelle qui pourrait être utilisée par le programme pour stocker des informations. A priori, seul le serveur interviendra sur la base de données et y entrera les informations relatives aux matchs actuels. Peut être utile d'entrer directement depuis les clients les données dans le serveur sans passer au préalable par le serveur (exemple : connexion d'un joueur, tchat, etc.). L'intérêt est de n'avoir qu'une seule connexion.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%                              %%
