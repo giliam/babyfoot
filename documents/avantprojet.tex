@@ -67,11 +67,11 @@ Je prévois de découper le code en deux grandes parties :
     \item Partie client
     \item Partie serveur
 \end{itemize}
-La partie cliente sera elle-même séparée en plusieurs modules, ce qui n'est pas nécessaire pour le client.
+Les deux parties (client/serveur) seront elles-mêmes séparées en plusieurs modules.
 \begin{itemize}
-    \item L'interface graphique (rangée dans /gui)
-    \item La partie réseau de l'application (rangée dans /network)
-    \item Le c\oe{}ur algorithmique de l'application (rangée dans /core)
+    \item L'interface graphique (rangée dans /gui) qui sera absente du serveur
+    \item La partie réseau de l'application (rangée dans /network), responsable de l'émission et de la réception des requêtes.
+    \item Le c\oe{}ur algorithmique de l'application (rangée dans /core) contenant les classes gérant les matchs, les joueurs, etc.
 \end{itemize}
 Chaque partie et chaque module comporteront donc plusieurs classes qui se chargeront chacune d'une des tâches du module parent.
 
@@ -108,7 +108,7 @@ Une partie un peu à part qui est chargée de gérer l'affichage du chat. Celui-
 \section{Le réseau}
 \section{Le principe général}
 \paragraph{}
-Des messages sont échangés entre le client et le serveur et ce de façon répétée. Il faut donc utiliser des Thread pour gérer l'émission et la réception de données depuis le serveur et un Thread pour gérer la réception côté client. Le serveur se chargera ensuite d'enregistrer les données statiques 
+Des messages sont échangés entre le client et le serveur et ce de façon répétée. Il faut donc utiliser des Thread pour gérer l'émission et la réception de données depuis le serveur et un Thread pour gérer la réception côté client. Le serveur se chargera ensuite d'enregistrer les données statiques devant être conservées.
 \section{La partie client}
 \paragraph{Client.java}
 Un peu à la façon de Server.java dans le package server, cette classe gère la connexion au serveur : il y a en tout trois connexions (une pour le tchat, une pour les joueurs et une pour les données des matchs) afin de pouvoir envoyer plusieurs requêtes simultanément du même client. Toutes les requêtes envoyées sont sous la forme de chaîne de caractères avec l'utilisation de \og - \fg comme séparateurs.
@@ -134,9 +134,11 @@ S'occupe de gérer la partie serveur du tchat : écoute un port, récupère les 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Le c\oe{}ur algorithmique}
 \paragraph{Player.java}
-Le bloc de base du c\oe{}ur algorithmique est le joueur. 
+Le bloc de base du c\oe{}ur algorithmique est le joueur. Il est instancié par le serveur et a plusieurs attributs : son login, son état actuel (s'il est en train de jouer ou non). Si le joueur est en match, la classe contient aussi les barres qu'il a le droit de déplacer.
 \paragraph{Game.java}
-Contient les données principales pour une partie, notamment l'état des scores, les joueurs y participant, l'avancement de la partie, etc. Sera appelée par le serveur.
+Contient les données principales pour une partie, notamment l'avancement de la partie, l'état des scores, les joueurs y participant, etc. Sera appelée par le serveur. Cette classe contient aussi toutes les informations sur les données factuelles d'une partie, à savoir la position de la balle, la position des barres, etc.
+\paragraph{Utils.java}
+Avoir une classe abstraite qui gère les fonctions utilitaires comme la mise-en-forme de la date, la mise-en-forme des requêtes, les fonctions de hash utilisées pour vérifier la validité des requêtes, etc.
 \paragraph{Database.java}
 Gère la base de données PostGreSQL ou bien textuelle qui pourrait être utilisée par le programme pour stocker des informations. A priori, seul le serveur interviendra sur la base de données et y entrera les informations relatives aux matchs actuels. Peut être utile d'entrer directement depuis les clients les données dans le serveur sans passer au préalable par le serveur (exemple : connexion d'un joueur, tchat, etc.). L'intérêt est de n'avoir qu'une seule connexion.
 
