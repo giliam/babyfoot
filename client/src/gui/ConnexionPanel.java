@@ -42,13 +42,17 @@ public class ConnexionPanel extends BPanel implements ActionListener, KeyListene
 	
 	public void logIn(){
 		if( !fpseudo.getText().equals("") ){
-			if( Main.getPlayer().addPlayer(fpseudo.getText()) ) {
+			String s = fpseudo.getText();
+			if( s.split("-").length > 1){
+				error.setForeground(Color.RED);
+				error.setText("Login contenant un tiret ce qui n'est pas permis ! ");
+			}else if( Main.getPlayer().addPlayer(s) ) {
 				
 				window.setContentPane(new MenuPanel(window));
 		    	window.setVisible(true);
 			}else{
 				error.setForeground(Color.RED);
-				error.setText("Login déjà utilisé ou contenant un tiret ce qui n'est pas permis ! ");
+				error.setText("Login déjà utilisé ! ");
 			}
 		}
 	}

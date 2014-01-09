@@ -152,7 +152,6 @@ public class GameZone extends JPanel implements KeyListener {
 	private void drawRodPosition(Graphics g){
 		g.setColor(Color.BLACK);
 		switch(rodPosition){
-/*
 			case GARDIEN:
 				g.fillRect(gapEdge+30,600,50,50);
 				break;
@@ -165,7 +164,6 @@ public class GameZone extends JPanel implements KeyListener {
 			case ATTAQUE:
 				g.fillRect(w-lineStrength-gapEdge-230,600,50,50);
 				break;
-*/
 		}
 	}
 

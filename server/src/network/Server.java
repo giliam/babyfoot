@@ -21,15 +21,12 @@ public class Server implements Runnable {
 	public static ChatServer tchat;
 	public static PlayerServer tplayer;
 	public static MatchServer tmatch;
-	public static Database db;
 	
 	public Server(ServerSocket s){
 		tmatch = new MatchServer();
 		tplayer = new PlayerServer();
 		tchat = new ChatServer();
 		socketserver = s;
-		db = new Database();
-		db.connect();
 	}
 	
 	

@@ -23,8 +23,6 @@ public class Player {
 	}
 	
 	public boolean addPlayer(String login){
-		if( login.split("-").length > 1 )
-			return false;
 		this.setLogin(login);
 		return Main.getClient().getPc().addPlayer();
 	}

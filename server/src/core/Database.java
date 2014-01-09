@@ -66,20 +66,15 @@ public class Database {
 				resultVerifRoomExist.first();
 				int salon_id = resultVerifRoomExist.getInt("salon_id");
 				
-				int joueur_id = findPlayer(login, 1);
-				if( joueur_id >= 0 ){
-					Statement state = link.createStatement();
-				    PreparedStatement prepare = link.prepareStatement("INSERT INTO chat(salon_id, message, date, joueur_id) VALUES(?, ?, ?, ? )");
-				    prepare.setInt(1,salon_id);
-				    prepare.setString(2,message);
-				    prepare.setInt(3,(int) System.currentTimeMillis());
-				    prepare.setInt(4,joueur_id);
-				    prepare.executeUpdate();
-				    prepare.close();
-					state.close();
-				}else{
-					System.out.println("Ce joueur n'existe pas ! " );
-				}
+				Statement state = link.createStatement();
+			    PreparedStatement prepare = link.prepareStatement("INSERT INTO chat(salon_id, message, date, joueur) VALUES(?, ?, ?, ? )");
+			    prepare.setInt(1,salon_id);
+			    prepare.setString(2,message);
+			    prepare.setInt(3,(int) System.currentTimeMillis());
+			    prepare.setString(4,login);
+			    prepare.executeUpdate();
+			    prepare.close();
+				state.close();
 			}else{
 				System.out.println("Ce salon n'existe pas ! " + resultVerifRoomExist.getRow());
 			}
@@ -94,7 +89,8 @@ public class Database {
 	
 	public boolean addPlayer(String login){
 		try {
-			if( findPlayer(login, 1) >= 0 ){
+			System.out.println(findPlayer(login, 1));
+			if( findPlayer(login, 1) <= 0 ){
 				Statement state = link.createStatement();
 				state.executeUpdate("INSERT INTO joueurs(login, online) VALUES('" + login + "', 1)");
 				state.close();
@@ -246,7 +242,7 @@ public class Database {
 		return null;
 	}
 	
-	
+	/*
 	public static void main(String[] args){
 		Database d = new Database();
 		d.connect();
@@ -254,5 +250,5 @@ public class Database {
 		for(int i = 0; i < 2; i++ ){
 			System.out.println(s[i]);
 		}
-	}
+	}*/
 }
