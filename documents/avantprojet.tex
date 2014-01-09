@@ -106,21 +106,66 @@ Une partie un peu à part qui est chargée de gérer l'affichage du chat. Celui-
 %%   ------------------------   %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Le réseau}
-\section{Le principe général}
+\subsection{Le principe général}
 \paragraph{}
 Des messages sont échangés entre le client et le serveur et ce de façon répétée. Il faut donc utiliser des Thread pour gérer l'émission et la réception de données depuis le serveur et un Thread pour gérer la réception côté client. Le serveur se chargera ensuite d'enregistrer les données statiques devant être conservées.
-\section{La partie client}
+\subsection{La partie client}
+\paragraph{Main.java}
+Il s'agit du main du client qui initialise les fenêtres et les différentes classes utilisées.
+\begin{quote}
+	private static Player player;
+    
+	private static Chat chat;
+    
+	private static Client client;
+\end{quote}
 \paragraph{Client.java}
-Un peu à la façon de Server.java dans le package server, cette classe gère la connexion au serveur : il y a en tout trois connexions (une pour le tchat, une pour les joueurs et une pour les données des matchs) afin de pouvoir envoyer plusieurs requêtes simultanément du même client. Toutes les requêtes envoyées sont sous la forme de chaîne de caractères avec l'utilisation de \og - \fg comme séparateurs.
+Cette classe gère la connexion au serveur : il y a en tout trois connexions (une pour le tchat, une pour les joueurs et une pour les données des matchs) afin de pouvoir envoyer plusieurs requêtes simultanément du même client. Toutes les requêtes envoyées sont sous la forme de chaîne de caractères avec l'utilisation de \og - \fg comme séparateurs.
+\begin{quote}
+	private static Socket socketChat;
+    
+	private static Socket socketPlayer;
+    
+	private static Socket socketMatch;
+    
+	private ChatClient cc;
+
+	private PlayerClient pc;
+
+	private MatchClient mc;
+
+	private Thread tChat;
+
+	private Thread tPlayer;
+    
+	private Thread tMatch;
+\end{quote}
 \paragraph{PlayerClient.java}
 Gère les différentes actions possibles par et sur les joueurs et les requêtes envoyées au serveur pour pouvoir satisfaire le système (connexion d'un joueur, déconnecter un joueur, ajouter un match, etc.). Elle contient aussi un Thread qui écoute l'entrée de la socket.
 \paragraph{MatchClient.java}
 Procède de la même façon que PlayerClient pour les matchs, envoie les requêtes au serveur et 
 \paragraph{ChatClient.java}
 S'occupe de gérer la partie client du tchat : une fois instanciée par le ChatPanel, elle permet d'envoyer des données au serveur et de récupérer la liste des messages disponibles dans le salon. Elle permet aussi de changer de salon, d'afficher la liste des salons et celle des joueurs connectés sur le jeu.
-\section{La partie serveur}
+\subsection{La partie serveur}
 \paragraph{Server.java}
 Gère les différentes requêtes et les redirige vers les autres entités du serveur (chat, jeu, etc.). Contient un système de Thread pour pouvoir gérer simultanément ces différentes actions, un Thread général qui gère les requêtes.
+\begin{quote}
+    ServerSocket socketserver = null;
+    
+	Socket socket = null;
+    
+	BufferedReader in;
+    
+	PrintWriter out;
+    
+	String login;
+    
+	public static ChatServer tchat;
+    
+	public static PlayerServer tplayer;
+    b
+	public static MatchServer tmatch;
+\end{quote}
 \paragraph{PlayerServer.java}
 Gère la connexion au serveur d'un des joueurs. L'enregistre dans une liste de joueurs connectés. Peut aussi renvoyer la liste des joueurs connectés actuellement et leur état.
 \paragraph{MatchServer.java}
@@ -135,12 +180,34 @@ S'occupe de gérer la partie serveur du tchat : écoute un port, récupère les 
 \section{Le c\oe{}ur algorithmique}
 \paragraph{Player.java}
 Le bloc de base du c\oe{}ur algorithmique est le joueur. Il est instancié par le serveur et a plusieurs attributs : son login, son état actuel (s'il est en train de jouer ou non). Si le joueur est en match, la classe contient aussi les barres qu'il a le droit de déplacer.
-\paragraph{Game.java}
+\begin{quote}
+	private Match match;
+    
+	private String login;
+\end{quote}
+\paragraph{Match.java}
 Contient les données principales pour une partie, notamment l'avancement de la partie, l'état des scores, les joueurs y participant, etc. Sera appelée par le serveur. Cette classe contient aussi toutes les informations sur les données factuelles d'une partie, à savoir la position de la balle, la position des barres, etc.
+\begin{quote}
+    private int leftScore;
+    
+	private int rightScore;
+	
+	private int type;
+	
+	private int state;
+	
+	private Player player1;
+    
+	private Player player2;
+    
+	private Player player3;
+    
+	private Player player4;
+\end{quote}
 \paragraph{Utils.java}
 Avoir une classe abstraite qui gère les fonctions utilitaires comme la mise-en-forme de la date, la mise-en-forme des requêtes, les fonctions de hash utilisées pour vérifier la validité des requêtes, etc.
 \paragraph{Database.java}
-Gère la base de données PostGreSQL ou bien textuelle qui pourrait être utilisée par le programme pour stocker des informations. A priori, seul le serveur interviendra sur la base de données et y entrera les informations relatives aux matchs actuels. Peut être utile d'entrer directement depuis les clients les données dans le serveur sans passer au préalable par le serveur (exemple : connexion d'un joueur, tchat, etc.). L'intérêt est de n'avoir qu'une seule connexion.
+Gère la base de données PostGreSQL ou bien textuelle qui pourrait être utilisée par le programme pour stocker des informations. A priori, seul le serveur interviendra sur la base de données et y entrera les informations relatives à l'historique des tchats et des matchs. Peut être utile d'entrer directement depuis les clients les données dans le serveur sans passer au préalable par le serveur (exemple : connexion d'un joueur, tchat, etc.). L'intérêt est de n'avoir qu'une seule connexion.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%                              %%
