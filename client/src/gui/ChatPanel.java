@@ -15,6 +15,7 @@ public class ChatPanel extends JPanel implements ActionListener, MouseListener, 
 	private JTextField textfield;
 	private long timeFirstClick;
 	private JTextPane text = new JTextPane();
+	private JLabel serverName;
 	
 	public ChatPanel() {
 		//Création de plusieurs Panneau
@@ -24,6 +25,10 @@ public class ChatPanel extends JPanel implements ActionListener, MouseListener, 
 	    onglet.add("Chat", tPan[0]);
 	    onglet.add("Salons", tPan[1]);
 	    onglet.setPreferredSize(new Dimension(300,800));
+	    
+	    //Titre = nom du serveur actuel
+	    serverName = new JLabel(Main.getChat().getServer());
+	    serverName.setForeground(Color.WHITE);
 	    
 	    //On s'occupe de la partie tchat en lui-même
 	    updateMessages();
@@ -47,6 +52,7 @@ public class ChatPanel extends JPanel implements ActionListener, MouseListener, 
 		
 		//On entre tout ça
 		add(onglet);
+		tPan[0].add(serverName);
 		tPan[0].add(displayZone);
 		tPan[0].add(textfield);
 		tPan[0].add(push);
@@ -87,6 +93,7 @@ public class ChatPanel extends JPanel implements ActionListener, MouseListener, 
 	public void mouseClicked(MouseEvent e) {
 		if (e.getClickCount() == 2 && ( timeFirstClick - System.currentTimeMillis() ) < 1000 ) {
 			Main.getChat().setServer(listServersLayout.locationToIndex(e.getPoint()));
+			serverName.setText(Main.getChat().getServer());
 			updateMessages();
 			onglet.setSelectedIndex(0);
 		}
