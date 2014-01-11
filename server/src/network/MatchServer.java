@@ -44,12 +44,13 @@ public class MatchServer extends AbstractServer {
 		if( m.getPlayer1() != null ){
 			display += "-" + m.getPlayer1().getLogin();
 		}if( m.getPlayer2() != null ){
-			display += "-" + m.getPlayer2().getLogin();
+			display += "-" + ( m.getType() == 2 ? "" : " -" ) + m.getPlayer2().getLogin();
 		}if( m.getPlayer3() != null ){
-			display += "-" + m.getPlayer3().getLogin();
+			display += "-" + ( m.getType() == 2 ? " -" : "" ) + m.getPlayer3().getLogin();
 		}if( m.getPlayer4() != null ){
 			display += "-" + m.getPlayer4().getLogin();
 		}
+		display += " - - - - ";
 		out.println(display);
 		out.println("matchinfo-end");
 		out.flush();

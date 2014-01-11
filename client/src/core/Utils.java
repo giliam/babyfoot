@@ -49,4 +49,10 @@ public abstract class Utils {
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM hh:mm:ss");
 		return formatter.format(d);
 	}
+	
+	public static void printArray(String[] s){
+		for( int i = 0; i<s.length; i++){
+			System.out.println(i + ". " + s[i] );
+		}
+	}
 }
