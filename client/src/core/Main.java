@@ -18,7 +18,11 @@ public class Main {
 
 	public static void closeWindow() {
 		if( !Main.getPlayer().getLogin().equals("") ){
-			Main.getPlayer().removePlayer(Main.getPlayer().getLogin());
+			try{
+				Main.getPlayer().removePlayer(Main.getPlayer().getLogin());
+			}catch(Exception e){
+				e.printStackTrace();
+			}
 		}
 		System.exit(0);
 	}

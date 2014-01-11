@@ -28,6 +28,9 @@ public class ServersPanel extends BPanel implements ActionListener {
 		add(chat,BorderLayout.EAST);
 		
 		JPanel menu = new JPanel();
+		BorderLayout g = new BorderLayout();
+		//g.setVgap(15);
+		menu.setLayout(g);
 		menu.setBackground(Color.ORANGE);
 		add(menu,BorderLayout.CENTER);
 		
@@ -37,12 +40,14 @@ public class ServersPanel extends BPanel implements ActionListener {
 		listServersLayout.setLayoutOrientation(JList.VERTICAL);
 		listServersLayout.setVisibleRowCount(-1);
 		JScrollPane listScroller = new JScrollPane(listServersLayout);
-		listScroller.setPreferredSize(new Dimension(250, 80));
+		menu.add((new JPanel()).add(listScroller),BorderLayout.CENTER);
 		
-		menu.add(listScroller);
-		menu.add(bReturn);
-		menu.add(bGo);
-		menu.add(bQuit);
+		JPanel buttonsList = new JPanel();
+		buttonsList.setBackground(Color.ORANGE);
+		buttonsList.add(bReturn);
+		buttonsList.add(bGo);
+		buttonsList.add(bQuit);
+		menu.add(buttonsList,BorderLayout.SOUTH);
 		
 		bReturn.addActionListener(this);
 		bGo.addActionListener(this);
