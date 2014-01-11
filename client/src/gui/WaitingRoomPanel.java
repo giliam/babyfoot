@@ -16,6 +16,9 @@ public class WaitingRoomPanel extends BPanel implements ActionListener {
 	private String[] playersTeamOne;
 	private String[] playersTeamTwo;
 	private int type;
+	
+	private JList<String> listMembersTeamOne;
+	private JList<String> listMembersTeamTwo;
 	public WaitingRoomPanel(MainFrame f) {
 		super(f);
 
@@ -34,15 +37,15 @@ public class WaitingRoomPanel extends BPanel implements ActionListener {
 		chat.setPreferredSize(new Dimension(300,700));
 		chat.setMinimumSize(new Dimension(300,700));
 		add(chat,BorderLayout.EAST);
-
+		
 		
 		//On s'occupe de la liste des serveurs
-		JList<String> listMembersTeamOne = new JList<String>(playersTeamOne);
+		listMembersTeamOne = new JList<String>(playersTeamOne);
 		listMembersTeamOne.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		listMembersTeamOne.setLayoutOrientation(JList.VERTICAL);
 		listMembersTeamOne.setVisibleRowCount(-1);
 		//On s'occupe de la liste des serveurs
-		JList<String> listMembersTeamTwo = new JList<String>(playersTeamTwo);
+		listMembersTeamTwo = new JList<String>(playersTeamTwo);
 		listMembersTeamTwo.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		listMembersTeamTwo.setLayoutOrientation(JList.VERTICAL);
 		listMembersTeamTwo.setVisibleRowCount(-1);
@@ -71,11 +74,16 @@ public class WaitingRoomPanel extends BPanel implements ActionListener {
 		buttonsList.add(bQuit);
 		menu.add(buttonsList);
 		
+		Thread tRefreshRoom = new Thread(new RefreshRoom(this));
+		tRefreshRoom.start();
+		
 		bReturn.addActionListener(this);
 		bGo.addActionListener(this);
 		bQuit.addActionListener(this);
 	}
 	
+	
+
 	private void handleMatchInfo(String[] datas) {
 		type = Integer.valueOf(datas[0]);
 	    switch(type){
@@ -102,6 +110,18 @@ public class WaitingRoomPanel extends BPanel implements ActionListener {
 	    		break;
 	    }
 	}
+	
+	private boolean testIsReady() {
+	    switch(type){
+	    	case 1:
+	    		return !playersTeamOne[0].equals("") && !playersTeamTwo[0].equals(""); 
+	    	case 2:
+	    		return !playersTeamOne[0].equals("") && !playersTeamOne[1].equals("") && !playersTeamTwo[1].equals("") && !playersTeamTwo[0].equals("");
+	    	case 3:
+	    		return !playersTeamOne[0].equals("") && !playersTeamTwo[0].equals("") && !playersTeamTwo[1].equals("");
+	    }
+		return false;
+	}
 
 	public void actionPerformed(ActionEvent e) {
 		if( e.getSource() == bQuit ){
@@ -114,4 +134,34 @@ public class WaitingRoomPanel extends BPanel implements ActionListener {
 		    window.setVisible(true);
 		}
 	}
+
+
+
+	public void refresh() {
+		bGo.setEnabled(false);
+		handleMatchInfo(Main.getClient().getMc().getMatchInfo(Main.getPlayer().getLogin()));
+		listMembersTeamOne.setListData(playersTeamOne);
+		listMembersTeamTwo.setListData(playersTeamTwo);
+		if( testIsReady() )
+			bGo.setEnabled(true);
+	}
 }
+
+class RefreshRoom implements Runnable{
+	private WaitingRoomPanel waitingroom;
+	public RefreshRoom(WaitingRoomPanel wp){
+		waitingroom = wp;
+	}
+	
+	public void run(){
+		while(true){
+			try {
+				Thread.sleep(5000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			waitingroom.refresh();
+		}
+	}
+}
+
