@@ -37,6 +37,7 @@ public class GameZone extends JPanel implements KeyListener {
 	public static enum RodPositions { GARDIEN , DEFENSE, MILIEU, ATTAQUE };
 	RodPositions rodPosition;
 	
+	@SuppressWarnings("unchecked")
 	public GameZone(){
 		Main.getPlayer().setLogin("giliam");
 		yDecalDefault = new Hashtable<RodPositions, Integer>();

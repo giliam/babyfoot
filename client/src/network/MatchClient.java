@@ -49,7 +49,7 @@ public class MatchClient implements Runnable {
 	}
 
 	public boolean setServerFromHost(String login, String loginHost) {
-		out.println("player-joinmatch-" + login + loginHost );
+		out.println("player-joinmatch-" + login + "-" + loginHost );
     	out.flush();
     	try {
 			Thread.currentThread();
@@ -82,7 +82,6 @@ class MatchReceptionMessage implements Runnable{
 		try {
 			while(true){
             	String message = in.readLine();
-            	System.out.println("MatchClient - " + message);
             	if( message.equals("matchlist-beginning") && mode == 0 ){
             		mode = 1;
             	}else if( mode == 1 ){

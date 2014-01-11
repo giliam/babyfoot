@@ -25,6 +25,7 @@ public class Match {
 	
 	public Match(String login, int type) {
 		this.player1 = Server.tplayer.getPlayer(login);
+		this.player1.setMatch(this);
 		this.type = type;
 	}
 

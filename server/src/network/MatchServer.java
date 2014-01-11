@@ -79,6 +79,7 @@ public class MatchServer extends AbstractServer {
 		   }
 		}
 		liste.add(new Match(login, type));
+		
 		return true;
 	}
 

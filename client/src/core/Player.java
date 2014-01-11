@@ -63,7 +63,8 @@ public class Player {
 
 	public boolean setServer(int selectedGame, String[] selectedStrings) {
 		String[] datas = selectedStrings[selectedGame].split("-");
-		String loginHost = datas[1];
+		String loginHost = datas[1].trim();
+		System.out.println(loginHost);
 		return Main.getClient().getMc().setServerFromHost(login,loginHost);
 	}
 }
