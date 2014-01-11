@@ -46,12 +46,14 @@ public class WaitingRoomPanel extends BPanel implements ActionListener {
 		listMembersTeamTwo.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		listMembersTeamTwo.setLayoutOrientation(JList.VERTICAL);
 		listMembersTeamTwo.setVisibleRowCount(-1);
-		
+		JScrollPane s1 = new JScrollPane(listMembersTeamOne);
+		s1.setPreferredSize(new Dimension(200,100));
+		JScrollPane s2 = new JScrollPane(listMembersTeamTwo);
+		s2.setPreferredSize(new Dimension(200,100));
 		JPanel teamOnePanel = new JPanel();
-		teamOnePanel.setMinimumSize(new Dimension(100,100));
-		teamOnePanel.add(new JScrollPane(listMembersTeamOne));
+		teamOnePanel.add(s1);
 	    JPanel teamTwoPanel = new JPanel();
-	    teamTwoPanel.add(new JScrollPane(listMembersTeamTwo));
+	    teamTwoPanel.add(s2);
 	    JSplitPane s = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, teamOnePanel, teamTwoPanel);
 	    s.setDividerLocation(250);
 	    

@@ -122,5 +122,21 @@ public class Match {
 		}
 		return "false";
 	}
+
+	public void removePlayer(String login) {
+		if( player1 != null ){
+			if( player1.getLogin().equals(login) )
+				player1 = null;
+		}else if( player2 != null ){
+			if( player2.getLogin().equals(login) )
+				player2 = null;
+		}else if( player3 != null ){
+			if( player3.getLogin().equals(login) )
+				player3 = null;
+		}else if( player4 != null ){
+			if( player4.getLogin().equals(login) )
+				player4 = null;
+		}
+	}
 	
 }

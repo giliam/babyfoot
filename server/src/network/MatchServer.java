@@ -107,4 +107,14 @@ public class MatchServer extends AbstractServer {
 	public void sendRodPositions(int[][] datas, PrintWriter out){
 		out.println("rodpositions");
 	}
+	
+	public LinkedList<Match> getListe() {
+		return liste;
+	}
+
+	public void removeFromListe(Match match) {
+		if( liste.contains(match) ){
+			liste.remove(match);
+		}
+	}
 }
