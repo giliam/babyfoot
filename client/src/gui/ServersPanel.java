@@ -9,18 +9,16 @@ import core.Main;
 
 @SuppressWarnings("serial")
 public class ServersPanel extends BPanel implements ActionListener, MouseListener {
-	JButton bQuit;
-	JButton bGo;
-	JButton bReturn;
-	JList<String> listServersLayout;
-	int selectedGame;
-	String[] listServers;
+	private JButton bQuit = new JButton("Quitter");
+	private JButton bGo = new JButton("Lancer la partie");
+	private JButton bReturn = new JButton("Retour");
+	private JButton bRefresh = new JButton("Rafraichir la liste");
+	private JList<String> listServersLayout;
+	private int selectedGame;
+	private String[] listServers;
+	
 	public ServersPanel(MainFrame f) {
 		super(f);
-		
-		bReturn = new JButton("Retour");
-		bGo = new JButton("Lancer la partie");
-	    bQuit = new JButton("Quitter");
 	    
 	    ChatPanel chat = new ChatPanel();
 		chat.setBackground(Color.BLACK);
@@ -47,6 +45,7 @@ public class ServersPanel extends BPanel implements ActionListener, MouseListene
 		JPanel buttonsList = new JPanel();
 		buttonsList.setBackground(Color.ORANGE);
 		buttonsList.add(bReturn);
+		buttonsList.add(bRefresh);
 		buttonsList.add(bGo);
 		buttonsList.add(bQuit);
 		menu.add(buttonsList,BorderLayout.SOUTH);
@@ -57,6 +56,7 @@ public class ServersPanel extends BPanel implements ActionListener, MouseListene
 		listServersLayout.addMouseListener(this);
 		
 		bReturn.addActionListener(this);
+		bRefresh.addActionListener(this);
 		bGo.addActionListener(this);
 		bQuit.addActionListener(this);
 	}
@@ -67,6 +67,10 @@ public class ServersPanel extends BPanel implements ActionListener, MouseListene
 		}else if( e.getSource() == bReturn ){
 			window.setContentPane(new MenuPanel(window));
 		    window.setVisible(true);
+		}else if( e.getSource() == bRefresh ){
+			listServers = Main.getPlayer().getServers();
+			listServersLayout.setListData(listServers);
+			bGo.setEnabled(false);
 		}else if( e.getSource() == bGo ){
 			if( Main.getPlayer().setServer(selectedGame, listServers) ){
 				window.setContentPane(new WaitingRoomPanel(window));
@@ -77,8 +81,9 @@ public class ServersPanel extends BPanel implements ActionListener, MouseListene
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		bGo.setEnabled(true);
 		selectedGame = listServersLayout.locationToIndex(e.getPoint());
+		if( selectedGame >= 0 )
+			bGo.setEnabled(true);
 	}
 
 	@Override

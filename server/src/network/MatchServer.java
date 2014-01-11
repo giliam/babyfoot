@@ -32,9 +32,30 @@ public class MatchServer extends AbstractServer {
     		sendRodPositions( getRodPositions(login), out );
     	}else if(task.equals("getserverslist")){
     		getServersList( out );
+    	}else if( task.equals( "getmatchinfo" ) ){
+    		String login = datas[2];
+    		getMatchInfo( login, out );
     	}
 	}
 	
+	private void getMatchInfo(String login, PrintWriter out) {
+		out.println("matchinfo-beginning");
+		Match m = Server.tplayer.getPlayer(login).getMatch();
+		String display = String.valueOf(m.getType());
+		if( m.getPlayer1() != null ){
+			display += "-" + m.getPlayer1().getLogin();
+		}if( m.getPlayer2() != null ){
+			display += "-" + m.getPlayer2().getLogin();
+		}if( m.getPlayer3() != null ){
+			display += "-" + m.getPlayer3().getLogin();
+		}if( m.getPlayer4() != null ){
+			display += "-" + m.getPlayer4().getLogin();
+		}
+		out.println(display);
+		out.println("matchinfo-end");
+		out.flush();
+	}
+
 	private void getServersList(PrintWriter out) {
 		out.println("matchlist-beginning");
 		out.println(liste.size());
