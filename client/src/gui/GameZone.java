@@ -8,6 +8,8 @@ import javax.swing.JPanel;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.Hashtable;
@@ -16,7 +18,7 @@ import javax.imageio.ImageIO;
 
 import core.Main;
 
-public class GameZone extends JPanel implements KeyListener {
+public class GameZone extends JPanel implements KeyListener, MouseMotionListener {
 	private static final long serialVersionUID = 1L;
 	/**
 	 * Taille des buts en pixels et épaisseur des traits
@@ -30,6 +32,8 @@ public class GameZone extends JPanel implements KeyListener {
 	
 	private int h;
 	private int w;
+	
+	private int oldY = 0;
 	
 	private Hashtable<RodPositions, Integer>[] yDecal;
 	private Hashtable<RodPositions, Integer> yDecalDefault;
@@ -61,6 +65,7 @@ public class GameZone extends JPanel implements KeyListener {
 	    setPreferredSize(new Dimension(900,700));
 	    setMinimumSize(new Dimension(900,700));
 	    addKeyListener(this);
+	    addMouseMotionListener(this);
 	    setFocusable(true);
 	    requestFocus();
 	}
@@ -150,7 +155,7 @@ public class GameZone extends JPanel implements KeyListener {
 	
 	private void drawRodPosition(Graphics g){
 		g.setColor(Color.BLACK);
-		switch(rodPosition){
+		/*switch(rodPosition){
 			case GARDIEN:
 				g.fillRect(gapEdge+30,600,50,50);
 				break;
@@ -163,11 +168,19 @@ public class GameZone extends JPanel implements KeyListener {
 			case ATTAQUE:
 				g.fillRect(w-lineStrength-gapEdge-230,600,50,50);
 				break;
-		}
+		}//*/
 	}
 
 
 	public void keyPressed(KeyEvent e) {
+		if( e.getKeyCode() == 38 ){
+			moveUpAndDown(true,movePath);
+		}else if( e.getKeyCode() == 40 ){
+			moveUpAndDown(false,movePath);
+		}
+	}
+	
+	public void moveUpAndDown(boolean up, int path){
 		int limitSup = 38;
 		int limiInf = 83;
 		switch(rodPosition){
@@ -188,19 +201,14 @@ public class GameZone extends JPanel implements KeyListener {
 				limiInf = 220;
 				break;
 		}
-		
-		if( e.getKeyCode() == 38 ){
-			if( yDecal[0].get(rodPosition) > (limitSup+movePath) ){
-				yDecal[0].put(rodPosition, yDecal[0].get(rodPosition)-movePath);
-				Main.getPlayer().setRod(yDecal[0]);
-				repaint();
-			}
-		}else if( e.getKeyCode() == 40 ){
-			if( yDecal[0].get(rodPosition) < (limiInf-movePath) ){
-				yDecal[0].put(rodPosition, yDecal[0].get(rodPosition)+movePath);
-				Main.getPlayer().setRod(yDecal[0]);
-				repaint();
-			}
+		if( up && yDecal[0].get(rodPosition) > (limitSup+path) ){
+			yDecal[0].put(rodPosition, yDecal[0].get(rodPosition)-path);
+			Main.getPlayer().setRod(yDecal[0]);
+			repaint();
+		}else if( !up && yDecal[0].get(rodPosition) < (limiInf-path) ){
+			yDecal[0].put(rodPosition, yDecal[0].get(rodPosition)+path);
+			Main.getPlayer().setRod(yDecal[0]);
+			repaint();
 		}
 	}
 
@@ -233,5 +241,21 @@ public class GameZone extends JPanel implements KeyListener {
 		}
 	}
 
-	
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+	}
+
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		int y = e.getYOnScreen();
+		if( y > ( 20 + oldY ) ){
+			moveUpAndDown(false, movePath);
+		}else if( y < ( oldY - 17 )){
+			moveUpAndDown(true, movePath);
+		}
+		if( ( y - oldY ) > 20 || ( oldY - y ) > 20 )
+			oldY = y;
+	}
 }
