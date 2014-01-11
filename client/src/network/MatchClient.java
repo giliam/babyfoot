@@ -123,14 +123,15 @@ class MatchReceptionMessage implements Runnable{
 			while(true){
             	String message = in.readLine();
             	if( ( message.equals("matchlist-beginning") || message.equals("matchinfo-beginning") ) && mode == 0 ){
-            		if( message.equals("matchinfo-beginning") )
+            		if( message.equals("matchinfo-beginning") ){
             			type = 1;
-            		mode = 1;
+            			matchClient.setMatchDatas(new String[5]);
+            			mode = 2;
+            		}else
+            			mode = 1;
             	}else if( mode == 1 ){
             		if( type == 0)
             			matchClient.setServerList(new String[Integer.valueOf(message)]);
-            		else if( type == 1 )
-            			matchClient.setMatchDatas(new String[5]);
             		mode = 2;
             	}else if( ( message.equals("matchlist-end") || message.equals("matchinfo-end") )  && mode == 2 ){
             		mode = 0;
@@ -140,7 +141,7 @@ class MatchReceptionMessage implements Runnable{
             		if( type == 0)
             			matchClient.getServerList()[n++] = message;
             		else if( type == 1)
-            			matchClient.getMatchDatas()[n++] = message;
+            			matchClient.setMatchDatas(message.split("-"));
             	}else{
             		matchClient.setOk(message.equals("true"));
             	}

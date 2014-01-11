@@ -14,7 +14,6 @@ public class MatchServer extends AbstractServer {
 	public void handle(BufferedReader in, PrintWriter out){
 		String[] datas = query.split("-");
 		String task = datas[1];
-		System.out.println(query);
     	if( task.equals("add") ){
     		int type = Integer.valueOf(datas[3]);
     		String login = datas[2];
