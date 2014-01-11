@@ -6,12 +6,14 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import core.Main;
+import core.Utils;
 
 @SuppressWarnings("serial")
 public class ServersPanel extends BPanel implements ActionListener {
 	JButton bQuit;
 	JButton bGo;
 	JButton bReturn;
+	JList<String> listServersLayout;
 	public ServersPanel(MainFrame f) {
 		super(f);
 		
@@ -29,6 +31,11 @@ public class ServersPanel extends BPanel implements ActionListener {
 		menu.setBackground(Color.ORANGE);
 		add(menu,BorderLayout.CENTER);
 		
+		//On s'occupe de la liste des serveurs
+		listServersLayout = new JList<String>(Main.getPlayer().getServers());
+		listServersLayout.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		listServersLayout.setLayoutOrientation(JList.VERTICAL);
+		listServersLayout.setVisibleRowCount(-1);
 		menu.add(bReturn);
 		menu.add(bGo);
 		menu.add(bQuit);

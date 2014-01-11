@@ -22,7 +22,7 @@ public class PlayerServer extends AbstractServer {
     		else
     			out.println("false");
     		out.flush();
-    	}else if(query.equals("remove")){
+    	}else if( task.equals("remove")){
     		removePlayer(login);
     	}
 	}

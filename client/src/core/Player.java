@@ -56,4 +56,8 @@ public class Player {
 	public void setRodAvailables(Hashtable<GameZone.RodPositions, Boolean> rodAvailables) {
 		this.rodAvailables = rodAvailables;
 	}
+
+	public String[] getServers() {
+		return Main.getClient().getMc().getServers();
+	}
 }

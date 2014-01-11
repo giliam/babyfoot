@@ -16,6 +16,7 @@ public class MatchClient implements Runnable {
     private BufferedReader in = null;
     private MatchReceptionMessage prc;
     static boolean ok;
+    static String[] serverList;
     
     public MatchClient(Socket s){
         socket = s;
@@ -38,28 +39,52 @@ public class MatchClient implements Runnable {
 		out.println("match-setrod-" + login + "-" + rodPositions[0] + "-" + rodPositions[1] + "-"  + rodPositions[2] + "-"  + rodPositions[3] );
     	out.flush();
 	}
+
+	public String[] getServers() {
+		out.println("match-getserverslist" );
+    	out.flush();
+		try {
+			Thread.currentThread().sleep(100);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		return serverList;
+	}
 }
 
 class MatchReceptionMessage implements Runnable{
 	
 	BufferedReader in;
-	String message;
 	boolean ready;
 	
 	public MatchReceptionMessage(BufferedReader in){
 		this.in = in;
-		message = "aba";
 	}
 	
 	public void run() {
+		int mode = 0;
+		int n = 0;
 		System.out.println("Prêt à la réception pour les match !");
 		try {
 			while(true){
-            	message = in.readLine();
-            	MatchClient.ok = message.equals("true");
+            	String message = in.readLine();
+            	System.out.println("MatchClient - " + message);
+            	if( message.equals("matchlist-beginning") && mode == 0 ){
+            		mode = 1;
+            	}else if( mode == 1 ){
+            		MatchClient.serverList = new String[Integer.valueOf(message)];
+            		mode = 2;
+            	}else if( message.equals("matchlist-end")  && mode == 2 ){
+            		mode = 0;
+            		n = 0;
+            	}else if( mode == 2 ){
+            		MatchClient.serverList[n++] = message;
+            	}else{
+            		MatchClient.ok = message.equals("true");
+            	}
 			}
-		} catch (IOException e) {
-                e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 	}
 }

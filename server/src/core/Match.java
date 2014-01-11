@@ -29,7 +29,7 @@ public class Match {
 	}
 
 	public boolean isPlayer( String login ){
-		return player1.getLogin().equals(login) || player2.getLogin().equals(login) || player3.getLogin().equals(login) || player4.getLogin().equals(login);
+		return ( player1 != null && player1.getLogin().equals(login) )|| ( player2 != null && player2.getLogin().equals(login) ) || ( player3 != null && player3.getLogin().equals(login) ) || ( player4 != null && player4.getLogin().equals(login));
 	}
 
 

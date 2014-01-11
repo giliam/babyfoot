@@ -72,7 +72,7 @@ class Allocator implements Runnable{
 			while(true){
 				m = in.readLine();
 				if( m != null ) {
-					String[] datas = m.split("-", 6);
+					String[] datas = m.split("-");
 					String typeRequete = datas[0];
 					if( typeRequete.equals("player") ){
 						Server.tplayer.setQuery(m);

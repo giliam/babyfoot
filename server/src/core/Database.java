@@ -131,7 +131,7 @@ public class Database {
 				
 				//On crée la requête
 				Statement stateGetMessages = link.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-				ResultSet resultGetMessages = stateGetMessages.executeQuery("SELECT message, date, login FROM chat as c LEFT JOIN joueurs ON joueurs.joueur_id = c.joueur_id WHERE salon_id = " + salon_id );
+				ResultSet resultGetMessages = stateGetMessages.executeQuery("SELECT message, date, joueur AS login FROM chat WHERE salon_id = " + salon_id );
 				resultGetMessages.last();
 				
 				//On crée le tableau

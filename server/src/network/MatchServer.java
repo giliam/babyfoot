@@ -34,9 +34,31 @@ public class MatchServer extends AbstractServer {
     	}else if(task.equals("getrod")){
     		String login = datas[2];
     		sendRodPositions( getRodPositions(login), out );
+    	}else if(task.equals("getserverslist")){
+    		getServersList( out );
     	}
 	}
 	
+	private void getServersList(PrintWriter out) {
+		out.println("matchlist-beginning");
+		out.println(liste.size());
+		Iterator<Match> it = liste.iterator();
+		while ( it.hasNext() ){
+			Match m = ((Match) it.next());
+			String display = ( m.getType() == 1 ? "1vs1" : ( m.getType() == 2 ? "2vs2" : "1vs2" ) );
+			if( m.getPlayer1() != null )
+				display += " - " + m.getPlayer1().getLogin();
+			if( m.getPlayer2() != null )
+				display += " - " + m.getPlayer2().getLogin();
+			if( m.getPlayer3() != null )
+				display += " - " + m.getPlayer3().getLogin();
+			if( m.getPlayer4() != null )
+				display += " - " + m.getPlayer4().getLogin();
+			out.println(display);
+		}
+		out.println("matchlist-end");
+	}
+
 	private int[][] getRodPositions(String login) {
 		return null;
 	}
@@ -45,13 +67,15 @@ public class MatchServer extends AbstractServer {
 	}
 
 	private boolean addMatch(int type, String login){
-		Iterator it = liste.iterator();
+		Iterator<Match> it = liste.iterator();
 		while ( it.hasNext() ){
-		   if( ((Match) it.next()).isPlayer(login) )
+			//On vérifie que le joueur n'est pas déjà dans un match.
+		   if( ((Match) it.next()).isPlayer(login) ){
 			   return false;
+		   }
 		}
 		liste.add(new Match(login, type));
-		return false;
+		return true;
 	}
 
 	public void sendRodPositions(int[][] datas, PrintWriter out){
