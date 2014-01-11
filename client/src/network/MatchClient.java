@@ -5,10 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Scanner;
-
-import core.Main;
-import core.Utils;
 
 public class MatchClient implements Runnable {
 	private Socket socket;
@@ -44,11 +40,29 @@ public class MatchClient implements Runnable {
 		out.println("match-getserverslist" );
     	out.flush();
 		try {
-			Thread.currentThread().sleep(100);
+			Thread.currentThread();
+			Thread.sleep(100);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 		return serverList;
+	}
+
+	public boolean setServerFromHost(String login, String loginHost) {
+		out.println("player-joinmatch-" + login + loginHost );
+    	out.flush();
+    	try {
+			Thread.currentThread();
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+    	if( ok ){
+    		ok = false;
+    		return true;
+    	}else{
+    		return false;
+    	}
 	}
 }
 

@@ -6,14 +6,15 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import core.Main;
-import core.Utils;
 
 @SuppressWarnings("serial")
-public class ServersPanel extends BPanel implements ActionListener {
+public class ServersPanel extends BPanel implements ActionListener, MouseListener {
 	JButton bQuit;
 	JButton bGo;
 	JButton bReturn;
 	JList<String> listServersLayout;
+	int selectedGame;
+	String[] listServers;
 	public ServersPanel(MainFrame f) {
 		super(f);
 		
@@ -35,7 +36,8 @@ public class ServersPanel extends BPanel implements ActionListener {
 		add(menu,BorderLayout.CENTER);
 		
 		//On s'occupe de la liste des serveurs
-		listServersLayout = new JList<String>(Main.getPlayer().getServers());
+		listServers = Main.getPlayer().getServers();
+		listServersLayout = new JList<String>(listServers);
 		listServersLayout.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		listServersLayout.setLayoutOrientation(JList.VERTICAL);
 		listServersLayout.setVisibleRowCount(-1);
@@ -49,6 +51,11 @@ public class ServersPanel extends BPanel implements ActionListener {
 		buttonsList.add(bQuit);
 		menu.add(buttonsList,BorderLayout.SOUTH);
 		
+		bGo.setEnabled(false);
+		
+		//On rajoute le gestionnaire d'événements du double-clic sur un élément de la liste
+		listServersLayout.addMouseListener(this);
+		
 		bReturn.addActionListener(this);
 		bGo.addActionListener(this);
 		bQuit.addActionListener(this);
@@ -61,8 +68,32 @@ public class ServersPanel extends BPanel implements ActionListener {
 			window.setContentPane(new MenuPanel(window));
 		    window.setVisible(true);
 		}else if( e.getSource() == bGo ){
-			window.setContentPane(new WaitingRoomPanel(window));
-		    window.setVisible(true);
+			if( Main.getPlayer().setServer(selectedGame, listServers) ){
+				window.setContentPane(new WaitingRoomPanel(window));
+			    window.setVisible(true);
+			}
 		}
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		bGo.setEnabled(true);
+		selectedGame = listServersLayout.locationToIndex(e.getPoint());
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
 	}
 }

@@ -5,10 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Scanner;
-
 import core.Main;
-import core.Utils;
 
 public class PlayerClient implements Runnable {
 	private Socket socket;
@@ -38,7 +35,8 @@ public class PlayerClient implements Runnable {
     	out.println("player-add-" + Main.getPlayer().getLogin() );
     	out.flush();
     	try {
-			Thread.currentThread().sleep(150);
+			Thread.currentThread();
+			Thread.sleep(150);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -55,7 +53,8 @@ public class PlayerClient implements Runnable {
 		out.println("match-add-" + Main.getPlayer().getLogin() + "-" + type );
     	out.flush();
     	try {
-			Thread.currentThread().sleep(150);
+			Thread.currentThread();
+			Thread.sleep(150);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

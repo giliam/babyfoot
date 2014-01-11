@@ -60,4 +60,10 @@ public class Player {
 	public String[] getServers() {
 		return Main.getClient().getMc().getServers();
 	}
+
+	public boolean setServer(int selectedGame, String[] selectedStrings) {
+		String[] datas = selectedStrings[selectedGame].split("-");
+		String loginHost = datas[1];
+		return Main.getClient().getMc().setServerFromHost(login,loginHost);
+	}
 }
