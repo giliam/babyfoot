@@ -1,13 +1,9 @@
 package network;
 
 import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.Socket;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Set;
 
 import core.Match;
 
@@ -46,14 +42,21 @@ public class MatchServer extends AbstractServer {
 		while ( it.hasNext() ){
 			Match m = ((Match) it.next());
 			String display = ( m.getType() == 1 ? "1vs1" : ( m.getType() == 2 ? "2vs2" : "1vs2" ) );
-			if( m.getPlayer1() != null )
+			int i = 0;
+			if( m.getPlayer1() != null ){
+				i++;
 				display += " - " + m.getPlayer1().getLogin();
-			if( m.getPlayer2() != null )
+			}if( m.getPlayer2() != null ){
+				i++;
 				display += " - " + m.getPlayer2().getLogin();
-			if( m.getPlayer3() != null )
+			}if( m.getPlayer3() != null ){
+				i++;
 				display += " - " + m.getPlayer3().getLogin();
-			if( m.getPlayer4() != null )
+			}if( m.getPlayer4() != null ){
+				i++;
 				display += " - " + m.getPlayer4().getLogin();
+			}
+			display += " - " + i + " joueur(s) / " + ( m.getType() == 1 ? "2" : ( m.getType() == 2 ? "4" : "3" ) );
 			out.println(display);
 		}
 		out.println("matchlist-end");

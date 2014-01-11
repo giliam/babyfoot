@@ -104,5 +104,22 @@ public class Match {
 	public void setRodPositions(Hashtable<RodPositions, Integer>[] rodPositions) {
 		this.rodPositions = rodPositions;
 	}
+
+	public String addPlayer(Player p) {
+		if( player1 != null ){
+			player1 = p;
+			return "true";
+		}else if( player2 != null ){
+			player2 = p;
+			return "true";
+		}else if( player3 != null ){
+			player3 = p;
+			return "true";
+		}else if( player4 != null ){
+			player4 = p;
+			return "true";
+		}
+		return "false";
+	}
 	
 }

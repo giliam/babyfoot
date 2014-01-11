@@ -5,9 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
 
 import core.Main;
 import core.Utils;
@@ -66,7 +63,8 @@ public class ChatClient implements Runnable {
 		out.println("servers-get");
 		out.flush();
 		try {
-			Thread.currentThread().sleep(100);
+			Thread.currentThread();
+			Thread.sleep(100);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -77,7 +75,8 @@ public class ChatClient implements Runnable {
 		out.println("chat-get-" + server);
 		out.flush();
 		try {
-			Thread.currentThread().sleep(100);
+			Thread.currentThread();
+			Thread.sleep(100);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

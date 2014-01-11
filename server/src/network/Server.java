@@ -8,9 +8,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 
-import core.Database;
-
-
 public class Server implements Runnable {
 
 	ServerSocket socketserver = null;

@@ -1,12 +1,10 @@
 package network;
 
 import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.Socket;
 import java.util.HashMap;
 
+import core.Match;
 import core.Player;
 
 public class PlayerServer extends AbstractServer {
@@ -24,6 +22,12 @@ public class PlayerServer extends AbstractServer {
     		out.flush();
     	}else if( task.equals("remove")){
     		removePlayer(login);
+    	}else if( task.equals("joinmatch")){
+    		String loginHost = datas[3];
+    		Match m = ((Player) liste.get(loginHost)).getMatch();
+    		((Player) liste.get(login)).setMatch(m);
+    		out.println(m.addPlayer(((Player) liste.get(login))));
+    		out.flush();
     	}
 	}
 

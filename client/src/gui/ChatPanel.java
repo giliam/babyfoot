@@ -1,8 +1,6 @@
 package gui;
 import java.awt.*;
 import java.awt.event.*;
-import java.security.Timestamp;
-import java.util.Map;
 
 import javax.swing.*;
 
@@ -91,7 +89,6 @@ public class ChatPanel extends JPanel implements ActionListener, MouseListener, 
 			Main.getChat().setServer(listServersLayout.locationToIndex(e.getPoint()));
 			updateMessages();
 			onglet.setSelectedIndex(0);
-			
 		}
 		timeFirstClick = System.currentTimeMillis();
 	}
