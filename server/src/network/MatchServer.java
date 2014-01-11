@@ -57,6 +57,7 @@ public class MatchServer extends AbstractServer {
 			out.println(display);
 		}
 		out.println("matchlist-end");
+		out.flush();
 	}
 
 	private int[][] getRodPositions(String login) {

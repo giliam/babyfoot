@@ -36,6 +36,10 @@ public class ServersPanel extends BPanel implements ActionListener {
 		listServersLayout.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		listServersLayout.setLayoutOrientation(JList.VERTICAL);
 		listServersLayout.setVisibleRowCount(-1);
+		JScrollPane listScroller = new JScrollPane(listServersLayout);
+		listScroller.setPreferredSize(new Dimension(250, 80));
+		
+		menu.add(listScroller);
 		menu.add(bReturn);
 		menu.add(bGo);
 		menu.add(bQuit);
