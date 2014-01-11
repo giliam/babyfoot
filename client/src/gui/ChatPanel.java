@@ -41,8 +41,6 @@ public class ChatPanel extends JPanel implements ActionListener, MouseListener, 
 		listServersLayout.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		listServersLayout.setLayoutOrientation(JList.VERTICAL);
 		listServersLayout.setVisibleRowCount(-1);
-		
-		//On rajoute le gestionnaire d'événements du double-clic sur un élément de la liste
 		JScrollPane listScroller = new JScrollPane(listServersLayout);
 		listScroller.setPreferredSize(new Dimension(250, 80));
 
@@ -57,8 +55,9 @@ public class ChatPanel extends JPanel implements ActionListener, MouseListener, 
 		
 		tPan[1].add(listScroller);
 		
-		//On ajoute les listener
+		//On rajoute le gestionnaire d'événements du double-clic sur un élément de la liste
 		listServersLayout.addMouseListener(this);
+		//On ajoute les listener
 		push.addActionListener(this);
 		textfield.addKeyListener(this);
 	}
