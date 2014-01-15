@@ -90,7 +90,6 @@ public class WaitingRoomPanel extends BPanel implements ActionListener {
 
 	private void handleMatchInfo(String[] datas) {
 		int go = Integer.valueOf(datas[0]);
-		System.out.println(go);
 		if( go == 1 ){
 			startGame();
 		}else{
@@ -161,8 +160,9 @@ public class WaitingRoomPanel extends BPanel implements ActionListener {
 				break;
 			}
 		}
-		if( !sideOk )
+		if( !sideOk ){
 			Main.getPlayer().setSide(Utils.Sides.UP);
+		}
 		refreshRoom.run = false;
 		window.setContentPane(new GamePanel(window));
 	    window.setVisible(true);

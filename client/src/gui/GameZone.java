@@ -201,13 +201,14 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 				limiInf = 220;
 				break;
 		}
-		if( up && yDecal[Main.getPlayer().getSide() == Utils.Sides.BOTTOM ? 0 : 1].get(rodPosition) > (limitSup+path) ){
-			yDecal[0].put(rodPosition, yDecal[Main.getPlayer().getSide() == Utils.Sides.BOTTOM ? 0 : 1].get(rodPosition)-path);
-			Main.getPlayer().setRod(yDecal[Main.getPlayer().getSide() == Utils.Sides.BOTTOM ? 0 : 1]);
+		int upOrDown = Main.getPlayer().getSide() == Utils.Sides.BOTTOM ? 0 : 1;
+		if( up && yDecal[upOrDown].get(rodPosition) > (limitSup+path) ){
+			yDecal[upOrDown].put(rodPosition, yDecal[upOrDown].get(rodPosition)-path);
+			Main.getPlayer().setRod(yDecal[upOrDown]);
 			repaint();
-		}else if( !up && yDecal[Main.getPlayer().getSide() == Utils.Sides.BOTTOM ? 0 : 1].get(rodPosition) < (limiInf-path) ){
-			yDecal[0].put(rodPosition, yDecal[Main.getPlayer().getSide() == Utils.Sides.BOTTOM ? 0 : 1].get(rodPosition)+path);
-			Main.getPlayer().setRod(yDecal[Main.getPlayer().getSide() == Utils.Sides.BOTTOM ? 0 : 1]);
+		}else if( !up && yDecal[upOrDown].get(rodPosition) < (limiInf-path) ){
+			yDecal[upOrDown].put(rodPosition, yDecal[upOrDown].get(rodPosition)+path);
+			Main.getPlayer().setRod(yDecal[upOrDown]);
 			repaint();
 		}
 	}
