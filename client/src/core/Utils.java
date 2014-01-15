@@ -7,7 +7,10 @@ import java.text.SimpleDateFormat;
 
 public abstract class Utils {
 	public static final int MATCH_END = 100;
-
+	public static enum Types { ONEVSONE, TWOVSTWO, ONEVSTWO };
+	public static enum States { WAITING, FULL, PLAYING, FINISHED };  
+	public static enum Sides { BOTTOM, UP };
+	
 	public static String hash(String s){
 		byte[] bytes = s.getBytes();
 		byte[] hashTable = null;
