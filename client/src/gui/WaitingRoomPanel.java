@@ -7,6 +7,7 @@ import javax.swing.*;
 
 import core.Main;
 import core.Utils;
+import core.Utils.Types;
 
 @SuppressWarnings("serial")
 public class WaitingRoomPanel extends BPanel implements ActionListener {
@@ -15,7 +16,7 @@ public class WaitingRoomPanel extends BPanel implements ActionListener {
 	private JButton bReturn;
 	private String[] playersTeamOne;
 	private String[] playersTeamTwo;
-	private int type;
+	private Utils.Types type;
 	
 	private JList<String> listMembersTeamOne;
 	private JList<String> listMembersTeamTwo;
@@ -85,7 +86,13 @@ public class WaitingRoomPanel extends BPanel implements ActionListener {
 	
 
 	private void handleMatchInfo(String[] datas) {
-		type = Integer.valueOf(datas[0]);
+		int type = Integer.valueOf(datas[0]);
+		if( type == 1 )
+			this.type = Utils.Types.ONEVSONE;
+		else if( type == 2 )
+			this.type = Utils.Types.TWOVSTWO;
+		else if( type == 3 )
+			this.type = Utils.Types.ONEVSTWO;
 	    switch(type){
 	    	case 1:
 	    		playersTeamOne = new String[1];
@@ -113,11 +120,11 @@ public class WaitingRoomPanel extends BPanel implements ActionListener {
 	
 	private boolean testIsReady() {
 	    switch(type){
-	    	case 1:
+	    	case ONEVSONE:
 	    		return !playersTeamOne[0].equals("") && !playersTeamTwo[0].equals(""); 
-	    	case 2:
+	    	case TWOVSTWO:
 	    		return !playersTeamOne[0].equals("") && !playersTeamOne[1].equals("") && !playersTeamTwo[1].equals("") && !playersTeamTwo[0].equals("");
-	    	case 3:
+	    	case ONEVSTWO:
 	    		return !playersTeamOne[0].equals("") && !playersTeamTwo[0].equals("") && !playersTeamTwo[1].equals("");
 	    }
 		return false;
@@ -129,7 +136,8 @@ public class WaitingRoomPanel extends BPanel implements ActionListener {
 		}else if( e.getSource() == bReturn ){
 			window.setContentPane(new MenuPanel(window));
 		    window.setVisible(true);
-		}else if( e.getSource() == bGo ){
+		}else if( e.getSource() == bGo && Main.getPlayer().isBoss() ){
+			Main.getPlayer().runMatch();
 			window.setContentPane(new GamePanel(window));
 		    window.setVisible(true);
 		}

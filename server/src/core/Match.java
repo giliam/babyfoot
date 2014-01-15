@@ -8,9 +8,10 @@ public class Match {
 	private int leftScore;
 	private int rightScore;
 	
-	private int type;
-	
-	private int state;
+	public final enum Types = { ONEVSONE, TWOVSTWO, ONEVSTWO };
+	public final enum States = { WAITING, FULL, PLAYING, FINISHED };  
+	private Types type;
+	private States state;
 	
 	private Player player1;
 	private Player player2;
@@ -23,7 +24,7 @@ public class Match {
 	
 	
 	
-	public Match(String login, int type) {
+	public Match(String login, Types type) {
 		this.player1 = Server.tplayer.getPlayer(login);
 		this.player1.setMatch(this);
 		this.type = type;
@@ -50,19 +51,19 @@ public class Match {
 		this.rightScore = rightScore;
 	}
 
-	public int getType() {
+	public Types getType() {
 		return type;
 	}
 
-	public void setType(int type) {
+	public void setType(Types type) {
 		this.type = type;
 	}
 
-	public int getState() {
+	public States getState() {
 		return state;
 	}
 
-	public void setState(int state) {
+	public void setState(States state) {
 		this.state = state;
 	}
 

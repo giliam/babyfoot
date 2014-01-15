@@ -18,9 +18,9 @@ public class MainFrame extends JFrame implements ActionListener, WindowListener 
 	    
 	    addWindowListener(this);
 	    //Quand on veut tester le programme complet
-	    //setContentPane(new ConnexionPanel(this));
+	    setContentPane(new ConnexionPanel(this));
 	    //Quand on veut tester l'interface du jeu
-	    setContentPane(new GamePanel(this));
+	    //setContentPane(new GamePanel(this));
 	    setResizable(false);
 	    setVisible(true);
 	}

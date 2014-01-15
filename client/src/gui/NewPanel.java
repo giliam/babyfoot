@@ -86,10 +86,12 @@ public class NewPanel extends BPanel implements ActionListener {
 			window.setContentPane(new MenuPanel(window));
 		    window.setVisible(true);
 		}else if( e.getSource() == bGo ){
-			if( Main.getPlayer().addMatch( bNumber1.isSelected() ? 1 : ( bNumber2.isSelected() ? 2 : 3 ) ) )
+			if( Main.getPlayer().addMatch( bNumber1.isSelected() ? 1 : ( bNumber2.isSelected() ? 2 : 3 ) ) ){
 				System.out.println("MATCH AJOUTÉ");
-			window.setContentPane(new WaitingRoomPanel(window));
-		    window.setVisible(true);
+				Main.getPlayer().setBoss(true);
+				window.setContentPane(new WaitingRoomPanel(window));
+			    window.setVisible(true);
+			}
 		}
 	}
 }

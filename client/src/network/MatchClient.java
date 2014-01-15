@@ -152,6 +152,17 @@ public class MatchClient implements Runnable {
 	public void initMatchDatas(int i) {
 		matchDatas = new String[i];
 	}
+
+	public void runMatch(String login) {
+		out.println("match-run-" + login );
+    	out.flush();
+		try {
+			Thread.currentThread();
+			Thread.sleep(200);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
 }
 
 class MatchReceptionMessage implements Runnable{

@@ -8,6 +8,8 @@ import java.util.Hashtable;
 public class Player {
 	private String login;
 	private Hashtable<GameZone.RodPositions, Boolean> rodAvailables;
+	private Utils.Sides side;
+	private boolean boss;
 	
 	public Player(String l){
 		rodAvailables = new Hashtable<GameZone.RodPositions, Boolean>();
@@ -65,5 +67,21 @@ public class Player {
 		String[] datas = selectedStrings[selectedGame].split("-");
 		String loginHost = datas[1].trim();
 		return Main.getClient().getMc().setServerFromHost(login,loginHost);
+	}
+
+	public Utils.Sides getSide() {
+		return side;
+	}
+
+	public void runMatch() {
+		Main.getClient().getMc().runMatch(login);
+	}
+
+	public void setBoss(boolean b) {
+		boss = b;
+	}
+
+	public boolean isBoss() {
+		return boss;
 	}
 }

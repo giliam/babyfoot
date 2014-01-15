@@ -17,6 +17,7 @@ import java.util.Hashtable;
 import javax.imageio.ImageIO;
 
 import core.Main;
+import core.Utils;
 
 public class GameZone extends JPanel implements KeyListener, MouseMotionListener {
 	private static final long serialVersionUID = 1L;
@@ -201,13 +202,13 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 				limiInf = 220;
 				break;
 		}
-		if( up && yDecal[0].get(rodPosition) > (limitSup+path) ){
-			yDecal[0].put(rodPosition, yDecal[0].get(rodPosition)-path);
-			Main.getPlayer().setRod(yDecal[0]);
+		if( up && yDecal[Main.getPlayer().getSide() == Utils.Sides.BOTTOM ? 0 : 1].get(rodPosition) > (limitSup+path) ){
+			yDecal[0].put(rodPosition, yDecal[Main.getPlayer().getSide() == Utils.Sides.BOTTOM ? 0 : 1].get(rodPosition)-path);
+			Main.getPlayer().setRod(yDecal[Main.getPlayer().getSide() == Utils.Sides.BOTTOM ? 0 : 1]);
 			repaint();
-		}else if( !up && yDecal[0].get(rodPosition) < (limiInf-path) ){
-			yDecal[0].put(rodPosition, yDecal[0].get(rodPosition)+path);
-			Main.getPlayer().setRod(yDecal[0]);
+		}else if( !up && yDecal[Main.getPlayer().getSide() == Utils.Sides.BOTTOM ? 0 : 1].get(rodPosition) < (limiInf-path) ){
+			yDecal[0].put(rodPosition, yDecal[Main.getPlayer().getSide() == Utils.Sides.BOTTOM ? 0 : 1].get(rodPosition)+path);
+			Main.getPlayer().setRod(yDecal[Main.getPlayer().getSide() == Utils.Sides.BOTTOM ? 0 : 1]);
 			repaint();
 		}
 	}
