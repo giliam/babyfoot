@@ -190,12 +190,12 @@ class RefreshRoom implements Runnable{
 	
 	public void run(){
 		while(run){
+			waitingroom.refresh();
 			try {
 				Thread.sleep(3000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			waitingroom.refresh();
 		}
 	}
 }

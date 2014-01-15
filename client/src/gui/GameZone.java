@@ -44,7 +44,6 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	
 	@SuppressWarnings("unchecked")
 	public GameZone(){
-		Main.getPlayer().setLogin("giliam");
 		yDecalDefault = new Hashtable<RodPositions, Integer>();
 		yDecalDefault.put(RodPositions.GARDIEN, 100);
 		yDecalDefault.put(RodPositions.DEFENSE, 150);
