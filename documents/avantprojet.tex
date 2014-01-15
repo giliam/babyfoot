@@ -192,9 +192,13 @@ Contient les données principales pour une partie, notamment l'avancement de la 
     
 	private int rightScore;
 	
-	private int type;
+	private enum Types = { ONEVSONE, TWOVSTWO, ONEVSTWO };
 	
-	private int state;
+	private enum States = { WAITING, FULL, PLAYING, FINISHED };  
+	
+	private Types type;
+	
+	private States state;
 	
 	private Player player1;
     
@@ -207,7 +211,7 @@ Contient les données principales pour une partie, notamment l'avancement de la 
 \paragraph{Utils.java}
 Avoir une classe abstraite qui gère les fonctions utilitaires comme la mise-en-forme de la date, la mise-en-forme des requêtes, les fonctions de hash utilisées pour vérifier la validité des requêtes, etc.
 \paragraph{Database.java}
-Gère la base de données PostGreSQL ou bien textuelle qui pourrait être utilisée par le programme pour stocker des informations. A priori, seul le serveur interviendra sur la base de données et y entrera les informations relatives à l'historique des tchats et des matchs. Peut être utile d'entrer directement depuis les clients les données dans le serveur sans passer au préalable par le serveur (exemple : connexion d'un joueur, tchat, etc.). L'intérêt est de n'avoir qu'une seule connexion.
+Gère la base de données PostGreSQL ou bien textuelle qui pourrait être utilisée par le programme pour stocker des informations. A priori, seul le serveur interviendra sur la base de données et y entrera les informations relatives à l'historique des tchats et des matchs. Peut être utile d'entrer directement depuis les clients les données dans la base sans passer au préalable par le serveur (exemple : connexion d'un joueur, tchat, etc.). L'intérêt est de n'avoir qu'une seule connexion.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%                              %%
