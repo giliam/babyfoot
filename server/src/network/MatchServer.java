@@ -35,9 +35,17 @@ public class MatchServer extends AbstractServer {
     	}else if( task.equals( "getmatchinfo" ) ){
     		String login = datas[2];
     		getMatchInfo( login, out );
+    	}else if( task.equals( "run" ) ){
+    		String login = datas[2];
+    		runMatch( login, out );
     	}
 	}
 	
+	private void runMatch(String login, PrintWriter out) {
+		Match m = Server.tplayer.getPlayer(login).getMatch();
+		m.setState(Match.States.PLAYING);
+	}
+
 	private void getMatchInfo(String login, PrintWriter out) {
 		out.println("matchinfo-beginning");
 		Match m = Server.tplayer.getPlayer(login).getMatch();

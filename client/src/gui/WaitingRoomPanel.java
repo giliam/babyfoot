@@ -18,6 +18,8 @@ public class WaitingRoomPanel extends BPanel implements ActionListener {
 	private String[] playersTeamTwo;
 	private Utils.Types type;
 	
+	private RefreshRoom refreshRoom;
+	
 	private JList<String> listMembersTeamOne = new JList<String>();
 	private JList<String> listMembersTeamTwo = new JList<String>();
 	public WaitingRoomPanel(MainFrame f) {
@@ -75,8 +77,8 @@ public class WaitingRoomPanel extends BPanel implements ActionListener {
 		buttonsList.add(bGo);
 		buttonsList.add(bQuit);
 		menu.add(buttonsList);
-		
-		Thread tRefreshRoom = new Thread(new RefreshRoom(this));
+		refreshRoom = new RefreshRoom(this);
+		Thread tRefreshRoom = new Thread(refreshRoom);
 		tRefreshRoom.start();
 		
 		bReturn.addActionListener(this);
@@ -88,8 +90,9 @@ public class WaitingRoomPanel extends BPanel implements ActionListener {
 
 	private void handleMatchInfo(String[] datas) {
 		int go = Integer.valueOf(datas[0]);
+		System.out.println(go);
 		if( go == 1 ){
-			
+			startGame();
 		}else{
 			int type = Integer.valueOf(datas[1]);
 			if( type == 1 )
@@ -160,6 +163,7 @@ public class WaitingRoomPanel extends BPanel implements ActionListener {
 		}
 		if( !sideOk )
 			Main.getPlayer().setSide(Utils.Sides.UP);
+		refreshRoom.run = false;
 		window.setContentPane(new GamePanel(window));
 	    window.setVisible(true);
 	}
@@ -178,12 +182,14 @@ public class WaitingRoomPanel extends BPanel implements ActionListener {
 
 class RefreshRoom implements Runnable{
 	private WaitingRoomPanel waitingroom;
+	public boolean run;
 	public RefreshRoom(WaitingRoomPanel wp){
 		waitingroom = wp;
+		run = true;
 	}
 	
 	public void run(){
-		while(true){
+		while(run){
 			try {
 				Thread.sleep(3000);
 			} catch (InterruptedException e) {

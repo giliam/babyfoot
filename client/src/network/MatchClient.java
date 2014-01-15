@@ -101,7 +101,6 @@ public class MatchClient implements Runnable {
 		switch( Integer.valueOf( md[1] ) ){
 			case 1:
 				matchDatas = new String[4];
-				matchDatas[0] = "0";
 				matchDatas[1] = "1";
 				if( md[2].equals(" ") ){
 					matchDatas[2] = "";
@@ -113,7 +112,6 @@ public class MatchClient implements Runnable {
 				break;
 			case 2:
 				matchDatas = new String[6];
-				matchDatas[0] = "0";
 				matchDatas[1] = "2";
 				if( md[2].equals(" ") ){
 					matchDatas[2] = "";
@@ -134,7 +132,6 @@ public class MatchClient implements Runnable {
 				break;
 			case 3:
 				matchDatas = new String[5];
-				matchDatas[0] = "0";
 				matchDatas[1] = "3";
 				if( md[2].equals(" ") ){
 					matchDatas[2] = "";
@@ -147,6 +144,7 @@ public class MatchClient implements Runnable {
 				}
 				break;
 		}
+		matchDatas[0] = md[0];
 	}
 
 	public String[] getMatchDatas() {
