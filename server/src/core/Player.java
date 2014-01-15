@@ -6,7 +6,7 @@ public class Player {
 	private Match match;
 	private String login;
 	private Hashtable<Match.RodPositions, Boolean> rodAvailables;
-	
+	private boolean side;
 	
 	public Player(String login){
 		this.login = login;
@@ -31,5 +31,14 @@ public class Player {
 	public void setRodAvailables(
 			Hashtable<Match.RodPositions, Boolean> rodAvailables) {
 		this.rodAvailables = rodAvailables;
+	}
+
+
+	public int getSide() {
+		return side ? 1 : 0;
+	}
+	
+	public void setSide(boolean b) {
+		side = b;
 	}
 }

@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat;
 
 public abstract class Utils {
 	public static final int MATCH_END = 100;
-
+	
 	public static String hash(String s){
 		byte[] bytes = s.getBytes();
 		byte[] hashTable = null;

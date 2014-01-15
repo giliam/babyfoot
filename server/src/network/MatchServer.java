@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import core.Match;
+import core.Utils;
 
 public class MatchServer extends AbstractServer {
 	
@@ -40,17 +41,18 @@ public class MatchServer extends AbstractServer {
 	private void getMatchInfo(String login, PrintWriter out) {
 		out.println("matchinfo-beginning");
 		Match m = Server.tplayer.getPlayer(login).getMatch();
-		String display = String.valueOf(m.getType());
+		String display = String.valueOf( m.getState() == Match.States.PLAYING ? 1 : 0 ) + "-";
+		display += String.valueOf(m.getType() == Match.Types.TWOVSTWO ? 2 : ( m.getType() == Match.Types.ONEVSONE ? 1 : 3 ));
 		if( m.getPlayer1() != null ){
 			display += "-" + m.getPlayer1().getLogin();
 		}if( m.getPlayer2() != null ){
-			display += "-" + ( m.getType() == 2 ? "" : " -" ) + m.getPlayer2().getLogin();
+			display += "-" + ( m.getType() == Match.Types.TWOVSTWO ? "" : " -" ) + m.getPlayer2().getLogin();
 		}if( m.getPlayer3() != null ){
-			display += "-" + ( m.getType() == 2 ? " -" : "" ) + m.getPlayer3().getLogin();
+			display += "-" + ( m.getType() == Match.Types.TWOVSTWO ? " -" : "" ) + m.getPlayer3().getLogin();
 		}if( m.getPlayer4() != null ){
 			display += "-" + m.getPlayer4().getLogin();
 		}
-		display += " - - - - ";
+		display += "- - - - ";
 		out.println(display);
 		out.println("matchinfo-end");
 		out.flush();
@@ -62,7 +64,7 @@ public class MatchServer extends AbstractServer {
 		Iterator<Match> it = liste.iterator();
 		while ( it.hasNext() ){
 			Match m = ((Match) it.next());
-			String display = ( m.getType() == 1 ? "1vs1" : ( m.getType() == 2 ? "2vs2" : "1vs2" ) );
+			String display = ( m.getType() == Match.Types.ONEVSONE ? "1vs1" : ( m.getType() == Match.Types.TWOVSTWO ? "2vs2" : "1vs2" ) );
 			int i = 0;
 			if( m.getPlayer1() != null ){
 				i++;
@@ -77,7 +79,7 @@ public class MatchServer extends AbstractServer {
 				i++;
 				display += " - " + m.getPlayer4().getLogin();
 			}
-			display += " - " + i + " joueur(s) / " + ( m.getType() == 1 ? "2" : ( m.getType() == 2 ? "4" : "3" ) );
+			display += " - " + i + " joueur(s) / " + ( m.getType() == Match.Types.ONEVSONE ? "2" : ( m.getType() == Match.Types.TWOVSTWO ? "4" : "3" ) );
 			out.println(display);
 		}
 		out.println("matchlist-end");
@@ -99,8 +101,8 @@ public class MatchServer extends AbstractServer {
 			   return false;
 		   }
 		}
-		liste.add(new Match(login, type));
-		
+		liste.add(new Match(login, type == 1 ? Match.Types.ONEVSONE : ( type == 2 ? Match.Types.TWOVSTWO : Match.Types.ONEVSTWO )));
+		Server.tplayer.getPlayer(login).setSide(true);
 		return true;
 	}
 

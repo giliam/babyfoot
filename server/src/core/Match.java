@@ -8,8 +8,8 @@ public class Match {
 	private int leftScore;
 	private int rightScore;
 	
-	public final enum Types = { ONEVSONE, TWOVSTWO, ONEVSTWO };
-	public final enum States = { WAITING, FULL, PLAYING, FINISHED };  
+	public static enum Types { ONEVSONE, TWOVSTWO, ONEVSTWO };
+	public static enum States { WAITING, FULL, PLAYING, FINISHED };  
 	private Types type;
 	private States state;
 	

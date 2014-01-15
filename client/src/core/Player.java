@@ -5,10 +5,12 @@ import gui.GameZone.RodPositions;
 
 import java.util.Hashtable;
 
+import core.Utils.Sides;
+
 public class Player {
 	private String login;
 	private Hashtable<GameZone.RodPositions, Boolean> rodAvailables;
-	private Utils.Sides side;
+	private Utils.Sides side = Utils.Sides.BOTTOM;
 	private boolean boss;
 	
 	public Player(String l){
@@ -66,6 +68,7 @@ public class Player {
 	public boolean setServer(int selectedGame, String[] selectedStrings) {
 		String[] datas = selectedStrings[selectedGame].split("-");
 		String loginHost = datas[1].trim();
+		boss = false;
 		return Main.getClient().getMc().setServerFromHost(login,loginHost);
 	}
 
@@ -83,5 +86,9 @@ public class Player {
 
 	public boolean isBoss() {
 		return boss;
+	}
+
+	public void setSide(Sides s) {
+		side = s;
 	}
 }

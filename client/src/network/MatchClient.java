@@ -97,49 +97,53 @@ public class MatchClient implements Runnable {
 	}
 
 	public void setMatchDatas(String[] md) {
-		switch( Integer.valueOf( md[0] ) ){
+		
+		switch( Integer.valueOf( md[1] ) ){
 			case 1:
-				matchDatas = new String[3];
-				matchDatas[0] = "1";
-				if( md[1].equals(" ") ){
-					matchDatas[1] = "";
+				matchDatas = new String[4];
+				matchDatas[0] = "0";
+				matchDatas[1] = "1";
+				if( md[2].equals(" ") ){
+					matchDatas[2] = "";
+					matchDatas[3] = md[3];
+				}else if( md[3].equals(" ") ){
 					matchDatas[2] = md[2];
-				}else if( md[2].equals(" ") ){
-					matchDatas[1] = md[1];
-					matchDatas[2] = md[3];
+					matchDatas[3] = md[4];
 				}
 				break;
 			case 2:
-				matchDatas = new String[5];
-				matchDatas[0] = "2";
-				if( md[1].equals(" ") ){
-					matchDatas[1] = "";
+				matchDatas = new String[6];
+				matchDatas[0] = "0";
+				matchDatas[1] = "2";
+				if( md[2].equals(" ") ){
 					matchDatas[2] = "";
-					matchDatas[3] = md[2];
+					matchDatas[3] = "";
 					matchDatas[4] = md[3];
-				}else if( md[2].equals(" ") ){
-					matchDatas[1] = md[1];
+					matchDatas[5] = md[4];
+				}else if( md[3].equals(" ") ){
+					matchDatas[2] = md[2];
+					matchDatas[3] = "";
+					matchDatas[4] = md[4];
+					matchDatas[5] = md[5];
+				}else if( md[4].equals(" ") ){
+					matchDatas[2] = md[2];
+					matchDatas[3] = md[3];
+					matchDatas[4] = md[5];
+					matchDatas[5] = md[6];
+				}
+				break;
+			case 3:
+				matchDatas = new String[5];
+				matchDatas[0] = "0";
+				matchDatas[1] = "3";
+				if( md[2].equals(" ") ){
 					matchDatas[2] = "";
 					matchDatas[3] = md[3];
 					matchDatas[4] = md[4];
 				}else if( md[3].equals(" ") ){
-					matchDatas[1] = md[1];
 					matchDatas[2] = md[2];
 					matchDatas[3] = md[4];
 					matchDatas[4] = md[5];
-				}
-				break;
-			case 3:
-				matchDatas = new String[4];
-				matchDatas[0] = "3";
-				if( md[1].equals(" ") ){
-					matchDatas[1] = "";
-					matchDatas[2] = md[2];
-					matchDatas[3] = md[3];
-				}else if( md[2].equals(" ") ){
-					matchDatas[1] = md[1];
-					matchDatas[2] = md[3];
-					matchDatas[3] = md[4];
 				}
 				break;
 		}
