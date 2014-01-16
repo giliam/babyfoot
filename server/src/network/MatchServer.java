@@ -2,11 +2,13 @@ package network;
 
 import java.io.BufferedReader;
 import java.io.PrintWriter;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 
 import core.Match;
 import core.Utils;
+import core.Match.RodPositions;
 
 public class MatchServer extends AbstractServer {
 	
@@ -27,7 +29,7 @@ public class MatchServer extends AbstractServer {
     		String login = datas[2];
     		int[] positions = {Integer.valueOf(datas[3]),Integer.valueOf(datas[4]),Integer.valueOf(datas[5]),Integer.valueOf(datas[6])};
     		setRod(login, positions);
-    	}else if(task.equals("getrod")){
+    	}else if(task.equals("getrodpositions")){
     		String login = datas[2];
     		sendRodPositions( getRodPositions(login), out );
     	}else if(task.equals("getserverslist")){
@@ -95,11 +97,29 @@ public class MatchServer extends AbstractServer {
 	}
 
 	private int[][] getRodPositions(String login) {
-		return null;
+		Match m = Server.tplayer.getPlayer(login).getMatch();
+		int[][] r = new int[2][4];
+		r[0][0] = m.getRodPosition(false,RodPositions.GARDIEN);
+		r[0][1] = m.getRodPosition(false,RodPositions.DEFENSE);
+		r[0][2] = m.getRodPosition(false,RodPositions.MILIEU);
+		r[0][3] = m.getRodPosition(false,RodPositions.ATTAQUE);
+		r[1][0] = m.getRodPosition(true,RodPositions.GARDIEN);
+		r[1][1] = m.getRodPosition(true,RodPositions.DEFENSE);
+		r[1][2] = m.getRodPosition(true,RodPositions.MILIEU);
+		r[1][3] = m.getRodPosition(true,RodPositions.ATTAQUE);
+		return r;
 	}
 
 	private void setRod(String login, int[] positions) {
+		Match m = Server.tplayer.getPlayer(login).getMatch();
+		Hashtable<RodPositions, Integer> positionsToSend = new Hashtable<RodPositions, Integer>();
 		
+		positionsToSend.put(RodPositions.GARDIEN, positions[0]);
+		positionsToSend.put(RodPositions.DEFENSE, positions[1]);
+		positionsToSend.put(RodPositions.MILIEU, positions[2]);
+		positionsToSend.put(RodPositions.ATTAQUE, positions[3]);
+		
+		m.setRodPositions( positionsToSend, Server.tplayer.getPlayer(login).getSide() );
 	}
 
 	private boolean addMatch(int type, String login){
@@ -116,7 +136,13 @@ public class MatchServer extends AbstractServer {
 	}
 
 	public void sendRodPositions(int[][] datas, PrintWriter out){
-		out.println("rodpositions");
+		String display = "rodpositions";
+		for( int i = 0; i < 2; i++ ){
+			for( int j = 0; j < 4; j++ ){
+				display += "-" + datas[i][j];
+			}
+		}
+		out.println(display);
 	}
 	
 	public LinkedList<Match> getListe() {

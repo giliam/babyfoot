@@ -13,9 +13,11 @@ public class GameClient implements Runnable {
     private BufferedReader in = null;
     private GameReceptionMessage grc;
     String[] rodPositions;
+	public boolean go;
     
     public GameClient(Socket s){
         socket = s;
+        go = false;
     }
     
     public void run() {
@@ -65,22 +67,21 @@ class GameReceptionMessage implements Runnable{
 	public void run() {
 		int mode = 0;
 		int n = 0;
-		System.out.println("Prêt à la réception pour les joueurs !");
+		System.out.println("Prêt à la réception pour les jeux !");
 		try {
-			while(true){
+			while(gc.go){
+				gc.setRodPositions( gc.getRodPositions(Main.getPlayer().getLogin()) );
             	message = in.readLine();
-            	if( message.equals("rod-beginning") && mode == 0 ){
-            		mode = 1;
+            	String[] datas = message.split("-");
+            	if( datas != null && datas[0].equals("rodpositions") ){
             		gc.setRodPositions(new String[8]);
-            	}else if( message.equals("rod-end") && mode == 1 ){
-            		mode = 0;
-            		n = 0;
-            	}else if( mode == 2 ){
-            		gc.rodPositions[n++] = message;
-            	}
+            		for( int i = 0; i<8; i++ ){
+            			gc.rodPositions[i] = datas[i+1];
+            		}
+				}
 			}
 		} catch (IOException e) {
-                e.printStackTrace();
-        }
+            e.printStackTrace();
+		}
 	}
 }

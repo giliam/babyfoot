@@ -24,10 +24,12 @@ public class Match {
 	
 	
 	
+	@SuppressWarnings("unchecked")
 	public Match(String login, Types type) {
 		this.player1 = Server.tplayer.getPlayer(login);
 		this.player1.setMatch(this);
 		this.type = type;
+		this.rodPositions = new Hashtable[2];
 	}
 
 	public boolean isPlayer( String login ){
@@ -106,6 +108,10 @@ public class Match {
 	public void setRodPositions(Hashtable<RodPositions, Integer>[] rodPositions) {
 		this.rodPositions = rodPositions;
 	}
+	
+	public void setRodPositions(Hashtable<RodPositions, Integer> rodPositions, int i) {
+		this.rodPositions[i] = rodPositions;
+	}
 
 	public String addPlayer(Player p) {
 		if( player1 == null ){
@@ -138,6 +144,10 @@ public class Match {
 			if( player4.getLogin().equals(login) )
 				player4 = null;
 		}
+	}
+
+	public int getRodPosition(boolean b, RodPositions i) {
+		return rodPositions[b ? 1 : 0].get(i);
 	}
 	
 }

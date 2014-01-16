@@ -38,9 +38,9 @@ public class Client {
 	        tMatch = new Thread(mc);
 	        tMatch.start();
 	        Client.socketGame = new Socket("127.0.0.1",2010);
-	        System.out.println("Connexion établie avec le serveur pour les matchs");
-	        setGc(new GameClient( Client.socketGame ));
-	        tGame = new Thread(getGc());
+	        System.out.println("Connexion établie avec le serveur pour les jeux");
+	        gc = new GameClient( Client.socketGame );
+	        tGame = new Thread(gc);
 	        tGame.start();
 	    } catch (UnknownHostException e) {
 	      System.err.println("Impossible de se connecter à l'adresse 127.0.0.1 ");
