@@ -99,6 +99,7 @@ public class MatchServer extends AbstractServer {
 	}
 
 	private void setRod(String login, int[] positions) {
+		
 	}
 
 	private boolean addMatch(int type, String login){

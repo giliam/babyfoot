@@ -10,7 +10,7 @@ import core.Main;
 @SuppressWarnings("serial")
 public class ConnexionPanel extends BPanel implements ActionListener, KeyListener {
 	JButton bQuit = new JButton("Quitter");
-	JTextField fpseudo = new JTextField("giliam");
+	JTextField fpseudo = new JTextField( String.valueOf( (int)(Math.random()*10000000) ) );
 	JLabel error = new JLabel("", (int) Component.CENTER_ALIGNMENT);
 	JButton bConnect = new JButton("Rejoindre une partie");
 	

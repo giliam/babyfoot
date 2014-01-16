@@ -9,12 +9,15 @@ public class Client {
 	private static Socket socketChat;
 	private static Socket socketPlayer;
 	private static Socket socketMatch;
+	private static Socket socketGame;
 	private ChatClient cc;
 	private PlayerClient pc;
 	private MatchClient mc;
+	private GameClient gc;
 	private Thread tChat;
 	private Thread tPlayer;
 	private Thread tMatch;
+	private Thread tGame;
 	
 	public Client(){
 		Scanner sc = new Scanner(System.in);
@@ -34,6 +37,11 @@ public class Client {
 	        mc = new MatchClient( Client.socketMatch );
 	        tMatch = new Thread(mc);
 	        tMatch.start();
+	        Client.socketGame = new Socket("127.0.0.1",2010);
+	        System.out.println("Connexion établie avec le serveur pour les matchs");
+	        setGc(new GameClient( Client.socketGame ));
+	        tGame = new Thread(getGc());
+	        tGame.start();
 	    } catch (UnknownHostException e) {
 	      System.err.println("Impossible de se connecter à l'adresse 127.0.0.1 ");
 	    } catch (IOException e) {
@@ -64,5 +72,13 @@ public class Client {
 
 	public void setMc(MatchClient mc) {
 		this.mc = mc;
+	}
+
+	public GameClient getGc() {
+		return gc;
+	}
+
+	public void setGc(GameClient gc) {
+		this.gc = gc;
 	}
 }

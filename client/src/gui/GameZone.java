@@ -202,11 +202,17 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 				break;
 		}
 		int upOrDown = Main.getPlayer().getSide() == Utils.Sides.BOTTOM ? 0 : 1;
-		if( up && yDecal[upOrDown].get(rodPosition) > (limitSup+path) ){
+		if( up && yDecal[upOrDown].get(rodPosition) > (limitSup+2*path) ){
 			yDecal[upOrDown].put(rodPosition, yDecal[upOrDown].get(rodPosition)-path);
 			Main.getPlayer().setRod(yDecal[upOrDown]);
 			repaint();
-		}else if( !up && yDecal[upOrDown].get(rodPosition) < (limiInf-path) ){
+			yDecal[upOrDown].put(rodPosition, yDecal[upOrDown].get(rodPosition)-path);
+			Main.getPlayer().setRod(yDecal[upOrDown]);
+			repaint();
+		}else if( !up && yDecal[upOrDown].get(rodPosition) < (limiInf-2*path) ){
+			yDecal[upOrDown].put(rodPosition, yDecal[upOrDown].get(rodPosition)+path);
+			Main.getPlayer().setRod(yDecal[upOrDown]);
+			repaint();
 			yDecal[upOrDown].put(rodPosition, yDecal[upOrDown].get(rodPosition)+path);
 			Main.getPlayer().setRod(yDecal[upOrDown]);
 			repaint();
@@ -259,4 +265,38 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 		if( ( y - oldY ) > 20 || ( oldY - y ) > 20 )
 			oldY = y;
 	}
+
+
+	public void refreshRodPositions(String[] rodPositions) {
+		yDecal[0].put(RodPositions.GARDIEN, Integer.valueOf(rodPositions[0]));
+		yDecal[0].put(RodPositions.DEFENSE, Integer.valueOf(rodPositions[1]));
+		yDecal[0].put(RodPositions.MILIEU, Integer.valueOf(rodPositions[2]));
+		yDecal[0].put(RodPositions.ATTAQUE, Integer.valueOf(rodPositions[3]));
+		yDecal[1].put(RodPositions.GARDIEN, Integer.valueOf(rodPositions[4]));
+		yDecal[1].put(RodPositions.DEFENSE, Integer.valueOf(rodPositions[5]));
+		yDecal[1].put(RodPositions.MILIEU, Integer.valueOf(rodPositions[6]));
+		yDecal[1].put(RodPositions.ATTAQUE, Integer.valueOf(rodPositions[7]));
+		repaint();
+	}
+}
+
+
+class RefreshRods implements Runnable {
+	private GameZone gamezone;
+	
+	public RefreshRods(GameZone g ){
+		gamezone = g;
+	}
+	
+	public void run() {
+		while(true){
+			gamezone.refreshRodPositions(Main.getClient().getGc().getRodPositions(Main.getPlayer().getLogin()));
+			try{
+				Thread.sleep(100);
+			}catch( InterruptedException e ){
+				
+			}
+		}
+	}
+	
 }
