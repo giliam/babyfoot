@@ -12,10 +12,10 @@ public class Database {
 	public void connect(){
 		try {
 	      Class.forName("org.postgresql.Driver");
-	      System.out.println("Driver O.K.");
+	      System.out.println("Base de données en préparation...");
 
 	      link = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Babyfoot", "babyfoot", "robert42");
-	      System.out.println("Connexion effective !");         
+	      System.out.println("Connexion effective ... ");         
 	         
 	    } catch (Exception e) {
 	      e.printStackTrace();
