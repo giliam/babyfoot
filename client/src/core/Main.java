@@ -3,7 +3,10 @@ package core;
 import network.Client;
 import gui.MainFrame;
 
-
+/** Cette classe contient le Main du client du projet. Elle initialise les différents composants nécessaires à l'exécution
+ * du programme, c'est-à-dire le client, pour la connexion avec le serveur, le système de chat et le joueur. Elle lance
+ * ensuite la classe MainFrame du package gui.
+ */
 public class Main {
 	private static Player player;
 	private static Chat chat;
@@ -15,7 +18,7 @@ public class Main {
 		Main.setPlayer(new Player());
 		new MainFrame("Babyfoot en réseau trololol", Main.getChat());
 	}
-
+	/** Lors de la fermeture de la fenêtre, supprime le joueur du serveur puisqu'il s'est déconnecté. */
 	public static void closeWindow() {
 		if( !Main.getPlayer().getLogin().equals("") ){
 			try{
@@ -26,6 +29,8 @@ public class Main {
 		}
 		System.exit(0);
 	}
+	
+	
 	public static Player getPlayer() {
 		return player;
 	}
