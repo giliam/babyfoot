@@ -118,9 +118,9 @@ public class Match {
 		return rodPositions;
 	}
 	
-	public void setRodPositions(Hashtable<RodPositions, Integer>[] rodPositions) {
+	/*public void setRodPositions(Hashtable<RodPositions, Integer>[] rodPositions) {
 		this.rodPositions = rodPositions;
-	}
+	}*/
 	
 	public void setRodPositions(Hashtable<RodPositions, Integer> rodPositions, int i) {
 		this.rodPositions[i] = rodPositions;

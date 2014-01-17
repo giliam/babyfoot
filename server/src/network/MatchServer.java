@@ -30,9 +30,7 @@ public class MatchServer extends AbstractServer {
     		int[] positions = {Integer.valueOf(datas[3]),Integer.valueOf(datas[4]),Integer.valueOf(datas[5]),Integer.valueOf(datas[6])};
     		setRod(login, positions);
     	}else if(task.equals("getrodpositions")){
-    		System.out.println("Envoi des positions en cours.");
     		String login = datas[2];
-    		System.out.println("Demandeur : " + login);
     		sendRodPositions( getRodPositions(login), out );
     	}else if(task.equals("getserverslist")){
     		getServersList( out );
@@ -109,7 +107,6 @@ public class MatchServer extends AbstractServer {
 		r[1][1] = m.getRodPosition(true,RodPositions.DEFENSE);
 		r[1][2] = m.getRodPosition(true,RodPositions.MILIEU);
 		r[1][3] = m.getRodPosition(true,RodPositions.ATTAQUE);
-		Utils.printArray(r);
 		return r;
 	}
 
@@ -146,6 +143,7 @@ public class MatchServer extends AbstractServer {
 			}
 		}
 		out.println(display);
+		out.flush();
 	}
 	
 	public LinkedList<Match> getListe() {

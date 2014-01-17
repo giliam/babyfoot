@@ -21,6 +21,7 @@ public class GameClient implements Runnable {
         socket = s;
         go = false;
         rodPositions = new String[8];
+        System.out.println("Update");
         rodPositions[0] = "100";
         rodPositions[1] = "150";
         rodPositions[2] = "100";
@@ -94,11 +95,8 @@ class GameReceptionMessage implements Runnable{
 		System.out.println("Prêt à la réception pour les jeux !");
 		try {
 			while(true){
-				System.out.println("Demande de rafraichissement");
 				gc.setRodPositions( gc.getRodPositions(Main.getPlayer().getLogin()) );
-				System.out.println("Demande okay, prête à être lancée");
             	message = in.readLine();
-            	System.out.println("Message reçu");
             	String[] datas = message.split("-");
             	if( datas != null && datas[0].equals("rodpositions") ){
             		gc.setRodPositions(new String[8]);
@@ -109,6 +107,8 @@ class GameReceptionMessage implements Runnable{
 			}
 		} catch (IOException e) {
             e.printStackTrace();
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
 		}
 	}
 }
