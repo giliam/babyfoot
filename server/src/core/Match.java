@@ -30,6 +30,19 @@ public class Match {
 		this.player1.setMatch(this);
 		this.type = type;
 		this.rodPositions = new Hashtable[2];
+		
+		this.rodPositions[0] = new Hashtable<RodPositions, Integer>();
+		this.rodPositions[1] = new Hashtable<RodPositions, Integer>();
+		
+		this.rodPositions[0].put( RodPositions.GARDIEN, 100 );
+		this.rodPositions[0].put( RodPositions.DEFENSE, 150 );
+		this.rodPositions[0].put( RodPositions.MILIEU, 100 );
+		this.rodPositions[0].put( RodPositions.ATTAQUE, 100 );
+		
+		this.rodPositions[1].put( RodPositions.GARDIEN, 100 );
+		this.rodPositions[1].put( RodPositions.DEFENSE, 150 );
+		this.rodPositions[1].put( RodPositions.MILIEU, 100 );
+		this.rodPositions[1].put( RodPositions.ATTAQUE, 100 );
 	}
 
 	public boolean isPlayer( String login ){

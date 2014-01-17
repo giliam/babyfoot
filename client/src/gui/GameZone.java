@@ -68,6 +68,9 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	    addMouseMotionListener(this);
 	    setFocusable(true);
 	    requestFocus();
+	    
+	    Thread tr = new Thread(new RefreshRods(this));
+	    tr.start();
 	}
 	
 
@@ -290,6 +293,7 @@ class RefreshRods implements Runnable {
 	
 	public void run() {
 		while(true){
+			System.out.println("Refreshing !");
 			gamezone.refreshRodPositions(Main.getClient().getGc().getRodPositions(Main.getPlayer().getLogin()));
 			try{
 				Thread.sleep(100);

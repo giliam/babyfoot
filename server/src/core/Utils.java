@@ -49,4 +49,13 @@ public abstract class Utils {
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM hh:mm:ss");
 		return formatter.format(d);
 	}
+	
+	/** Affiche un array de à deux dimensions */
+	public static void printArray(int[][] s){
+		for( int i = 0; i<s.length; i++){
+			for( int j = 0; j<s[0].length; j++){
+				System.out.println(i + ". " + s[i][j] );
+			}
+		}
+	}
 }
