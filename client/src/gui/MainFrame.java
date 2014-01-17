@@ -6,11 +6,16 @@ import javax.swing.*;
 import core.Chat;
 import core.Main;
 
+
 @SuppressWarnings("serial")
-public class MainFrame extends JFrame implements ActionListener, WindowListener {
-	public JPanel pan;
-	
-	public MainFrame(String title, Chat chat) {
+/** Cette classe est la fenêtre principale (comme son nom l'indique). Elle s'occupe du conteneur général du projet. Il ne s'agit ensuite
+que de modifier le panel intérieur pour mettre à jour la fenêtre. Elle a un WindowListener qui lui permet de gérer plusieurs actions
+lorsque le joueur quitte la fenêtre : par exemple, le déconnecter du serveur, ce qui se fait par une requête. Elle sera passée en paramètre
+à tous ses Panel enfants car nécessaires pour pouvoir modifier certaines informations (taille). */
+public class MainFrame extends JFrame implements WindowListener {
+	/** Constructeur qui initialise la fenêtre avec quelques paramètres (Resizable à false) fixés, dont la taille de 800 par 800 par défaut.
+	Cela est souvent modifié par les panels fils. */
+	public MainFrame(String title ) {
 		setTitle(title);
 	    setSize(800, 800);
 	    setLocationRelativeTo(null);
@@ -25,14 +30,11 @@ public class MainFrame extends JFrame implements ActionListener, WindowListener 
 	    setVisible(true);
 	}
 	
+	/** Alias sans paramètres */
 	public MainFrame(){
 		this("Babyfoot en réseau", null);
 	}
 	
-	public void actionPerformed(ActionEvent arg0) {
-		
-	}
-
 	public void windowActivated(WindowEvent e) {
 	}
 
