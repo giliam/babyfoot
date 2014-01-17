@@ -20,6 +20,15 @@ public class GameClient implements Runnable {
     public GameClient(Socket s){
         socket = s;
         go = false;
+        rodPositions = new String[8];
+        rodPositions[0] = "100";
+        rodPositions[1] = "150";
+        rodPositions[2] = "100";
+        rodPositions[3] = "100";
+        rodPositions[4] = "100";
+        rodPositions[5] = "150";
+        rodPositions[6] = "100";
+        rodPositions[7] = "100";
     }
     
     public void run() {

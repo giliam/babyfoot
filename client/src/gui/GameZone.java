@@ -271,6 +271,7 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 
 
 	public void refreshRodPositions(String[] rodPositions) {
+		if( Main.getPlayer().)
 		yDecal[0].put(RodPositions.GARDIEN, Integer.valueOf(rodPositions[0]));
 		yDecal[0].put(RodPositions.DEFENSE, Integer.valueOf(rodPositions[1]));
 		yDecal[0].put(RodPositions.MILIEU, Integer.valueOf(rodPositions[2]));
@@ -296,7 +297,7 @@ class RefreshRods implements Runnable {
 			System.out.println("Refreshing !");
 			gamezone.refreshRodPositions(Main.getClient().getGc().getRodPositions(Main.getPlayer().getLogin()));
 			try{
-				Thread.sleep(100);
+				Thread.sleep(1000);
 			}catch( InterruptedException e ){
 				
 			}
