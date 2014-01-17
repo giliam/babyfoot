@@ -129,15 +129,19 @@ public class Match {
 	public String addPlayer(Player p) {
 		if( player1 == null ){
 			player1 = p;
+			p.updateSide(1);
 			return "true";
 		}else if( player2 == null ){
 			player2 = p;
+			p.updateSide(2);
 			return "true";
 		}else if( player3 == null ){
 			player3 = p;
+			p.updateSide(3);
 			return "true";
 		}else if( player4 == null ){
 			player4 = p;
+			p.updateSide(4);
 			return "true";
 		}
 		return "false";

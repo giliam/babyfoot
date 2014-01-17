@@ -6,7 +6,7 @@ public class Player {
 	private Match match;
 	private String login;
 	private Hashtable<Match.RodPositions, Boolean> rodAvailables;
-	private boolean side;
+	private Utils.Sides side;
 	
 	public Player(String login){
 		this.login = login;
@@ -35,10 +35,32 @@ public class Player {
 
 
 	public int getSide() {
-		return side ? 1 : 0;
+		return side == Utils.Sides.UP ? 1 : 0;
 	}
 	
-	public void setSide(boolean b) {
+	public void setSide(Utils.Sides b) {
 		side = b;
+	}
+
+
+	public void updateSide(int i) {
+		switch( match.getType() ){
+			case ONEVSONE:
+			case ONEVSTWO:
+				if( i == 1 )
+					side = Utils.Sides.BOTTOM;
+				else
+					side = Utils.Sides.UP;
+				break;
+			case TWOVSTWO:
+				if( i < 3 )
+					side = Utils.Sides.BOTTOM;
+				else
+					side = Utils.Sides.UP;
+				break;
+			default:
+				break;
+		
+		}
 	}
 }

@@ -131,7 +131,7 @@ public class MatchServer extends AbstractServer {
 		   }
 		}
 		liste.add(new Match(login, type == 1 ? Match.Types.ONEVSONE : ( type == 2 ? Match.Types.TWOVSTWO : Match.Types.ONEVSTWO )));
-		Server.tplayer.getPlayer(login).setSide(true);
+		Server.tplayer.getPlayer(login).setSide(Utils.Sides.BOTTOM);
 		return true;
 	}
 

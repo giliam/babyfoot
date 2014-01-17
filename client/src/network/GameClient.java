@@ -97,13 +97,16 @@ class GameReceptionMessage implements Runnable{
 			while(true){
 				gc.setRodPositions( gc.getRodPositions(Main.getPlayer().getLogin()) );
             	message = in.readLine();
-            	String[] datas = message.split("-");
-            	if( datas != null && datas[0].equals("rodpositions") ){
-            		gc.setRodPositions(new String[8]);
-            		for( int i = 0; i<8; i++ ){
-            			gc.rodPositions[i] = datas[i+1];
-            		}
-				}
+            	if( message != null ){
+            		System.out.println(message);
+	            	String[] datas = message.split("-");
+	            	if( datas != null && datas[0].equals("rodpositions") ){
+	            		gc.setRodPositions(new String[8]);
+	            		for( int i = 0; i<8; i++ ){
+	            			gc.rodPositions[i] = datas[i+1];
+	            		}
+					}
+            	}
 			}
 		} catch (IOException e) {
             e.printStackTrace();
