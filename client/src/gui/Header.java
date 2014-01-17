@@ -10,6 +10,8 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
+/** Cette classe gére le bandeau titre de la fenêtre avec l'affichage du logo (très moche certes). Elle sera appelée par le BPanel qui
+est la classe mère de toutes les autres classes et qui initiliase l'objet afin de conserver le cadre partout. */
 public class Header extends JPanel {
 	public Header(){
 		super();
