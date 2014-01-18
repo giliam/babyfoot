@@ -99,15 +99,15 @@ public class MatchServer extends AbstractServer {
 	private int[][] getRodPositions(String login) {
 		Match m = Server.tplayer.getPlayer(login).getMatch();
 		int[][] r = new int[2][4];
-		r[0][0] = m.getRodPosition(false,RodPositions.GARDIEN);
-		r[0][1] = m.getRodPosition(false,RodPositions.DEFENSE);
-		r[0][2] = m.getRodPosition(false,RodPositions.MILIEU);
-		r[0][3] = m.getRodPosition(false,RodPositions.ATTAQUE);
+		r[0][0] = Math.abs(m.getRodPosition(false,RodPositions.GARDIEN));
+		r[0][1] = Math.abs(m.getRodPosition(false,RodPositions.DEFENSE));
+		r[0][2] = Math.abs(m.getRodPosition(false,RodPositions.MILIEU));
+		r[0][3] = Math.abs(m.getRodPosition(false,RodPositions.ATTAQUE));
 		
-		r[1][0] = m.getRodPosition(true,RodPositions.GARDIEN);
-		r[1][1] = m.getRodPosition(true,RodPositions.DEFENSE);
-		r[1][2] = m.getRodPosition(true,RodPositions.MILIEU);
-		r[1][3] = m.getRodPosition(true,RodPositions.ATTAQUE);
+		r[1][0] = Math.abs(m.getRodPosition(true,RodPositions.GARDIEN));
+		r[1][1] = Math.abs(m.getRodPosition(true,RodPositions.DEFENSE));
+		r[1][2] = Math.abs(m.getRodPosition(true,RodPositions.MILIEU));
+		r[1][3] = Math.abs(m.getRodPosition(true,RodPositions.ATTAQUE));
 		return r;
 	}
 
