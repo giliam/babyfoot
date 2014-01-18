@@ -8,6 +8,11 @@ import core.Main;
 import core.Utils;
 
 @SuppressWarnings("serial")
+/** Cette classe gère le panel du chat qui peut être affiché à n'importe quel moment. Cette classe s'occupe des événements liés
+au chat et à la gestion, notamment, des salons. Pour cela, elle implémente ActionListener, pour l'envoi de message, MouseListener pour
+le choix de l'onglet et KeyListener pour la touche Entrée lorsque la zone de texte est sélectionnée. Met en place un système de deux onglets pour
+les deux possibilités suivantes : la liste des salons ou les messages du salon actuel. Utilise un Thread pour mettre à jour les messages. Ce
+Thread appelle la classe RefreshChat. */
 public class ChatPanel extends JPanel implements ActionListener, MouseListener, KeyListener {
 	private JButton push = new JButton("Envoyer");
 	private JTabbedPane onglet = new JTabbedPane();
@@ -66,6 +71,7 @@ public class ChatPanel extends JPanel implements ActionListener, MouseListener, 
 		textfield.addKeyListener(this);
 	}
 	
+	/** Est chargée d'envoyer le contenu de la zone de texte. Cette action est lancée par les événements. */
 	private void sendMessage(){
 		if( !textfield.getText().equals("") ){
 			Main.getChat().sendMessage(textfield.getText());
@@ -80,6 +86,7 @@ public class ChatPanel extends JPanel implements ActionListener, MouseListener, 
 		}
 	}
 	
+	/** Met à jour les messages affichées en les récupérant depuis core.Main.getChat().getMessage() */
 	public void updateMessages(){
 		String[] datas = Main.getChat().getMessages();
 		String s = "";
@@ -133,7 +140,8 @@ public class ChatPanel extends JPanel implements ActionListener, MouseListener, 
 	}
 }
 
-
+/** Cette classe s'occupe de rafraichir le tchat à intervalles réguliers pour obtenir un suivi en direct des messages. Fait du coup 
+appel à la méthode updateMessages() de la classe ChatPanel. Implémente Runnable et est lancée par le constructeur du ChatPanel. */
 class RefreshChat implements Runnable{
 	private ChatPanel cp;
 	public RefreshChat(ChatPanel chatpanel ){
