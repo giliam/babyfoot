@@ -103,6 +103,7 @@ public class MatchServer extends AbstractServer {
 		r[0][1] = m.getRodPosition(false,RodPositions.DEFENSE);
 		r[0][2] = m.getRodPosition(false,RodPositions.MILIEU);
 		r[0][3] = m.getRodPosition(false,RodPositions.ATTAQUE);
+		
 		r[1][0] = m.getRodPosition(true,RodPositions.GARDIEN);
 		r[1][1] = m.getRodPosition(true,RodPositions.DEFENSE);
 		r[1][2] = m.getRodPosition(true,RodPositions.MILIEU);

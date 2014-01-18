@@ -274,15 +274,21 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	public void refreshRodPositions(String[] rodPositions, Utils.Sides s) {
 		//On met à jour les autres barres
 		if( s == Utils.Sides.UP ){
+			System.out.println("MAJ UP");
 			yDecal[0].put(RodPositions.GARDIEN, Integer.valueOf(rodPositions[0]));
 			yDecal[0].put(RodPositions.DEFENSE, Integer.valueOf(rodPositions[1]));
 			yDecal[0].put(RodPositions.MILIEU, Integer.valueOf(rodPositions[2]));
 			yDecal[0].put(RodPositions.ATTAQUE, Integer.valueOf(rodPositions[3]));
-		}else if( s == Utils.Sides.BOTTOM ){
-			yDecal[1].put(RodPositions.GARDIEN, Integer.valueOf(rodPositions[4]));
-			yDecal[1].put(RodPositions.DEFENSE, Integer.valueOf(rodPositions[5]));
-			yDecal[1].put(RodPositions.MILIEU, Integer.valueOf(rodPositions[6]));
-			yDecal[1].put(RodPositions.ATTAQUE, Integer.valueOf(rodPositions[7]));
+		}else{
+			System.out.println("MAJ DOWN");
+			if( rodPositions[4] != null )
+				yDecal[1].put(RodPositions.GARDIEN, Integer.valueOf(rodPositions[4]));
+			if( rodPositions[5] != null )
+				yDecal[1].put(RodPositions.DEFENSE, Integer.valueOf(rodPositions[5]));
+			if( rodPositions[6] != null )
+				yDecal[1].put(RodPositions.MILIEU, Integer.valueOf(rodPositions[6]));
+			if( rodPositions[7] != null )
+				yDecal[1].put(RodPositions.ATTAQUE, Integer.valueOf(rodPositions[7]));
 		}
 		repaint();
 	}
@@ -300,7 +306,7 @@ class RefreshRods implements Runnable {
 		while(true){
 			gamezone.refreshRodPositions(Main.getClient().getGc().getRodPositions(Main.getPlayer().getLogin()), Main.getPlayer().getSide() );
 			try{
-				Thread.sleep(50);
+				Thread.sleep(100);
 			}catch( InterruptedException e ){
 				
 			}

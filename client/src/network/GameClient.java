@@ -98,7 +98,6 @@ class GameReceptionMessage implements Runnable{
 				gc.setRodPositions( gc.getRodPositions(Main.getPlayer().getLogin()) );
             	message = in.readLine();
             	if( message != null ){
-            		System.out.println(message);
 	            	String[] datas = message.split("-");
 	            	if( datas.length < 9 ){
 	            		System.err.println("ajrzeioanra");
