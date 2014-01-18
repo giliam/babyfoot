@@ -32,7 +32,7 @@ public class MainFrame extends JFrame implements WindowListener {
 	
 	/** Alias sans paramètres */
 	public MainFrame(){
-		this("Babyfoot en réseau", null);
+		this("Babyfoot en réseau" );
 	}
 	
 	public void windowActivated(WindowEvent e) {

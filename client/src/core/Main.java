@@ -16,7 +16,7 @@ public class Main {
 		Main.client = new Client();
 		Main.setChat(new Chat());
 		Main.setPlayer(new Player());
-		new MainFrame("Babyfoot en réseau trololol", Main.getChat());
+		new MainFrame("Babyfoot en réseau trololol");
 	}
 	/** Lors de la fermeture de la fenêtre, supprime le joueur du serveur puisqu'il s'est déconnecté. */
 	public static void closeWindow() {
