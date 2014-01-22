@@ -15,6 +15,7 @@ public class ServersPanel extends BPanel implements ActionListener, MouseListene
 	private JButton bRefresh = new JButton("Rafraichir la liste");
 	private JList<String> listServersLayout;
 	private int selectedGame;
+	private long timeFirstClick;
 	private String[] listServers;
 	
 	public ServersPanel(MainFrame f) {
@@ -84,6 +85,13 @@ public class ServersPanel extends BPanel implements ActionListener, MouseListene
 		selectedGame = listServersLayout.locationToIndex(e.getPoint());
 		if( selectedGame >= 0 )
 			bGo.setEnabled(true);
+		if (e.getClickCount() == 2 && ( timeFirstClick - System.currentTimeMillis() ) < 1000 ) {
+			if( Main.getPlayer().setServer(selectedGame, listServers) ){
+				window.setContentPane(new WaitingRoomPanel(window));
+			    window.setVisible(true);
+			}
+		}
+		timeFirstClick = System.currentTimeMillis();
 	}
 
 	@Override
