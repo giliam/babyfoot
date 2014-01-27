@@ -192,7 +192,7 @@ public class Match {
 		setBallX(450);
 		setBallY(350);
 		setBallSpeedX(( Math.random() > 0.5 ? 5 : -5 ));
-		setBallSpeedY(( Math.random() > 0.5 ? 2 : -2 ));
+		setBallSpeedY(( Math.random() > 0.5 ? 5 : -5 ));
 		Thread t = new Thread(new RefreshBallPosition(this));
 		t.start();
 	}
@@ -250,11 +250,15 @@ class RefreshBallPosition implements Runnable {
 		try{
 			while(true){
 				System.out.println(match.getBallX() + " - " + match.getBallSpeedY());
-				if( ( match.getBallX() + match.getBallSpeedX() ) >=  match.BALL_RADIUS && ( match.getBallX() + match.getBallSpeedX() ) <  ( 900 - match.BALL_RADIUS ) ){
-					match.addBallX(match.getBallSpeedX());
+				if( ( match.getBallX() + match.getBallSpeedX() ) >=  match.BALL_RADIUS ) {
+					if( ( match.getBallX() + match.getBallSpeedX() ) <  ( 900 - match.BALL_RADIUS ) ){
+						match.addBallX(match.getBallSpeedX());
+					}
 				}
-				if( ( match.getBallY() + match.getBallSpeedY() ) >=  match.BALL_RADIUS && ( match.getBallY() + match.getBallSpeedY() ) <  ( 900 - match.BALL_RADIUS ) ){
-					match.addBallY(match.getBallSpeedY());
+				if( ( match.getBallY() + match.getBallSpeedY() ) >=  match.BALL_RADIUS ){
+					if( ( match.getBallY() + match.getBallSpeedY() ) <  ( 700 - match.BALL_RADIUS ) ){
+						match.addBallY(match.getBallSpeedY());
+					}
 				}
 				Thread.sleep(100);
 			}
