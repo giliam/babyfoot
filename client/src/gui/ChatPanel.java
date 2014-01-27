@@ -7,6 +7,7 @@ import javax.swing.*;
 import core.Main;
 import core.Utils;
 
+
 @SuppressWarnings("serial")
 /** Cette classe gère le panel du chat qui peut être affiché à n'importe quel moment. Cette classe s'occupe des événements liés
 au chat et à la gestion, notamment, des salons. Pour cela, elle implémente ActionListener, pour l'envoi de message, MouseListener pour
