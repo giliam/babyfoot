@@ -16,8 +16,9 @@ public class MatchClient implements Runnable {
     private boolean ok;
     private String[] serverList;
     private String[] matchDatas;
-    
-    public MatchClient(Socket s){
+    private boolean toDelete = false;
+
+	public MatchClient(Socket s){
         socket = s;
     }
     
@@ -165,6 +166,25 @@ public class MatchClient implements Runnable {
 			e.printStackTrace();
 		}
 	}
+
+	public void stopMatch(String login) {
+		out.println("match-stop-" + login );
+    	out.flush();
+		
+	}
+
+	public void deleteMatch() {
+		toDelete = true;
+	}
+	
+
+    public boolean isToDelete() {
+		return toDelete;
+	}
+
+	public void setToDelete(boolean toDelete) {
+		this.toDelete = toDelete;
+	}
 }
 
 class MatchReceptionMessage implements Runnable{
@@ -186,6 +206,9 @@ class MatchReceptionMessage implements Runnable{
 		try {
 			while(true){
             	String message = in.readLine();
+            	if(message.equals("matchinfo-deleted")){
+            		matchClient.deleteMatch();
+            	}
             	if( ( message.equals("matchlist-beginning") || message.equals("matchinfo-beginning") ) && mode == 0 ){
             		if( message.equals("matchinfo-beginning") ){
             			type = 1;

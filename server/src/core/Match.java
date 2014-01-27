@@ -166,5 +166,16 @@ public class Match {
 	public int getRodPosition(boolean b, RodPositions i) {
 		return rodPositions[b ? 1 : 0].get(i);
 	}
+
+	public void stopMatch() {
+		if( player1 != null )
+			player1.setMatch(null);
+		if( player2 != null )
+			player2.setMatch(null);
+		if( player3 != null )
+			player3.setMatch(null);
+		if( player4 != null )
+			player4.setMatch(null);
+	}
 	
 }

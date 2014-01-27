@@ -87,7 +87,6 @@ public class NewPanel extends BPanel implements ActionListener {
 		    window.setVisible(true);
 		}else if( e.getSource() == bGo ){
 			if( Main.getPlayer().addMatch( bNumber1.isSelected() ? 1 : ( bNumber2.isSelected() ? 2 : 3 ) ) ){
-				System.out.println("MATCH AJOUTÉ");
 				Main.getPlayer().setBoss(true);
 				window.setContentPane(new WaitingRoomPanel(window));
 			    window.setVisible(true);

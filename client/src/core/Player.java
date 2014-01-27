@@ -109,4 +109,8 @@ public class Player {
 	public void setSide(Sides s) {
 		side = s;
 	}
+
+	public void stopMatch() {
+		Main.getClient().getMc().stopMatch(login);
+	}
 }

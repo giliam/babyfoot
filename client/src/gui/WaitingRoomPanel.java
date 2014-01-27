@@ -140,8 +140,14 @@ public class WaitingRoomPanel extends BPanel implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		if( e.getSource() == bQuit ){
+			if( Main.getPlayer().isBoss() ){
+				Main.getPlayer().stopMatch();
+			}
 			Main.closeWindow();
 		}else if( e.getSource() == bReturn ){
+			if( Main.getPlayer().isBoss() ){
+				Main.getPlayer().stopMatch();
+			}
 			window.setContentPane(new MenuPanel(window));
 		    window.setVisible(true);
 		}else if( e.getSource() == bGo && Main.getPlayer().isBoss() && testIsReady() ){
@@ -172,12 +178,18 @@ public class WaitingRoomPanel extends BPanel implements ActionListener {
 
 	public void refresh() {
 		handleMatchInfo(Main.getClient().getMc().getMatchInfo(Main.getPlayer().getLogin()));
-		listMembersTeamOne.setListData(playersTeamOne);
-		listMembersTeamTwo.setListData(playersTeamTwo);
-		if( testIsReady() && Main.getPlayer().isBoss() )
-			bGo.setEnabled(true);
-		else
-			bGo.setEnabled(false);
+		if( Main.getClient().getMc().isToDelete() ){
+			window.setContentPane(new MenuPanel(window));
+			Main.getClient().getMc().setToDelete(false);
+		    window.setVisible(true);
+		}else{
+			listMembersTeamOne.setListData(playersTeamOne);
+			listMembersTeamTwo.setListData(playersTeamTwo);
+			if( testIsReady() && Main.getPlayer().isBoss() )
+				bGo.setEnabled(true);
+			else
+				bGo.setEnabled(false);
+		}
 	}
 }
 

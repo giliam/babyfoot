@@ -40,32 +40,46 @@ public class MatchServer extends AbstractServer {
     	}else if( task.equals( "run" ) ){
     		String login = datas[2];
     		runMatch( login, out );
+    	}else if( task.equals( "stop" ) ){
+    		String login = datas[2];
+    		stopMatch( login );
     	}
 	}
 	
+	private void stopMatch(String login) {
+		Match m = Server.tplayer.getPlayer(login).getMatch();
+		m.stopMatch();
+		m = null;
+	}
+
 	private void runMatch(String login, PrintWriter out) {
 		Match m = Server.tplayer.getPlayer(login).getMatch();
 		m.setState(Match.States.PLAYING);
 	}
 
 	private void getMatchInfo(String login, PrintWriter out) {
-		out.println("matchinfo-beginning");
 		Match m = Server.tplayer.getPlayer(login).getMatch();
-		String display = String.valueOf( m.getState() == Match.States.PLAYING ? 1 : 0 ) + "-";
-		display += String.valueOf(m.getType() == Match.Types.TWOVSTWO ? 2 : ( m.getType() == Match.Types.ONEVSONE ? 1 : 3 ));
-		if( m.getPlayer1() != null ){
-			display += "-" + m.getPlayer1().getLogin();
-		}if( m.getPlayer2() != null ){
-			display += "-" + ( m.getType() == Match.Types.TWOVSTWO ? "" : " -" ) + m.getPlayer2().getLogin();
-		}if( m.getPlayer3() != null ){
-			display += "-" + ( m.getType() == Match.Types.TWOVSTWO ? " -" : "" ) + m.getPlayer3().getLogin();
-		}if( m.getPlayer4() != null ){
-			display += "-" + m.getPlayer4().getLogin();
+		if( m == null ){
+			out.println("matchinfo-deleted");
+			out.flush();
+		}else{
+			out.println("matchinfo-beginning");
+			String display = String.valueOf( m.getState() == Match.States.PLAYING ? 1 : 0 ) + "-";
+			display += String.valueOf(m.getType() == Match.Types.TWOVSTWO ? 2 : ( m.getType() == Match.Types.ONEVSONE ? 1 : 3 ));
+			if( m.getPlayer1() != null ){
+				display += "-" + m.getPlayer1().getLogin();
+			}if( m.getPlayer2() != null ){
+				display += "-" + ( m.getType() == Match.Types.TWOVSTWO ? "" : " -" ) + m.getPlayer2().getLogin();
+			}if( m.getPlayer3() != null ){
+				display += "-" + ( m.getType() == Match.Types.TWOVSTWO ? " -" : "" ) + m.getPlayer3().getLogin();
+			}if( m.getPlayer4() != null ){
+				display += "-" + m.getPlayer4().getLogin();
+			}
+			display += "- - - - ";
+			out.println(display);
+			out.println("matchinfo-end");
+			out.flush();
 		}
-		display += "- - - - ";
-		out.println(display);
-		out.println("matchinfo-end");
-		out.flush();
 	}
 
 	private void getServersList(PrintWriter out) {
