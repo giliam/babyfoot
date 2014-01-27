@@ -18,6 +18,16 @@ public class Match {
 	private Player player3;
 	private Player player4;
 	
+	private int ballX;
+	private int ballY;
+	private int ballSpeedX;
+	private int ballSpeedY;
+	
+	private final int STEP_X = 1;
+	private final int STEP_Y = 1;
+	
+	final int BALL_RADIUS = 25;
+	
 	public static enum RodPositions { GARDIEN , DEFENSE, MILIEU, ATTAQUE };
 	@SuppressWarnings("unchecked")
 	private Hashtable<RodPositions, Integer>[] rodPositions = new Hashtable[2] ;
@@ -167,7 +177,7 @@ public class Match {
 		return rodPositions[b ? 1 : 0].get(i);
 	}
 
-	public void stopMatch() {
+	public void stop() {
 		if( player1 != null )
 			player1.setMatch(null);
 		if( player2 != null )
@@ -177,5 +187,79 @@ public class Match {
 		if( player4 != null )
 			player4.setMatch(null);
 	}
+
+	public void start() {
+		setBallX(450);
+		setBallY(350);
+		setBallSpeedX(( Math.random() > 0.5 ? 5 : -5 ));
+		setBallSpeedY(( Math.random() > 0.5 ? 2 : -2 ));
+		Thread t = new Thread(new RefreshBallPosition(this));
+		t.start();
+	}
+
+	public int getBallY() {
+		return ballY;
+	}
+
+	public void setBallY(int ballY) {
+		this.ballY = ballY;
+	}
+
+	public int getBallSpeedY() {
+		return ballSpeedY;
+	}
+
+	public void setBallSpeedY(int ballSpeedY) {
+		this.ballSpeedY = ballSpeedY;
+	}
+
+	public int getBallX() {
+		return ballX;
+	}
+
+	public void setBallX(int ballX) {
+		this.ballX = ballX;
+	}
+
+	public int getBallSpeedX() {
+		return ballSpeedX;
+	}
+
+	public void setBallSpeedX(int ballSpeedX) {
+		this.ballSpeedX = ballSpeedX;
+	}
+
+	public void addBallX(int ballX2) {
+		ballX += ballX2;
+	}
+
+	public void addBallY(int ballY2) {
+		ballY += ballY2;
+	}
 	
+}
+
+class RefreshBallPosition implements Runnable {
+	private Match match;
+	public RefreshBallPosition(Match m){
+		match = m;
+	}
+	
+	@Override
+	public void run() {
+		try{
+			while(true){
+				System.out.println(match.getBallX() + " - " + match.getBallSpeedY());
+				if( ( match.getBallX() + match.getBallSpeedX() ) >=  match.BALL_RADIUS && ( match.getBallX() + match.getBallSpeedX() ) <  ( 900 - match.BALL_RADIUS ) ){
+					match.addBallX(match.getBallSpeedX());
+				}
+				if( ( match.getBallY() + match.getBallSpeedY() ) >=  match.BALL_RADIUS && ( match.getBallY() + match.getBallSpeedY() ) <  ( 900 - match.BALL_RADIUS ) ){
+					match.addBallY(match.getBallSpeedY());
+				}
+				Thread.sleep(100);
+			}
+		}catch(InterruptedException e){
+			e.printStackTrace();
+		}
+	}
 }

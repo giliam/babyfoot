@@ -13,6 +13,8 @@ public class GameClient implements Runnable {
     private BufferedReader in = null;
     private GameReceptionMessage grc;
     String[] rodPositions;
+    private int ballX;
+    private int ballY;
 	public boolean go;
 	
 	private Thread tReceptionMessage;
@@ -30,6 +32,9 @@ public class GameClient implements Runnable {
         rodPositions[5] = "150";
         rodPositions[6] = "100";
         rodPositions[7] = "100";
+        
+        ballX = 450;
+        ballY = 350;
     }
     
     public void run() {
@@ -47,10 +52,26 @@ public class GameClient implements Runnable {
     	out.flush();
 	}
     
-    public String[] getRodPositions(String login) {
-		out.println("match-getrodpositions-" + login );
+    public String[] getPositions(String login) {
+		out.println("match-getpositions-" + login );
     	out.flush();
     	return rodPositions;
+	}
+    
+    public int getBallX() {
+		return ballX;
+	}
+
+	public void setBallX(int ballX) {
+		this.ballX = ballX;
+	}
+
+	public int getBallY() {
+		return ballY;
+	}
+
+	public void setBallY(int ballY) {
+		this.ballY = ballY;
 	}
 
 	public String[] getRodPositions() {
@@ -73,8 +94,6 @@ public class GameClient implements Runnable {
 		tReceptionMessage = new Thread(grc);
 		tReceptionMessage.start();
 	}
-	
-	
 }
 
 class GameReceptionMessage implements Runnable{
@@ -95,7 +114,7 @@ class GameReceptionMessage implements Runnable{
 		System.out.println("Prêt à la réception pour les jeux !");
 		try {
 			while(true){
-				gc.setRodPositions( gc.getRodPositions(Main.getPlayer().getLogin()) );
+				gc.getPositions( Main.getPlayer().getLogin() );
             	message = in.readLine();
             	if( message != null ){
 	            	String[] datas = message.split("-");
@@ -103,18 +122,18 @@ class GameReceptionMessage implements Runnable{
 	            		System.err.println("ajrzeioanra");
 	            		System.exit(0);
 	            	}
-	            	if( datas != null && datas[0].equals("rodpositions") ){
+	            	if( datas != null && datas[0].equals("positions") ){
 	            		gc.setRodPositions(new String[8]);
 	            		for( int i = 0; i<8; i++ ){
 	            			gc.rodPositions[i] = datas[i+1];
 	            		}
+            			gc.setBallX(Integer.valueOf(datas[8]));
+            			gc.setBallY(Integer.valueOf(datas[9]));
 					}
             	}
 			}
 		} catch (IOException e) {
             e.printStackTrace();
-//		} catch (InterruptedException e) {
-//			e.printStackTrace();
 		}
 	}
 }

@@ -29,9 +29,9 @@ public class MatchServer extends AbstractServer {
     		String login = datas[2];
     		int[] positions = {Integer.valueOf(datas[3]),Integer.valueOf(datas[4]),Integer.valueOf(datas[5]),Integer.valueOf(datas[6])};
     		setRod(login, positions);
-    	}else if(task.equals("getrodpositions")){
+    	}else if(task.equals("getpositions")){
     		String login = datas[2];
-    		sendRodPositions( getRodPositions(login), out );
+    		sendPositions( getRodPositions(login), getBallPositions(login), out );
     	}else if(task.equals("getserverslist")){
     		getServersList( out );
     	}else if( task.equals( "getmatchinfo" ) ){
@@ -48,13 +48,14 @@ public class MatchServer extends AbstractServer {
 	
 	private void stopMatch(String login) {
 		Match m = Server.tplayer.getPlayer(login).getMatch();
-		m.stopMatch();
+		m.stop();
 		m = null;
 	}
 
 	private void runMatch(String login, PrintWriter out) {
 		Match m = Server.tplayer.getPlayer(login).getMatch();
 		m.setState(Match.States.PLAYING);
+		m.start();
 	}
 
 	private void getMatchInfo(String login, PrintWriter out) {
@@ -124,6 +125,11 @@ public class MatchServer extends AbstractServer {
 		r[1][3] = Math.abs(m.getRodPosition(true,RodPositions.ATTAQUE));
 		return r;
 	}
+	
+	private String getBallPositions(String login) {
+		Match m = Server.tplayer.getPlayer(login).getMatch();
+		return m.getBallX() + "-" + m.getBallY();
+	}
 
 	private void setRod(String login, int[] positions) {
 		Match m = Server.tplayer.getPlayer(login).getMatch();
@@ -150,13 +156,14 @@ public class MatchServer extends AbstractServer {
 		return true;
 	}
 
-	public void sendRodPositions(int[][] datas, PrintWriter out){
-		String display = "rodpositions";
+	public void sendPositions(int[][] datas, String ballPositions, PrintWriter out){
+		String display = "positions";
 		for( int i = 0; i < 2; i++ ){
 			for( int j = 0; j < 4; j++ ){
 				display += "-" + datas[i][j];
 			}
 		}
+		display += "-" + ballPositions;
 		out.println(display);
 		out.flush();
 	}

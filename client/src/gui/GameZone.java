@@ -18,6 +18,7 @@ import javax.imageio.ImageIO;
 
 import core.Main;
 import core.Utils;
+import core.Utils.Sides;
 
 public class GameZone extends JPanel implements KeyListener, MouseMotionListener {
 	private static final long serialVersionUID = 1L;
@@ -31,6 +32,10 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	private static final int imagePlayerX = 30;
 	private static final int movePath = 20;
 	
+	
+	final int BALL_RADIUS = 25;
+	
+	
 	private int h;
 	private int w;
 	
@@ -41,6 +46,8 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	
 	public static enum RodPositions { GARDIEN , DEFENSE, MILIEU, ATTAQUE };
 	RodPositions rodPosition;
+	private int ballX;
+	private int ballY;
 	
 	@SuppressWarnings("unchecked")
 	public GameZone(){
@@ -84,8 +91,16 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 		drawGoals(g);
 		drawPlayers(g);
 		drawRodPosition(g);
+		drawBall(g);
 	}
 	
+	private void drawBall(Graphics g) {
+		//Côté gauche
+		g.setColor(Color.WHITE);
+		g.fillOval(ballX, ballY, BALL_RADIUS, BALL_RADIUS);
+	}
+
+
 	private void drawGoals(Graphics g){
 		//Côté gauche
 		g.setColor(Color.RED);
@@ -292,6 +307,13 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 		}
 		repaint();
 	}
+
+
+	public void refreshPositions(String[] positions, Sides side, int i, int j) {
+		ballX = i;
+		ballY = j;
+		refreshRodPositions( positions, side );
+	}
 }
 
 
@@ -304,9 +326,9 @@ class RefreshRods implements Runnable {
 	
 	public void run() {
 		while(true){
-			gamezone.refreshRodPositions(Main.getClient().getGc().getRodPositions(Main.getPlayer().getLogin()), Main.getPlayer().getSide() );
+			gamezone.refreshPositions(Main.getClient().getGc().getPositions(Main.getPlayer().getLogin()), Main.getPlayer().getSide(), Main.getClient().getGc().getBallX(), Main.getClient().getGc().getBallY() );
 			try{
-				Thread.sleep(100);
+				Thread.sleep(20);
 			}catch( InterruptedException e ){
 				
 			}
