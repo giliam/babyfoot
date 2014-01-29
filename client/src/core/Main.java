@@ -15,10 +15,7 @@ public class Main {
 	
 	public static void main(String[] args){
 		Main m = new Main();
-		m.setClient(new Client(m));
-		m.setChat(new Chat(m));
-		m.setPlayer(new Player(m));
-		m.mainFrame = new MainFrame("Babyfoot en réseau trololol", m);
+		m.init();
 	}
 	/** Lors de la fermeture de la fenêtre, supprime le joueur du serveur puisqu'il s'est déconnecté. */
 	public void closeWindow() {
@@ -30,6 +27,13 @@ public class Main {
 			}
 		}
 		System.exit(0);
+	}
+	
+	public void init(){
+		setClient(new Client(this));
+		setChat(new Chat(this));
+		setPlayer(new Player(this));
+		mainFrame = new MainFrame("Babyfoot en réseau trololol", this);
 	}
 	
 	
