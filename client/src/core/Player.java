@@ -17,8 +17,10 @@ public class Player {
 	private Hashtable<GameZone.RodPositions, Boolean> rodAvailables;
 	private Utils.Sides side = Utils.Sides.BOTTOM;
 	private boolean boss;
-	
-	public Player(String l){
+	private Main main;
+	public Player(String l, Main m){
+		main = m;
+		
 		rodAvailables = new Hashtable<GameZone.RodPositions, Boolean>();
 		//A priori on donne tous les accès, ce qui pourra être modifié par la suite.
 		rodAvailables.put(RodPositions.GARDIEN, true);
@@ -29,30 +31,34 @@ public class Player {
 	}
 	
 	public Player(){
-		this("");
+		this("", null);
 	}
 	
+	public Player(Main m) {
+		this("", m);
+	}
+
 	/** Connecte le joueur. */
 	public boolean addPlayer(String login){
 		this.login = login;
-		return Main.getClient().getPc().addPlayer();
+		return main.getClient().getPc().addPlayer();
 	}
 
 	/** Déconnecte le joueur. */
 	public void removePlayer(String login) {
-		if(Main.getClient().getPc().removePlayer(login))
+		if(main.getClient().getPc().removePlayer(login))
 			this.setLogin("");
 	}
 	
 	/** Ajoute un match au serveur. */
 	public boolean addMatch(int type){
-		return Main.getClient().getPc().addMatch(type);
+		return main.getClient().getPc().addMatch(type);
 	}
 	
 	/** Envoie les modifications de positions des barres au serveur pour le joueur actuel. */
 	public void setRod(Hashtable<GameZone.RodPositions, Integer> rodPositionsHash){
 		int[] rodPositions = { rodPositionsHash.get(GameZone.RodPositions.GARDIEN), rodPositionsHash.get(GameZone.RodPositions.DEFENSE),rodPositionsHash.get(GameZone.RodPositions.MILIEU),rodPositionsHash.get(GameZone.RodPositions.ATTAQUE) };
-		Main.getClient().getMc().setRodPositions(login, rodPositions);
+		main.getClient().getMc().setRodPositions(login, rodPositions);
 	}
 
 	public String getLogin() {
@@ -74,7 +80,7 @@ public class Player {
 	
 	/** Retourne la liste des parties actuellement disponibles ou en cours en lançant une requête. */
 	public String[] getServers() {
-		return Main.getClient().getMc().getServers();
+		return main.getClient().getMc().getServers();
 	}
 	
 	/** Crée une nouvelle partie à partir de la liste des parties actuelles et l'index de celle choisie. 
@@ -86,7 +92,7 @@ public class Player {
 		String loginHost = datas[1].trim();
 		//Si on change la partie, c'est-à-dire qu'on ne la crée pas donc qu'on n'est pas maitre de jeu
 		boss = false;
-		return Main.getClient().getMc().setServerFromHost(login,loginHost);
+		return main.getClient().getMc().setServerFromHost(login,loginHost);
 	}
 
 	public Utils.Sides getSide() {
@@ -95,7 +101,7 @@ public class Player {
 	
 	/** Lance le match du joueur, c'est-à-dire met à jour le statut du match au serveur. */
 	public void runMatch() {
-		Main.getClient().getMc().runMatch(login);
+		main.getClient().getMc().runMatch(login);
 	}
 
 	public void setBoss(boolean b) {
@@ -111,6 +117,6 @@ public class Player {
 	}
 
 	public void stopMatch() {
-		Main.getClient().getMc().stopMatch(login);
+		main.getClient().getMc().stopMatch(login);
 	}
 }

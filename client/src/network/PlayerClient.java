@@ -13,8 +13,9 @@ public class PlayerClient implements Runnable {
     private BufferedReader in = null;
     private PlayerReceptionMessage prc;
     static boolean ok;
-    
-    public PlayerClient(Socket s){
+    private Main main;
+    public PlayerClient(Socket s, Main m){
+    	main = m;
         socket = s;
     }
     
@@ -32,7 +33,7 @@ public class PlayerClient implements Runnable {
     }
     
     public boolean addPlayer(){
-    	out.println("player-add-" + Main.getPlayer().getLogin() );
+    	out.println("player-add-" + main.getPlayer().getLogin() );
     	out.flush();
     	try {
 			Thread.currentThread();
@@ -44,13 +45,13 @@ public class PlayerClient implements Runnable {
     }
 
 	public boolean removePlayer(String login) {
-		out.println("player-remove-" + Main.getPlayer().getLogin() );
+		out.println("player-remove-" + main.getPlayer().getLogin() );
 		out.flush();
 		return true;
 	}
 
 	public boolean addMatch(int type) {
-		out.println("match-add-" + Main.getPlayer().getLogin() + "-" + type );
+		out.println("match-add-" + main.getPlayer().getLogin() + "-" + type );
     	out.flush();
     	try {
 			Thread.currentThread();

@@ -3,6 +3,7 @@ package core;
 un message, changer de serveur et récupérer les messages d'un serveur. */
 public class Chat {
 	private String server = "Global";
+	private Main main;
 	
 	public String getServer() {
 		return server;
@@ -12,30 +13,30 @@ public class Chat {
 		this.server = server;
 	}
 
-	public Chat(){
-		
+	public Chat(Main m){
+		main = m;
 	}
 	
 	/** Change de serveur. Récupère la liste des serveurs puis les informations qui l'intéressent sur celui sélectionné par le joueur. 
 	@param id est le numéro du serveur dans la liste générée par la requête. */
 	public void setServer(int id){
-		String[] servers = Utils.formatStringArray(Main.getClient().getCc().getServers());
+		String[] servers = Utils.formatStringArray(main.getClient().getCc().getServers());
 		server = servers[id];
 	}
 	
 	/** Envoie un message au serveur à partir du texte du message */
 	public void sendMessage(String text){
-		Main.getClient().getCc().sendMessage(text);
+		main.getClient().getCc().sendMessage(text);
 	}
 	
 	/** Obtient la liste des serveurs */
 	public String[] getServers(){
-		return Main.getClient().getCc().getServers();
+		return main.getClient().getCc().getServers();
 	}
 	
 	/** Récupère les messages d'un serveur */
 	public String[] getMessages(){
-		return Main.getClient().getCc().getMessages(server);
+		return main.getClient().getCc().getMessages(server);
 	}
 	
 	public void logIn(){

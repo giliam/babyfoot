@@ -8,21 +8,23 @@ import gui.MainFrame;
  * ensuite la classe MainFrame du package gui.
  */
 public class Main {
-	private static Player player;
-	private static Chat chat;
-	private static Client client;
+	private Player player;
+	private Chat chat;
+	private Client client;
+	private MainFrame mainFrame;
 	
 	public static void main(String[] args){
-		Main.client = new Client();
-		Main.setChat(new Chat());
-		Main.setPlayer(new Player());
-		new MainFrame("Babyfoot en réseau trololol");
+		Main m = new Main();
+		m.setClient(new Client(m));
+		m.setChat(new Chat(m));
+		m.setPlayer(new Player(m));
+		m.mainFrame = new MainFrame("Babyfoot en réseau trololol", m);
 	}
 	/** Lors de la fermeture de la fenêtre, supprime le joueur du serveur puisqu'il s'est déconnecté. */
-	public static void closeWindow() {
-		if( !Main.getPlayer().getLogin().equals("") ){
+	public void closeWindow() {
+		if( !getPlayer().getLogin().equals("") ){
 			try{
-				Main.getPlayer().removePlayer(Main.getPlayer().getLogin());
+				getPlayer().removePlayer(getPlayer().getLogin());
 			}catch(Exception e){
 				e.printStackTrace();
 			}
@@ -31,27 +33,27 @@ public class Main {
 	}
 	
 	
-	public static Player getPlayer() {
+	public Player getPlayer() {
 		return player;
 	}
-	public static void setPlayer(Player player) {
-		Main.player = player;
+	public void setPlayer(Player player) {
+		player = player;
 	}
 
-	public static Chat getChat() {
+	public Chat getChat() {
 		return chat;
 	}
 
-	public static void setChat(Chat chat) {
-		Main.chat = chat;
+	public void setChat(Chat chat) {
+		chat = chat;
 	}
 	
-	public static Client getClient() {
+	public Client getClient() {
 		return client;
 	}
 
-	public static void setClient(Client client) {
-		Main.client = client;
+	public void setClient(Client client) {
+		client = client;
 	}
 }
 

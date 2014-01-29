@@ -21,7 +21,7 @@ public class ServersPanel extends BPanel implements ActionListener, MouseListene
 	public ServersPanel(MainFrame f) {
 		super(f);
 	    
-	    ChatPanel chat = new ChatPanel();
+	    ChatPanel chat = new ChatPanel(window);
 		chat.setBackground(Color.BLACK);
 		chat.setPreferredSize(new Dimension(300,700));
 		chat.setMinimumSize(new Dimension(300,700));
@@ -35,7 +35,7 @@ public class ServersPanel extends BPanel implements ActionListener, MouseListene
 		add(menu,BorderLayout.CENTER);
 		
 		//On s'occupe de la liste des serveurs
-		listServers = Main.getPlayer().getServers();
+		listServers = window.getMain().getPlayer().getServers();
 		listServersLayout = new JList<String>(listServers);
 		listServersLayout.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		listServersLayout.setLayoutOrientation(JList.VERTICAL);
@@ -64,16 +64,16 @@ public class ServersPanel extends BPanel implements ActionListener, MouseListene
 	
 	public void actionPerformed(ActionEvent e) {
 		if( e.getSource() == bQuit ){
-			Main.closeWindow();
+			window.getMain().closeWindow();
 		}else if( e.getSource() == bReturn ){
 			window.setContentPane(new MenuPanel(window));
 		    window.setVisible(true);
 		}else if( e.getSource() == bRefresh ){
-			listServers = Main.getPlayer().getServers();
+			listServers = window.getMain().getPlayer().getServers();
 			listServersLayout.setListData(listServers);
 			bGo.setEnabled(false);
 		}else if( e.getSource() == bGo ){
-			if( Main.getPlayer().setServer(selectedGame, listServers) ){
+			if( window.getMain().getPlayer().setServer(selectedGame, listServers) ){
 				window.setContentPane(new WaitingRoomPanel(window));
 			    window.setVisible(true);
 			}
@@ -86,7 +86,7 @@ public class ServersPanel extends BPanel implements ActionListener, MouseListene
 		if( selectedGame >= 0 )
 			bGo.setEnabled(true);
 		if (e.getClickCount() == 2 && ( timeFirstClick - System.currentTimeMillis() ) < 1000 ) {
-			if( Main.getPlayer().setServer(selectedGame, listServers) ){
+			if( window.getMain().getPlayer().setServer(selectedGame, listServers) ){
 				window.setContentPane(new WaitingRoomPanel(window));
 			    window.setVisible(true);
 			}

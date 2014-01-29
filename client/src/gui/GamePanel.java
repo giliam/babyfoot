@@ -20,7 +20,7 @@ public class GamePanel extends JPanel implements ActionListener {
 		setLayout(new BorderLayout());
 		JPanel chat = null;
 		if( !testMode ){
-			chat = new ChatPanel();
+			chat = new ChatPanel(window);
 		}else{
 			chat = new JPanel();
 		}
@@ -29,7 +29,7 @@ public class GamePanel extends JPanel implements ActionListener {
 		chat.setMinimumSize(new Dimension(300,700));
 		add(chat,BorderLayout.EAST);
 		
-	    gameZone = new GameZone(testMode);
+	    gameZone = new GameZone(window, testMode);
 	    add(gameZone,BorderLayout.CENTER);
 	    
 	    repaint();

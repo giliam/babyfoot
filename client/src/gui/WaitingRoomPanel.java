@@ -34,9 +34,9 @@ public class WaitingRoomPanel extends BPanel implements ActionListener {
 	     * Case 1 contient le joueur1
 	     * Case 2 contient le joueur2 etc.
 	     */
-	    handleMatchInfo(Main.getClient().getMc().getMatchInfo(Main.getPlayer().getLogin()));
+	    handleMatchInfo(window.getMain().getClient().getMc().getMatchInfo(window.getMain().getPlayer().getLogin()));
 	    
-	    ChatPanel chat = new ChatPanel();
+	    ChatPanel chat = new ChatPanel(window);
 		chat.setBackground(Color.BLACK);
 		chat.setPreferredSize(new Dimension(300,700));
 		chat.setMinimumSize(new Dimension(300,700));
@@ -140,18 +140,18 @@ public class WaitingRoomPanel extends BPanel implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		if( e.getSource() == bQuit ){
-			if( Main.getPlayer().isBoss() ){
-				Main.getPlayer().stopMatch();
+			if( window.getMain().getPlayer().isBoss() ){
+				window.getMain().getPlayer().stopMatch();
 			}
-			Main.closeWindow();
+			window.getMain().closeWindow();
 		}else if( e.getSource() == bReturn ){
-			if( Main.getPlayer().isBoss() ){
-				Main.getPlayer().stopMatch();
+			if( window.getMain().getPlayer().isBoss() ){
+				window.getMain().getPlayer().stopMatch();
 			}
 			window.setContentPane(new MenuPanel(window));
 		    window.setVisible(true);
-		}else if( e.getSource() == bGo && Main.getPlayer().isBoss() && testIsReady() ){
-			Main.getPlayer().runMatch();
+		}else if( e.getSource() == bGo && window.getMain().getPlayer().isBoss() && testIsReady() ){
+			window.getMain().getPlayer().runMatch();
 			startGame();
 		}
 	}
@@ -160,32 +160,32 @@ public class WaitingRoomPanel extends BPanel implements ActionListener {
 	private void startGame(){
 		boolean sideOk = false;
 		for( int i = 0; i < playersTeamOne.length; i++ ){
-			if( playersTeamOne[i].equals(Main.getPlayer().getLogin())){
-				Main.getPlayer().setSide(Utils.Sides.BOTTOM);
+			if( playersTeamOne[i].equals(window.getMain().getPlayer().getLogin())){
+				window.getMain().getPlayer().setSide(Utils.Sides.BOTTOM);
 				sideOk = true;
 				break;
 			}
 		}
 		if( !sideOk ){
-			Main.getPlayer().setSide(Utils.Sides.UP);
+			window.getMain().getPlayer().setSide(Utils.Sides.UP);
 		}
 		refreshRoom.run = false;
-		Main.getClient().getGc().startThread();
+		window.getMain().getClient().getGc().startThread();
 		window.setContentPane(new GamePanel(window,false));
 	    window.setVisible(true);
 	}
 
 
 	public void refresh() {
-		handleMatchInfo(Main.getClient().getMc().getMatchInfo(Main.getPlayer().getLogin()));
-		if( Main.getClient().getMc().isToDelete() ){
+		handleMatchInfo(window.getMain().getClient().getMc().getMatchInfo(window.getMain().getPlayer().getLogin()));
+		if( window.getMain().getClient().getMc().isToDelete() ){
 			window.setContentPane(new MenuPanel(window));
-			Main.getClient().getMc().setToDelete(false);
+			window.getMain().getClient().getMc().setToDelete(false);
 		    window.setVisible(true);
 		}else{
 			listMembersTeamOne.setListData(playersTeamOne);
 			listMembersTeamTwo.setListData(playersTeamTwo);
-			if( testIsReady() && Main.getPlayer().isBoss() )
+			if( testIsReady() && window.getMain().getPlayer().isBoss() )
 				bGo.setEnabled(true);
 			else
 				bGo.setEnabled(false);

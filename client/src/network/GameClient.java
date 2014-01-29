@@ -16,10 +16,11 @@ public class GameClient implements Runnable {
     private int ballX;
     private int ballY;
 	public boolean go;
-	
+	private Main main;
 	private Thread tReceptionMessage;
     
-    public GameClient(Socket s){
+    public GameClient(Socket s, Main m){
+    	setMain(m);
         socket = s;
         go = false;
         rodPositions = new String[8];
@@ -94,6 +95,14 @@ public class GameClient implements Runnable {
 		tReceptionMessage = new Thread(grc);
 		tReceptionMessage.start();
 	}
+
+	public Main getMain() {
+		return main;
+	}
+
+	public void setMain(Main main) {
+		this.main = main;
+	}
 }
 
 class GameReceptionMessage implements Runnable{
@@ -114,7 +123,7 @@ class GameReceptionMessage implements Runnable{
 		System.out.println("Prêt à la réception pour les jeux !");
 		try {
 			while(true){
-				gc.getPositions( Main.getPlayer().getLogin() );
+				gc.getPositions( gc.getMain().getPlayer().getLogin() );
             	message = in.readLine();
             	if( message != null ){
 	            	String[] datas = message.split("-");

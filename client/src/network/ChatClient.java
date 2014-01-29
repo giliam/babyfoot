@@ -15,8 +15,10 @@ public class ChatClient implements Runnable {
     private BufferedReader in = null;
     public ChatReceptionMessage rc;
     public static String[][] s;
+    private Main main;
     
-    public ChatClient(Socket s){
+    public ChatClient(Socket s, Main m){
+    	main = m;
     	ChatClient.s = new String[2][];
         socket = s;
     }
@@ -37,7 +39,7 @@ public class ChatClient implements Runnable {
     }
     
     public void sendMessage(String text){
-    	out.println("chat-add-" + Main.getChat().getServer() + "-" + Main.getPlayer().getLogin() + "-" + Utils.hash( Main.getChat().getServer() + "salt" + text + Main.getPlayer().getLogin() + "42$1a" ) + "-" + text);
+    	out.println("chat-add-" + main.getChat().getServer() + "-" + main.getPlayer().getLogin() + "-" + Utils.hash( main.getChat().getServer() + "salt" + text + main.getPlayer().getLogin() + "42$1a" ) + "-" + text);
 		out.flush();
     }
     /*

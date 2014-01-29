@@ -5,6 +5,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
+import core.Main;
+
 public class Client {
 	private static Socket socketChat;
 	private static Socket socketPlayer;
@@ -19,17 +21,20 @@ public class Client {
 	private Thread tMatch;
 	private Thread tGame;
 	
-	public Client(){
+	private Main main;
+	public Client(Main m){
+		main = m;
+		
 		Scanner sc = new Scanner(System.in);
 	    try {
 	        Client.socketChat = new Socket("127.0.0.1",2010);
 	        System.out.println("Connexion établie avec le serveur pour le chat");
-	        setCc(new ChatClient( Client.socketChat ));
+	        setCc(new ChatClient( Client.socketChat, main ));
 	        tChat = new Thread(getCc());
 	        tChat.start();
 	        Client.socketPlayer = new Socket("127.0.0.1",2010);
 	        System.out.println("Connexion établie avec le serveur pour les joueurs");
-	        pc = new PlayerClient( Client.socketPlayer );
+	        pc = new PlayerClient( Client.socketPlayer, main );
 	        tPlayer = new Thread(pc);
 	        tPlayer.start();
 	        Client.socketMatch = new Socket("127.0.0.1",2010);
@@ -39,7 +44,7 @@ public class Client {
 	        tMatch.start();
 	        Client.socketGame = new Socket("127.0.0.1",2010);
 	        System.out.println("Connexion établie avec le serveur pour les jeux");
-	        gc = new GameClient( Client.socketGame );
+	        gc = new GameClient( Client.socketGame, main );
 	        tGame = new Thread(gc);
 	        tGame.start();
 	    } catch (UnknownHostException e) {

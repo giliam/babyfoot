@@ -13,9 +13,13 @@ que de modifier le panel intérieur pour mettre à jour la fenêtre. Elle a un W
 lorsque le joueur quitte la fenêtre : par exemple, le déconnecter du serveur, ce qui se fait par une requête. Elle sera passée en paramètre
 à tous ses Panel enfants car nécessaires pour pouvoir modifier certaines informations (taille). */
 public class MainFrame extends JFrame implements WindowListener {
+	private Main main;
+	
 	/** Constructeur qui initialise la fenêtre avec quelques paramètres (Resizable à false) fixés, dont la taille de 800 par 800 par défaut.
 	Cela est souvent modifié par les panels fils. */
-	public MainFrame(String title ) {
+	public MainFrame(String title, Main m) {
+		main = m;
+		
 		setTitle(title);
 	    setSize(800, 800);
 	    setLocationRelativeTo(null);
@@ -32,7 +36,7 @@ public class MainFrame extends JFrame implements WindowListener {
 	
 	/** Alias sans paramètres */
 	public MainFrame(){
-		this("Babyfoot en réseau" );
+		this("Babyfoot en réseau", null);
 	}
 	
 	public void windowActivated(WindowEvent e) {
@@ -42,9 +46,9 @@ public class MainFrame extends JFrame implements WindowListener {
 	}
 
 	public void windowClosing(WindowEvent e) {
-		if( !Main.getPlayer().getLogin().equals("") ){
+		if( !main.getPlayer().getLogin().equals("") ){
 			System.out.println("SUPPRESSION EN COURS");
-			Main.getPlayer().removePlayer(Main.getPlayer().getLogin());
+			main.getPlayer().removePlayer(main.getPlayer().getLogin());
 		}
 	}
 
@@ -58,5 +62,9 @@ public class MainFrame extends JFrame implements WindowListener {
 	}
 
 	public void windowOpened(WindowEvent e) {
+	}
+
+	public Main getMain() {
+		return main;
 	}
 }

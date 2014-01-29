@@ -22,8 +22,10 @@ public class ChatPanel extends JPanel implements ActionListener, MouseListener, 
 	private long timeFirstClick;
 	private JTextPane text = new JTextPane();
 	private JLabel serverName;
+	private MainFrame window;
 	
-	public ChatPanel() {
+	public ChatPanel(MainFrame window) {
+		this.window = window;
 		//Création de plusieurs Panneau
 		JPanel[] tPan = { new JPanel(), new JPanel() };
 		tPan[0].setBackground(Color.BLACK);
@@ -33,7 +35,7 @@ public class ChatPanel extends JPanel implements ActionListener, MouseListener, 
 	    onglet.setPreferredSize(new Dimension(300,800));
 	    
 	    //Titre = nom du serveur actuel
-	    serverName = new JLabel(Main.getChat().getServer());
+	    serverName = new JLabel(window.getMain().getChat().getServer());
 	    serverName.setForeground(Color.WHITE);
 	    
 	    //On s'occupe de la partie tchat en lui-même
@@ -46,7 +48,7 @@ public class ChatPanel extends JPanel implements ActionListener, MouseListener, 
 		push.setPreferredSize(new Dimension(90,25));
 		
 		//On s'occupe de la liste des serveurs
-		listServersLayout = new JList<String>(Utils.formatStringArray(Main.getChat().getServers()));
+		listServersLayout = new JList<String>(Utils.formatStringArray(window.getMain().getChat().getServers()));
 		listServersLayout.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		listServersLayout.setLayoutOrientation(JList.VERTICAL);
 		listServersLayout.setVisibleRowCount(-1);
@@ -75,7 +77,7 @@ public class ChatPanel extends JPanel implements ActionListener, MouseListener, 
 	/** Est chargée d'envoyer le contenu de la zone de texte. Cette action est lancée par les événements. */
 	private void sendMessage(){
 		if( !textfield.getText().equals("") ){
-			Main.getChat().sendMessage(textfield.getText());
+			window.getMain().getChat().sendMessage(textfield.getText());
 			updateMessages();
 			textfield.setText("");
 		}
@@ -89,7 +91,7 @@ public class ChatPanel extends JPanel implements ActionListener, MouseListener, 
 	
 	/** Met à jour les messages affichées en les récupérant depuis core.Main.getChat().getMessage() */
 	public void updateMessages(){
-		String[] datas = Main.getChat().getMessages();
+		String[] datas = window.getMain().getChat().getMessages();
 		String s = "";
 		for( int i = 0; i < datas.length; i++ ){
 			s += datas[i] + "\n";
@@ -100,8 +102,8 @@ public class ChatPanel extends JPanel implements ActionListener, MouseListener, 
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getClickCount() == 2 && ( timeFirstClick - System.currentTimeMillis() ) < 1000 ) {
-			Main.getChat().setServer(listServersLayout.locationToIndex(e.getPoint()));
-			serverName.setText(Main.getChat().getServer());
+			window.getMain().getChat().setServer(listServersLayout.locationToIndex(e.getPoint()));
+			serverName.setText(window.getMain().getChat().getServer());
 			updateMessages();
 			onglet.setSelectedIndex(0);
 		}

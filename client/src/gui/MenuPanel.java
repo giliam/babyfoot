@@ -56,7 +56,7 @@ public class MenuPanel extends BPanel implements ActionListener {
 	
 	public void actionPerformed(ActionEvent e) {
 		if( e.getSource() == bQuit ){
-			Main.closeWindow();
+			window.getMain().closeWindow();
 		}else if( e.getSource() == bNewGame ){
 			window.setContentPane(new NewPanel(window));
 		    window.setVisible(true);

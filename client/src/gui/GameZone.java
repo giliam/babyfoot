@@ -52,8 +52,10 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	
 	private boolean testMode;
 	
+	private MainFrame window;
+	
 	@SuppressWarnings("unchecked")
-	public GameZone(boolean testMode){
+	public GameZone(MainFrame window, boolean testMode){
 		this.testMode = testMode;
 		
 		yDecalDefault = new Hashtable<RodPositions, Integer>();
@@ -225,13 +227,13 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 				limiInf = 220;
 				break;
 		}
-		int upOrDown = Main.getPlayer().getSide() == Utils.Sides.BOTTOM ? 0 : 1;
+		int upOrDown = getWindow().getMain().getPlayer().getSide() == Utils.Sides.BOTTOM ? 0 : 1;
 		if( up && yDecal[upOrDown].get(rodPosition) > (limitSup+2*path) ){
 			/*yDecal[upOrDown].put(rodPosition, yDecal[upOrDown].get(rodPosition)-path);
 			Main.getPlayer().setRod(yDecal[upOrDown]);
 			repaint();*/
 			yDecal[upOrDown].put(rodPosition, yDecal[upOrDown].get(rodPosition)-path);
-			Main.getPlayer().setRod(yDecal[upOrDown]);
+			getWindow().getMain().getPlayer().setRod(yDecal[upOrDown]);
 			repaint();
 		}else if( !up && yDecal[upOrDown].get(rodPosition) < (limiInf-2*path) ){
 			/*
@@ -239,7 +241,7 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 			Main.getPlayer().setRod(yDecal[upOrDown]);
 			repaint();*/
 			yDecal[upOrDown].put(rodPosition, yDecal[upOrDown].get(rodPosition)+path);
-			Main.getPlayer().setRod(yDecal[upOrDown]);
+			getWindow().getMain().getPlayer().setRod(yDecal[upOrDown]);
 			repaint();
 		}
 	}
@@ -251,22 +253,22 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 
 	public void keyTyped(KeyEvent e) {
 		if( e.getKeyChar() == 'a' || e.getKeyChar() == 'A' ){
-			if( Main.getPlayer().getRodAvailables().get(RodPositions.GARDIEN) ){
+			if( getWindow().getMain().getPlayer().getRodAvailables().get(RodPositions.GARDIEN) ){
 				rodPosition = RodPositions.GARDIEN;
 				repaint();
 			}
 		}else if( e.getKeyChar() == 'z'|| e.getKeyChar() == 'Z' ){
-			if( Main.getPlayer().getRodAvailables().get(RodPositions.DEFENSE) ){
+			if( getWindow().getMain().getPlayer().getRodAvailables().get(RodPositions.DEFENSE) ){
 				rodPosition = RodPositions.DEFENSE;
 				repaint();
 			}
 		}else if( e.getKeyChar() == 'e'|| e.getKeyChar() == 'E' ){
-			if( Main.getPlayer().getRodAvailables().get(RodPositions.MILIEU) ){
+			if( getWindow().getMain().getPlayer().getRodAvailables().get(RodPositions.MILIEU) ){
 				rodPosition = RodPositions.MILIEU;
 				repaint();
 			}
 		}else if( e.getKeyChar() == 'r'|| e.getKeyChar() == 'R' ){
-			if( Main.getPlayer().getRodAvailables().get(RodPositions.ATTAQUE) ){
+			if( getWindow().getMain().getPlayer().getRodAvailables().get(RodPositions.ATTAQUE) ){
 				rodPosition = RodPositions.ATTAQUE;
 				repaint();
 			}
@@ -320,6 +322,16 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 		ballY = j;
 		refreshRodPositions( positions, side );
 	}
+
+
+	public MainFrame getWindow() {
+		return window;
+	}
+
+
+	public void setWindow(MainFrame window) {
+		this.window = window;
+	}
 }
 
 
@@ -332,7 +344,8 @@ class RefreshRods implements Runnable {
 	
 	public void run() {
 		while(true){
-			gamezone.refreshPositions(Main.getClient().getGc().getPositions(Main.getPlayer().getLogin()), Main.getPlayer().getSide(), Main.getClient().getGc().getBallX(), Main.getClient().getGc().getBallY() );
+			gamezone.refreshPositions(gamezone.getWindow().getMain().getClient().getGc().getPositions(gamezone.getWindow().getMain().getPlayer().getLogin()), 
+					gamezone.getWindow().getMain().getPlayer().getSide(), gamezone.getWindow().getMain().getClient().getGc().getBallX(), gamezone.getWindow().getMain().getClient().getGc().getBallY() );
 			try{
 				Thread.sleep(20);
 			}catch( InterruptedException e ){

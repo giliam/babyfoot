@@ -44,7 +44,7 @@ public class ConnexionPanel extends BPanel implements ActionListener, KeyListene
 	 */
 	public void actionPerformed(ActionEvent e) {
 		if( e.getSource() == bQuit ){
-			Main.closeWindow();
+			window.getMain().closeWindow();
 		}else if( e.getSource() == bConnect ){
 			logIn();
 		}
@@ -61,7 +61,7 @@ public class ConnexionPanel extends BPanel implements ActionListener, KeyListene
 			if( s.split("-").length > 1){
 				error.setForeground(Color.RED);
 				error.setText("Login contenant un tiret ce qui n'est pas permis ! ");
-			}else if( Main.getPlayer().addPlayer(s) ) {
+			}else if( window.getMain().getPlayer().addPlayer(s) ) {
 				
 				window.setContentPane(new MenuPanel(window));
 		    	window.setVisible(true);
