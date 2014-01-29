@@ -46,11 +46,16 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	
 	public static enum RodPositions { GARDIEN , DEFENSE, MILIEU, ATTAQUE };
 	RodPositions rodPosition;
+	
 	private int ballX;
 	private int ballY;
 	
+	private boolean testMode;
+	
 	@SuppressWarnings("unchecked")
-	public GameZone(){
+	public GameZone(boolean testMode){
+		this.testMode = testMode;
+		
 		yDecalDefault = new Hashtable<RodPositions, Integer>();
 		yDecalDefault.put(RodPositions.GARDIEN, 100);
 		yDecalDefault.put(RodPositions.DEFENSE, 150);
@@ -75,9 +80,10 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	    addMouseMotionListener(this);
 	    setFocusable(true);
 	    requestFocus();
-	    
-	    Thread tr = new Thread(new RefreshRods(this));
-	    tr.start();
+	    if( !testMode ){
+		    Thread tr = new Thread(new RefreshRods(this));
+		    tr.start();
+	    }
 	}
 	
 

@@ -23,8 +23,8 @@ public class Match {
 	private int ballSpeedX;
 	private int ballSpeedY;
 	
-	private final int STEP_X = 1;
-	private final int STEP_Y = 1;
+	private final int STEP_X = 2;
+	private final int STEP_Y = 2;
 	
 	final int BALL_RADIUS = 25;
 	
@@ -191,8 +191,8 @@ public class Match {
 	public void start() {
 		setBallX(450);
 		setBallY(350);
-		setBallSpeedX(( Math.random() > 0.5 ? 5 : -5 ));
-		setBallSpeedY(( Math.random() > 0.5 ? 5 : -5 ));
+		setBallSpeedX(( Math.random() > 0.5 ? 15 : -15 ));
+		setBallSpeedY(( Math.random() > 0.5 ? 15 : -15 ));
 		Thread t = new Thread(new RefreshBallPosition(this));
 		t.start();
 	}
@@ -249,17 +249,25 @@ class RefreshBallPosition implements Runnable {
 	public void run() {
 		try{
 			while(true){
-				System.out.println(match.getBallX() + " - " + match.getBallSpeedY());
+				
 				if( ( match.getBallX() + match.getBallSpeedX() ) >=  match.BALL_RADIUS ) {
-					if( ( match.getBallX() + match.getBallSpeedX() ) <  ( 900 - match.BALL_RADIUS ) ){
-						match.addBallX(match.getBallSpeedX());
+					if( ( match.getBallX() + match.getBallSpeedX() ) >=  ( 900 - match.BALL_RADIUS ) ){
+						match.setBallSpeedX((-1)*match.getBallSpeedX());
 					}
+				}else if( match.getBallSpeedX() < 0 ){
+					match.setBallSpeedX((-1)*match.getBallSpeedX());
 				}
+				
 				if( ( match.getBallY() + match.getBallSpeedY() ) >=  match.BALL_RADIUS ){
-					if( ( match.getBallY() + match.getBallSpeedY() ) <  ( 700 - match.BALL_RADIUS ) ){
-						match.addBallY(match.getBallSpeedY());
+					if( ( match.getBallY() + match.getBallSpeedY() ) >=  ( 700 - match.BALL_RADIUS ) ){
+						match.setBallSpeedY((-1)*match.getBallSpeedY());
 					}
+				}else if( match.getBallSpeedY() < 0 ){
+					match.setBallSpeedY((-1)*match.getBallSpeedY());
 				}
+				match.addBallX(match.getBallSpeedX());
+				match.addBallY(match.getBallSpeedY());
+				
 				Thread.sleep(100);
 			}
 		}catch(InterruptedException e){

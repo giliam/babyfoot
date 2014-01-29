@@ -31,7 +31,7 @@ public class MatchServer extends AbstractServer {
     		setRod(login, positions);
     	}else if(task.equals("getpositions")){
     		String login = datas[2];
-    		sendPositions( getRodPositions(login), getBallPositions(login), out );
+    		sendPositions( login, out );
     	}else if(task.equals("getserverslist")){
     		getServersList( out );
     	}else if( task.equals( "getmatchinfo" ) ){
@@ -128,7 +128,7 @@ public class MatchServer extends AbstractServer {
 	
 	private String getBallPositions(String login) {
 		Match m = Server.tplayer.getPlayer(login).getMatch();
-		return m.getBallX() + "-" + m.getBallY();
+		return Math.abs(m.getBallX()) + "-" + Math.abs(m.getBallY());
 	}
 
 	private void setRod(String login, int[] positions) {
@@ -156,7 +156,10 @@ public class MatchServer extends AbstractServer {
 		return true;
 	}
 
-	public void sendPositions(int[][] datas, String ballPositions, PrintWriter out){
+	public void sendPositions( String login, PrintWriter out){
+		int[][] datas = getRodPositions(login);
+		String ballPositions = getBallPositions(login);
+		
 		String display = "positions";
 		for( int i = 0; i < 2; i++ ){
 			for( int j = 0; j < 4; j++ ){
@@ -164,6 +167,8 @@ public class MatchServer extends AbstractServer {
 			}
 		}
 		display += "-" + ballPositions;
+		System.out.println(display);
+		
 		out.println(display);
 		out.flush();
 	}

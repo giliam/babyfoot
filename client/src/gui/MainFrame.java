@@ -25,7 +25,7 @@ public class MainFrame extends JFrame implements WindowListener {
 	    //Quand on veut tester le programme complet
 	    setContentPane(new ConnexionPanel(this));
 	    //Quand on veut tester l'interface du jeu
-	    //setContentPane(new GamePanel(this));
+	    //setContentPane(new GamePanel(this, true));
 	    setResizable(false);
 	    setVisible(true);
 	}

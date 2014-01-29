@@ -127,8 +127,8 @@ class GameReceptionMessage implements Runnable{
 	            		for( int i = 0; i<8; i++ ){
 	            			gc.rodPositions[i] = datas[i+1];
 	            		}
-            			gc.setBallX(Integer.valueOf(datas[8]));
-            			gc.setBallY(Integer.valueOf(datas[9]));
+            			gc.setBallX(Integer.valueOf(datas[9]));
+            			gc.setBallY(Integer.valueOf(datas[10]));
 					}
             	}
 			}
