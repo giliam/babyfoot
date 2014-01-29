@@ -37,7 +37,7 @@ public class Main {
 		return player;
 	}
 	public void setPlayer(Player player) {
-		player = player;
+		this.player = player;
 	}
 
 	public Chat getChat() {
@@ -45,7 +45,7 @@ public class Main {
 	}
 
 	public void setChat(Chat chat) {
-		chat = chat;
+		this.chat = chat;
 	}
 	
 	public Client getClient() {
@@ -53,7 +53,7 @@ public class Main {
 	}
 
 	public void setClient(Client client) {
-		client = client;
+		this.client = client;
 	}
 }
 
