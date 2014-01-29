@@ -163,12 +163,10 @@ public class MatchServer extends AbstractServer {
 		String display = "positions";
 		for( int i = 0; i < 2; i++ ){
 			for( int j = 0; j < 4; j++ ){
-				display += "-" + datas[i][j];
+				display += "-" + Math.abs( datas[i][j] );
 			}
 		}
 		display += "-" + ballPositions;
-		System.out.println(display);
-		
 		out.println(display);
 		out.flush();
 	}

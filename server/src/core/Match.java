@@ -26,6 +26,8 @@ public class Match {
 	private final int STEP_X = 2;
 	private final int STEP_Y = 2;
 	
+	final int LINE_STRENGTH = 0;
+	final int GAP_EDGE = 2*20;	
 	final int BALL_RADIUS = 25;
 	
 	public static enum RodPositions { GARDIEN , DEFENSE, MILIEU, ATTAQUE };
@@ -250,7 +252,7 @@ class RefreshBallPosition implements Runnable {
 		try{
 			while(true){
 				
-				if( ( match.getBallX() + match.getBallSpeedX() ) >=  match.BALL_RADIUS ) {
+				if( ( match.getBallX() + match.getBallSpeedX() ) >=  ( match.BALL_RADIUS + 15 ) ) {
 					if( ( match.getBallX() + match.getBallSpeedX() ) >=  ( 900 - match.BALL_RADIUS ) ){
 						match.setBallSpeedX((-1)*match.getBallSpeedX());
 					}
@@ -258,8 +260,8 @@ class RefreshBallPosition implements Runnable {
 					match.setBallSpeedX((-1)*match.getBallSpeedX());
 				}
 				
-				if( ( match.getBallY() + match.getBallSpeedY() ) >=  match.BALL_RADIUS ){
-					if( ( match.getBallY() + match.getBallSpeedY() ) >=  ( 700 - match.BALL_RADIUS ) ){
+				if( ( match.getBallY() + match.getBallSpeedY() ) >=  ( match.BALL_RADIUS + 15 ) ){
+					if( ( match.getBallY() + match.getBallSpeedY() ) >=  ( 700 - 2*match.BALL_RADIUS - match.GAP_EDGE ) ){
 						match.setBallSpeedY((-1)*match.getBallSpeedY());
 					}
 				}else if( match.getBallSpeedY() < 0 ){
