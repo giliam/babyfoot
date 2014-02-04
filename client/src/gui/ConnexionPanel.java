@@ -55,9 +55,10 @@ public class ConnexionPanel extends BPanel implements ActionListener, KeyListene
 	 * à défaut de mettre en place un système d'UID (Unique Identity). De plus, comme il sera présent dans les requêtes envoyées entre client et serveur, il doit respecter une certaine
 	 * nomenclature, à savoir ne pas comprendre de tiret. Au cas où l'un de ces deux tests ne seraient pas validés, un message d'erreur s'affiche. 
 	 */
-	public void logIn(){
-		if( !fpseudo.getText().equals("") ){
-			String s = fpseudo.getText();
+	public void logIn(String s){
+		if( !s.equals("") || !fpseudo.getText().equals("") ){
+			if( s.equals("") )
+				s = fpseudo.getText();
 			if( s.split("-").length > 1){
 				error.setForeground(Color.RED);
 				error.setText("Login contenant un tiret ce qui n'est pas permis ! ");
@@ -69,6 +70,10 @@ public class ConnexionPanel extends BPanel implements ActionListener, KeyListene
 				error.setText("Login déjà utilisé ! ");
 			}
 		}
+	}
+	
+	public void logIn(){
+		logIn("");
 	}
 	
 	public void keyPressed(KeyEvent event) {

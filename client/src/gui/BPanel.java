@@ -12,6 +12,7 @@ public abstract class BPanel extends JPanel {
 	MainFrame window;
 	public BPanel(MainFrame f){
 		window = f;
+		window.getMain().actualPanel = this;
 		setLayout(new BorderLayout());
 		setBackground(Color.WHITE);
 		add(new Header(),BorderLayout.NORTH);

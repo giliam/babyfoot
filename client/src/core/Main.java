@@ -1,5 +1,7 @@
 package core;
 
+import javax.swing.JPanel;
+
 import network.Client;
 import gui.MainFrame;
 
@@ -13,10 +15,13 @@ public class Main {
 	private Client client;
 	private MainFrame mainFrame;
 	
+	public JPanel actualPanel;
+	
 	public static void main(String[] args){
 		Main m = new Main();
 		m.init();
 	}
+	
 	/** Lors de la fermeture de la fenêtre, supprime le joueur du serveur puisqu'il s'est déconnecté. */
 	public void closeWindow() {
 		if( !getPlayer().getLogin().equals("") ){

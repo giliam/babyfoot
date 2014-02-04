@@ -1,6 +1,8 @@
 package test;
 
-import core.Main;
+import core.*;
+import gui.*;
+import network.*;
 
 public class Tester {
 	public static void main(String[] args){
@@ -21,5 +23,6 @@ class TesterThread implements Runnable {
 	}
 	public void run(){
 		main.init();
+		((ConnexionPanel) main.actualPanel).logIn("aogjaeignoaeg");
 	}
 }
