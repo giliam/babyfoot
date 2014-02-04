@@ -16,7 +16,7 @@ import java.util.Hashtable;
 
 import javax.imageio.ImageIO;
 
-import clientCore.Main;
+import clientCore.ClientBabyfoot;
 import clientCore.Utils;
 import clientCore.Utils.Sides;
 

@@ -4,7 +4,7 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
-import clientCore.Main;
+import clientCore.ClientBabyfoot;
 import clientCore.Utils;
 
 

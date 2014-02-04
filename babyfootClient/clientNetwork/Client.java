@@ -5,7 +5,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
-import clientCore.Main;
+import clientCore.ClientBabyfoot;
 
 
 public class Client {
@@ -22,8 +22,8 @@ public class Client {
 	private Thread tMatch;
 	private Thread tGame;
 	
-	private Main main;
-	public Client(Main m){
+	private ClientBabyfoot main;
+	public Client(ClientBabyfoot m){
 		main = m;
 		
 		Scanner sc = new Scanner(System.in);

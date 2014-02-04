@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-import clientCore.Main;
+import clientCore.ClientBabyfoot;
 
 public class PlayerClient implements Runnable {
 	private Socket socket;
@@ -14,8 +14,8 @@ public class PlayerClient implements Runnable {
     private BufferedReader in = null;
     private PlayerReceptionMessage prc;
     static boolean ok;
-    private Main main;
-    public PlayerClient(Socket s, Main m){
+    private ClientBabyfoot main;
+    public PlayerClient(Socket s, ClientBabyfoot m){
     	main = m;
         socket = s;
     }

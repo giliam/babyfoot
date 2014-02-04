@@ -18,8 +18,8 @@ public class Player {
 	private Hashtable<GameZone.RodPositions, Boolean> rodAvailables;
 	private Utils.Sides side = Utils.Sides.BOTTOM;
 	private boolean boss;
-	private Main main;
-	public Player(String l, Main m){
+	private ClientBabyfoot main;
+	public Player(String l, ClientBabyfoot m){
 		main = m;
 		
 		rodAvailables = new Hashtable<GameZone.RodPositions, Boolean>();
@@ -35,7 +35,7 @@ public class Player {
 		this("", null);
 	}
 	
-	public Player(Main m) {
+	public Player(ClientBabyfoot m) {
 		this("", m);
 	}
 

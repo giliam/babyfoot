@@ -2,7 +2,7 @@ package serverCore;
 
 import java.util.Hashtable;
 
-import serverNetwork.Server;
+import serverNetwork.ServerBabyfoot;
 
 
 public class Match {
@@ -39,7 +39,7 @@ public class Match {
 	
 	@SuppressWarnings("unchecked")
 	public Match(String login, Types type) {
-		this.player1 = Server.tplayer.getPlayer(login);
+		this.player1 = ServerBabyfoot.tplayer.getPlayer(login);
 		this.player1.setMatch(this);
 		this.type = type;
 		this.rodPositions = new Hashtable[2];

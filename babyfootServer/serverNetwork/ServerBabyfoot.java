@@ -8,7 +8,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 
-public class Server implements Runnable {
+public class ServerBabyfoot implements Runnable {
 
 	ServerSocket socketserver = null;
 	Socket socket = null;
@@ -19,7 +19,7 @@ public class Server implements Runnable {
 	public static PlayerServer tplayer;
 	public static MatchServer tmatch;
 	
-	public Server(ServerSocket s){
+	public ServerBabyfoot(ServerSocket s){
 		tmatch = new MatchServer();
 		tplayer = new PlayerServer();
 		tchat = new ChatServer();
@@ -44,7 +44,7 @@ public class Server implements Runnable {
 	public static void main(String[] args){
 		try{	
 			System.out.println("Lancement du serveur en cours...");
-			Server s = new Server(new ServerSocket(2010));
+			ServerBabyfoot s = new ServerBabyfoot(new ServerSocket(2010));
 			System.out.println("Serveur prêt !");
 			Thread serveur = new Thread(s);
 			serveur.start();
@@ -72,17 +72,17 @@ class Allocator implements Runnable{
 					String[] datas = m.split("-");
 					String typeRequete = datas[0];
 					if( typeRequete.equals("player") ){
-						Server.tplayer.setQuery(m);
-						Server.tplayer.handle(in, out);
+						ServerBabyfoot.tplayer.setQuery(m);
+						ServerBabyfoot.tplayer.handle(in, out);
 					}else if( typeRequete.equals("match") ){
-						Server.tmatch.setQuery(m);
-						Server.tmatch.handle(in, out);
+						ServerBabyfoot.tmatch.setQuery(m);
+						ServerBabyfoot.tmatch.handle(in, out);
 					}else if( typeRequete.equals("servers") ){
-						Server.tchat.setQuery(m);
-						Server.tchat.handle(in, out);
+						ServerBabyfoot.tchat.setQuery(m);
+						ServerBabyfoot.tchat.handle(in, out);
 					}else if( typeRequete.equals("chat") ){
-						Server.tchat.setQuery(m);
-						Server.tchat.handle(in, out);
+						ServerBabyfoot.tchat.setQuery(m);
+						ServerBabyfoot.tchat.handle(in, out);
 					}
 	        	}else{
 	        		break;

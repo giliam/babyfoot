@@ -48,19 +48,19 @@ public class MatchServer extends AbstractServer {
 	}
 	
 	private void stopMatch(String login) {
-		Match m = Server.tplayer.getPlayer(login).getMatch();
+		Match m = ServerBabyfoot.tplayer.getPlayer(login).getMatch();
 		m.stop();
 		m = null;
 	}
 
 	private void runMatch(String login, PrintWriter out) {
-		Match m = Server.tplayer.getPlayer(login).getMatch();
+		Match m = ServerBabyfoot.tplayer.getPlayer(login).getMatch();
 		m.setState(Match.States.PLAYING);
 		m.start();
 	}
 
 	private void getMatchInfo(String login, PrintWriter out) {
-		Match m = Server.tplayer.getPlayer(login).getMatch();
+		Match m = ServerBabyfoot.tplayer.getPlayer(login).getMatch();
 		if( m == null ){
 			out.println("matchinfo-deleted");
 			out.flush();
@@ -113,7 +113,7 @@ public class MatchServer extends AbstractServer {
 	}
 
 	private int[][] getRodPositions(String login) {
-		Match m = Server.tplayer.getPlayer(login).getMatch();
+		Match m = ServerBabyfoot.tplayer.getPlayer(login).getMatch();
 		int[][] r = new int[2][4];
 		r[0][0] = Math.abs(m.getRodPosition(false,RodPositions.GARDIEN));
 		r[0][1] = Math.abs(m.getRodPosition(false,RodPositions.DEFENSE));
@@ -128,12 +128,12 @@ public class MatchServer extends AbstractServer {
 	}
 	
 	private String getBallPositions(String login) {
-		Match m = Server.tplayer.getPlayer(login).getMatch();
+		Match m = ServerBabyfoot.tplayer.getPlayer(login).getMatch();
 		return Math.abs(m.getBallX()) + "-" + Math.abs(m.getBallY());
 	}
 
 	private void setRod(String login, int[] positions) {
-		Match m = Server.tplayer.getPlayer(login).getMatch();
+		Match m = ServerBabyfoot.tplayer.getPlayer(login).getMatch();
 		Hashtable<RodPositions, Integer> positionsToSend = new Hashtable<RodPositions, Integer>();
 		
 		positionsToSend.put(RodPositions.GARDIEN, positions[0]);
@@ -141,7 +141,7 @@ public class MatchServer extends AbstractServer {
 		positionsToSend.put(RodPositions.MILIEU, positions[2]);
 		positionsToSend.put(RodPositions.ATTAQUE, positions[3]);
 		
-		m.setRodPositions( positionsToSend, Server.tplayer.getPlayer(login).getSide() );
+		m.setRodPositions( positionsToSend, ServerBabyfoot.tplayer.getPlayer(login).getSide() );
 	}
 
 	private boolean addMatch(int type, String login){
@@ -153,7 +153,7 @@ public class MatchServer extends AbstractServer {
 		   }
 		}
 		liste.add(new Match(login, type == 1 ? Match.Types.ONEVSONE : ( type == 2 ? Match.Types.TWOVSTWO : Match.Types.ONEVSTWO )));
-		Server.tplayer.getPlayer(login).setSide(Utils.Sides.BOTTOM);
+		ServerBabyfoot.tplayer.getPlayer(login).setSide(Utils.Sides.BOTTOM);
 		return true;
 	}
 

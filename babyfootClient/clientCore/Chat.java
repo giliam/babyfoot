@@ -4,7 +4,7 @@ package clientCore;
 un message, changer de serveur et récupérer les messages d'un serveur. */
 public class Chat {
 	private String server = "Global";
-	private Main main;
+	private ClientBabyfoot main;
 	
 	public String getServer() {
 		return server;
@@ -14,7 +14,7 @@ public class Chat {
 		this.server = server;
 	}
 
-	public Chat(Main m){
+	public Chat(ClientBabyfoot m){
 		main = m;
 	}
 	

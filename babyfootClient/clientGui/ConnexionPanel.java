@@ -5,7 +5,7 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
-import clientCore.Main;
+import clientCore.ClientBabyfoot;
 
 
 /** Cette classe s'occupe du premier écran affiché lors du lancement du jeu, c'est-à-dire un écran de connexion qui permet à l'utilisateur de choisir un pseudonyme.

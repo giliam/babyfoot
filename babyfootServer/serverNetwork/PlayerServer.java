@@ -43,7 +43,7 @@ public class PlayerServer extends AbstractServer {
 	private void removePlayer(String login) {
 		if( liste.containsKey(login)){
 			((Player)liste.get(login)).getMatch().removePlayer(login);
-			Server.tmatch.removeFromListe(((Player)liste.get(login)).getMatch());
+			ServerBabyfoot.tmatch.removeFromListe(((Player)liste.get(login)).getMatch());
 			liste.remove(login);
 		}
 	}

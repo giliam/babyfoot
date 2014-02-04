@@ -6,19 +6,19 @@ import clientNetwork.*;
 
 public class Tester {
 	public static void main(String[] args){
-		Main m1 = new Main();
+		ClientBabyfoot m1 = new ClientBabyfoot();
 		Thread t1 = new Thread(new TesterThread(m1));
 		t1.start();
 		
-		Main m2 = new Main();
+		ClientBabyfoot m2 = new ClientBabyfoot();
 		Thread t2 = new Thread(new TesterThread(m2));
 		t2.start();
 	}
 }
 
 class TesterThread implements Runnable {
-	private Main main;
-	public TesterThread(Main m){
+	private ClientBabyfoot main;
+	public TesterThread(ClientBabyfoot m){
 		main = m;
 	}
 	public void run(){

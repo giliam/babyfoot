@@ -5,7 +5,7 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
-import clientCore.Main;
+import clientCore.ClientBabyfoot;
 
 
 @SuppressWarnings("serial")

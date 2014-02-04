@@ -12,7 +12,7 @@ import clientNetwork.Client;
  * du programme, c'est-à-dire le client, pour la connexion avec le serveur, le système de chat et le joueur. Elle lance
  * ensuite la classe MainFrame du package gui.
  */
-public class Main {
+public class ClientBabyfoot {
 	private Player player;
 	private Chat chat;
 	private Client client;
@@ -21,7 +21,7 @@ public class Main {
 	public JPanel actualPanel;
 	
 	public static void main(String[] args){
-		Main m = new Main();
+		ClientBabyfoot m = new ClientBabyfoot();
 		m.init();
 	}
 	

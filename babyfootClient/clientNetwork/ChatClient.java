@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-import clientCore.Main;
+import clientCore.ClientBabyfoot;
 import clientCore.Utils;
 
 
@@ -16,9 +16,9 @@ public class ChatClient implements Runnable {
     private BufferedReader in = null;
     public ChatReceptionMessage rc;
     public static String[][] s;
-    private Main main;
+    private ClientBabyfoot main;
     
-    public ChatClient(Socket s, Main m){
+    public ChatClient(Socket s, ClientBabyfoot m){
     	main = m;
     	ChatClient.s = new String[2][];
         socket = s;

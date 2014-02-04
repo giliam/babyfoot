@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-import clientCore.Main;
+import clientCore.ClientBabyfoot;
 
 public class GameClient implements Runnable {
 	private Socket socket;
@@ -17,10 +17,10 @@ public class GameClient implements Runnable {
     private int ballX;
     private int ballY;
 	public boolean go;
-	private Main main;
+	private ClientBabyfoot main;
 	private Thread tReceptionMessage;
     
-    public GameClient(Socket s, Main m){
+    public GameClient(Socket s, ClientBabyfoot m){
     	setMain(m);
         socket = s;
         go = false;
@@ -97,11 +97,11 @@ public class GameClient implements Runnable {
 		tReceptionMessage.start();
 	}
 
-	public Main getMain() {
+	public ClientBabyfoot getMain() {
 		return main;
 	}
 
-	public void setMain(Main main) {
+	public void setMain(ClientBabyfoot main) {
 		this.main = main;
 	}
 }
