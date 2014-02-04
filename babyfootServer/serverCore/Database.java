@@ -1,4 +1,4 @@
-package core;
+package serverCore;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

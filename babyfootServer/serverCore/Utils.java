@@ -1,4 +1,4 @@
-package core;
+package serverCore;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

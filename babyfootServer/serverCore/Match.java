@@ -1,8 +1,9 @@
-package core;
+package serverCore;
 
 import java.util.Hashtable;
 
-import network.Server;
+import serverNetwork.Server;
+
 
 public class Match {
 	private int leftScore;

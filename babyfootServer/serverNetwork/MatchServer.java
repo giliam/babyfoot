@@ -1,4 +1,4 @@
-package network;
+package serverNetwork;
 
 import java.io.BufferedReader;
 import java.io.PrintWriter;
@@ -6,9 +6,10 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import core.Match;
-import core.Utils;
-import core.Match.RodPositions;
+import serverCore.Match;
+import serverCore.Utils;
+import serverCore.Match.RodPositions;
+
 
 public class MatchServer extends AbstractServer {
 	

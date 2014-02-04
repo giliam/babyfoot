@@ -1,11 +1,12 @@
-package network;
+package serverNetwork;
 
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.util.HashMap;
 
-import core.Match;
-import core.Player;
+import serverCore.Match;
+import serverCore.Player;
+
 
 public class PlayerServer extends AbstractServer {
 	private HashMap<String, Player> liste = new HashMap<String, Player>();

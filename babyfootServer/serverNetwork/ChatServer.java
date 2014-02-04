@@ -1,11 +1,12 @@
-package network;
+package serverNetwork;
 
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 
+import serverCore.Database;
+import serverCore.Utils;
 
-import core.Database;
-import core.Utils;
+
 
 public class ChatServer extends AbstractServer {
 	private Database db;
