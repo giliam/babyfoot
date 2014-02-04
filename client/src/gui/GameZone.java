@@ -56,6 +56,7 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	
 	@SuppressWarnings("unchecked")
 	public GameZone(MainFrame window, boolean testMode){
+		this.window = window;
 		this.testMode = testMode;
 		
 		yDecalDefault = new Hashtable<RodPositions, Integer>();
@@ -304,14 +305,10 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 			yDecal[0].put(RodPositions.ATTAQUE, Integer.valueOf(rodPositions[3]));
 		}else{
 			System.out.println("MAJ DOWN");
-			if( rodPositions[4] != null )
-				yDecal[1].put(RodPositions.GARDIEN, Integer.valueOf(rodPositions[4]));
-			if( rodPositions[5] != null )
-				yDecal[1].put(RodPositions.DEFENSE, Integer.valueOf(rodPositions[5]));
-			if( rodPositions[6] != null )
-				yDecal[1].put(RodPositions.MILIEU, Integer.valueOf(rodPositions[6]));
-			if( rodPositions[7] != null )
-				yDecal[1].put(RodPositions.ATTAQUE, Integer.valueOf(rodPositions[7]));
+			yDecal[1].put(RodPositions.GARDIEN, Integer.valueOf(rodPositions[4]));
+			yDecal[1].put(RodPositions.DEFENSE, Integer.valueOf(rodPositions[5]));
+			yDecal[1].put(RodPositions.MILIEU, Integer.valueOf(rodPositions[6]));
+			yDecal[1].put(RodPositions.ATTAQUE, Integer.valueOf(rodPositions[7]));
 		}
 		repaint();
 	}
