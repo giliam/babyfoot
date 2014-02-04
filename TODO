@@ -1,7 +1,7 @@
 ===========
 PROCHAINS JOURS
 ===========
-	-- Tester connectivité avec les différentes positions des barres
+	-- Tester nouvelles requêtes
 	-- Ajouter restriction des joueurs à certaines barres
 	-- Améliorer la représentation du choix de la barre
 	-- Pas oublier suppression partie quand un joueur quitte une liste d'attente, une création de partie etc.
