@@ -40,7 +40,7 @@ public class ChatClient implements Runnable {
     }
     
     public void sendMessage(String text){
-    	out.println("chat-add-" + main.getChat().getServer() + "-" + main.getPlayer().getLogin() + "-" + Utils.hash( main.getChat().getServer() + "salt" + text + main.getPlayer().getLogin() + "42$1a" ) + "-" + text);
+    	out.println("chat" + Utils.SEPARATOR + "add" + Utils.SEPARATOR + main.getChat().getServer() + Utils.SEPARATOR + main.getPlayer().getLogin() + Utils.SEPARATOR + Utils.hash( main.getChat().getServer() + "salt" + text + main.getPlayer().getLogin() + "42$1a" ) + Utils.SEPARATOR + text);
 		out.flush();
     }
     /*
@@ -63,7 +63,7 @@ public class ChatClient implements Runnable {
     }*/
 
 	public String[] getServers() {
-		out.println("servers-get");
+		out.println("servers" + Utils.SEPARATOR + "get");
 		out.flush();
 		try {
 			Thread.currentThread();
@@ -75,7 +75,7 @@ public class ChatClient implements Runnable {
 	}
 
 	public String[] getMessages(String server) {
-		out.println("chat-get-" + server);
+		out.println("chat" + Utils.SEPARATOR + "get" + Utils.SEPARATOR + server);
 		out.flush();
 		try {
 			Thread.currentThread();
@@ -123,14 +123,14 @@ class ChatReceptionMessage implements Runnable{
 		while(true){
             try {
             	String message = in.readLine();
-            	if( ( message.equals("server-beginning") ||message.equals("chat-beginning") ) && mode == 0 ){
-            		if( message.equals("chat-beginning") )
+            	if( ( message.equals("server" + Utils.SEPARATOR + "beginning") ||message.equals("chat" + Utils.SEPARATOR + "beginning") ) && mode == 0 ){
+            		if( message.equals("chat" + Utils.SEPARATOR + "beginning") )
             			type = 1;
             		mode = 1;
             	}else if( mode == 1 ){
             		ChatClient.s[type] = new String[Integer.valueOf(message)];
             		mode = 2;
-            	}else if( ( message.equals("server-end")||message.equals("chat-end")) && mode == 2 ){
+            	}else if( ( message.equals("server" + Utils.SEPARATOR + "end")||message.equals("chat" + Utils.SEPARATOR + "end")) && mode == 2 ){
             		mode = 0;
             		n = 0;
             		type = 0;

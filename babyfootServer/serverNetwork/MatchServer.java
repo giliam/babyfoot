@@ -6,8 +6,8 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import clientCore.Utils;
 import serverCore.Match;
-import serverCore.Utils;
 import serverCore.Match.RodPositions;
 
 
@@ -16,7 +16,7 @@ public class MatchServer extends AbstractServer {
 	private LinkedList<Match> liste = new LinkedList<Match>();
 	
 	public void handle(BufferedReader in, PrintWriter out){
-		String[] datas = query.split("-");
+		String[] datas = query.split(Utils.SEPARATOR);
 		String task = datas[1];
     	if( task.equals("add") ){
     		int type = Integer.valueOf(datas[3]);
@@ -62,30 +62,30 @@ public class MatchServer extends AbstractServer {
 	private void getMatchInfo(String login, PrintWriter out) {
 		Match m = ServerBabyfoot.tplayer.getPlayer(login).getMatch();
 		if( m == null ){
-			out.println("matchinfo-deleted");
+			out.println("matchinfo" + Utils.SEPARATOR + "deleted");
 			out.flush();
 		}else{
-			out.println("matchinfo-beginning");
-			String display = String.valueOf( m.getState() == Match.States.PLAYING ? 1 : 0 ) + "-";
+			out.println("matchinfo" + Utils.SEPARATOR + "beginning");
+			String display = String.valueOf( m.getState() == Match.States.PLAYING ? 1 : 0 ) + Utils.SEPARATOR;
 			display += String.valueOf(m.getType() == Match.Types.TWOVSTWO ? 2 : ( m.getType() == Match.Types.ONEVSONE ? 1 : 3 ));
 			if( m.getPlayer1() != null ){
-				display += "-" + m.getPlayer1().getLogin();
+				display += Utils.SEPARATOR + m.getPlayer1().getLogin();
 			}if( m.getPlayer2() != null ){
-				display += "-" + ( m.getType() == Match.Types.TWOVSTWO ? "" : " -" ) + m.getPlayer2().getLogin();
+				display += Utils.SEPARATOR + ( m.getType() == Match.Types.TWOVSTWO ? "" : " " + Utils.SEPARATOR ) + m.getPlayer2().getLogin();
 			}if( m.getPlayer3() != null ){
-				display += "-" + ( m.getType() == Match.Types.TWOVSTWO ? " -" : "" ) + m.getPlayer3().getLogin();
+				display += Utils.SEPARATOR + ( m.getType() == Match.Types.TWOVSTWO ? " " + Utils.SEPARATOR : "" ) + m.getPlayer3().getLogin();
 			}if( m.getPlayer4() != null ){
-				display += "-" + m.getPlayer4().getLogin();
+				display += Utils.SEPARATOR + m.getPlayer4().getLogin();
 			}
-			display += "- - - - ";
+			display += Utils.SEPARATOR + " " + Utils.SEPARATOR + " " + Utils.SEPARATOR + " " + Utils.SEPARATOR + " ";
 			out.println(display);
-			out.println("matchinfo-end");
+			out.println("matchinfo" + Utils.SEPARATOR + "end");
 			out.flush();
 		}
 	}
 
 	private void getServersList(PrintWriter out) {
-		out.println("matchlist-beginning");
+		out.println("matchlist" + Utils.SEPARATOR + "beginning");
 		out.println(liste.size());
 		Iterator<Match> it = liste.iterator();
 		while ( it.hasNext() ){
@@ -108,7 +108,7 @@ public class MatchServer extends AbstractServer {
 			display += " - " + i + " joueur(s) / " + ( m.getType() == Match.Types.ONEVSONE ? "2" : ( m.getType() == Match.Types.TWOVSTWO ? "4" : "3" ) );
 			out.println(display);
 		}
-		out.println("matchlist-end");
+		out.println("matchlist" + Utils.SEPARATOR + "end");
 		out.flush();
 	}
 
@@ -129,7 +129,7 @@ public class MatchServer extends AbstractServer {
 	
 	private String getBallPositions(String login) {
 		Match m = ServerBabyfoot.tplayer.getPlayer(login).getMatch();
-		return Math.abs(m.getBallX()) + "-" + Math.abs(m.getBallY());
+		return Math.abs(m.getBallX()) + Utils.SEPARATOR + Math.abs(m.getBallY());
 	}
 
 	private void setRod(String login, int[] positions) {
@@ -164,10 +164,10 @@ public class MatchServer extends AbstractServer {
 		String display = "positions";
 		for( int i = 0; i < 2; i++ ){
 			for( int j = 0; j < 4; j++ ){
-				display += "-" + Math.abs( datas[i][j] );
+				display += Utils.SEPARATOR + Math.abs( datas[i][j] );
 			}
 		}
-		display += "-" + ballPositions;
+		display += Utils.SEPARATOR + ballPositions;
 		out.println(display);
 		out.flush();
 	}

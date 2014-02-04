@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 import clientCore.ClientBabyfoot;
+import clientCore.Utils;
 
 public class GameClient implements Runnable {
 	private Socket socket;
@@ -50,12 +51,12 @@ public class GameClient implements Runnable {
     }
     
     public void setRodPositions(String login, int[] rodPositions) {
-		out.println("match-setrod-" + login + "-" + rodPositions[0] + "-" + rodPositions[1] + "-"  + rodPositions[2] + "-"  + rodPositions[3] );
+		out.println("match" + Utils.SEPARATOR + "setrod" + Utils.SEPARATOR + login + Utils.SEPARATOR + rodPositions[0] + Utils.SEPARATOR + rodPositions[1] + Utils.SEPARATOR  + rodPositions[2] + Utils.SEPARATOR  + rodPositions[3] );
     	out.flush();
 	}
     
     public String[] getPositions(String login) {
-		out.println("match-getpositions-" + login );
+		out.println("match" + Utils.SEPARATOR + "getpositions" + Utils.SEPARATOR + login );
     	out.flush();
     	return rodPositions;
 	}
@@ -127,7 +128,7 @@ class GameReceptionMessage implements Runnable{
 				gc.getPositions( gc.getMain().getPlayer().getLogin() );
             	message = in.readLine();
             	if( message != null ){
-	            	String[] datas = message.split("-");
+	            	String[] datas = message.split(Utils.SEPARATOR);
 	            	if( datas.length < 9 ){
 	            		System.err.println("ajrzeioanra");
 	            		System.exit(0);

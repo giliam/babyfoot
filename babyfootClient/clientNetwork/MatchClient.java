@@ -37,12 +37,13 @@ public class MatchClient implements Runnable {
     }
     
 	public void setRodPositions(String login, int[] rodPositions) {
-		out.println("match-setrod-" + login + "-" + rodPositions[0] + "-" + rodPositions[1] + "-"  + rodPositions[2] + "-"  + rodPositions[3] );
+		out.println("match" + Utils.SEPARATOR + "setrod" + Utils.SEPARATOR + login + Utils.SEPARATOR 
+				+ rodPositions[0] + Utils.SEPARATOR + rodPositions[1] + Utils.SEPARATOR + rodPositions[2] + Utils.SEPARATOR + rodPositions[3] );
     	out.flush();
 	}
 
 	public String[] getServers() {
-		out.println("match-getserverslist" );
+		out.println("match" + Utils.SEPARATOR + "getserverslist" );
     	out.flush();
 		try {
 			Thread.currentThread();
@@ -54,7 +55,7 @@ public class MatchClient implements Runnable {
 	}
 
 	public boolean setServerFromHost(String login, String loginHost) {
-		out.println("player-joinmatch-" + login + "-" + loginHost );
+		out.println("player" + Utils.SEPARATOR + "joinmatch" + Utils.SEPARATOR + login + Utils.SEPARATOR + loginHost );
     	out.flush();
     	try {
 			Thread.currentThread();
@@ -71,7 +72,7 @@ public class MatchClient implements Runnable {
 	}
 	
 	public String[] getMatchInfo(String login) {
-		out.println("match-getmatchinfo-" + login );
+		out.println("match" + Utils.SEPARATOR + "getmatchinfo" + Utils.SEPARATOR + login );
     	out.flush();
 		try {
 			Thread.currentThread();
@@ -158,7 +159,7 @@ public class MatchClient implements Runnable {
 	}
 
 	public void runMatch(String login) {
-		out.println("match-run-" + login );
+		out.println("match" + Utils.SEPARATOR + "run" + Utils.SEPARATOR + login );
     	out.flush();
 		try {
 			Thread.currentThread();
@@ -169,7 +170,7 @@ public class MatchClient implements Runnable {
 	}
 
 	public void stopMatch(String login) {
-		out.println("match-stop-" + login );
+		out.println("match" + Utils.SEPARATOR + "stop" + Utils.SEPARATOR + login );
     	out.flush();
 		
 	}
@@ -207,11 +208,11 @@ class MatchReceptionMessage implements Runnable{
 		try {
 			while(true){
             	String message = in.readLine();
-            	if(message.equals("matchinfo-deleted")){
+            	if(message.equals("matchinfo" + Utils.SEPARATOR + "deleted")){
             		matchClient.deleteMatch();
             	}
-            	if( ( message.equals("matchlist-beginning") || message.equals("matchinfo-beginning") ) && mode == 0 ){
-            		if( message.equals("matchinfo-beginning") ){
+            	if( ( message.equals("matchlist" + Utils.SEPARATOR + "beginning") || message.equals("matchinfo" + Utils.SEPARATOR + "beginning") ) && mode == 0 ){
+            		if( message.equals("matchinfo" + Utils.SEPARATOR + "beginning") ){
             			type = 1;
             			matchClient.initMatchDatas(5);
             			mode = 2;
@@ -221,7 +222,7 @@ class MatchReceptionMessage implements Runnable{
             		if( type == 0)
             			matchClient.setServerList(new String[Integer.valueOf(message)]);
             		mode = 2;
-            	}else if( ( message.equals("matchlist-end") || message.equals("matchinfo-end") )  && mode == 2 ){
+            	}else if( ( message.equals("matchlist" + Utils.SEPARATOR + "end") || message.equals("matchinfo" + Utils.SEPARATOR + "end") )  && mode == 2 ){
             		mode = 0;
             		type = 0;
             		n = 0;
@@ -229,7 +230,7 @@ class MatchReceptionMessage implements Runnable{
             		if( type == 0)
             			matchClient.getServerList()[n++] = message;
             		else if( type == 1){
-            			matchClient.setMatchDatas(message.split("-"));
+            			matchClient.setMatchDatas(message.split(Utils.SEPARATOR));
             		}
             	}else{
             		matchClient.setOk(message.equals("true"));

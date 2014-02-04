@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.util.HashMap;
 
+import clientCore.Utils;
+
 import serverCore.Match;
 import serverCore.Player;
 
@@ -12,7 +14,7 @@ public class PlayerServer extends AbstractServer {
 	private HashMap<String, Player> liste = new HashMap<String, Player>();
 	
 	public void handle(BufferedReader in, PrintWriter out){
-		String[] datas = query.split("-");
+		String[] datas = query.split(Utils.SEPARATOR);
 		String task = datas[1];
     	String login = datas[2];
     	if( task.equals("add") ){

@@ -7,6 +7,8 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import clientCore.Utils;
+
 
 public class ServerBabyfoot implements Runnable {
 
@@ -69,7 +71,7 @@ class Allocator implements Runnable{
 			while(true){
 				m = in.readLine();
 				if( m != null ) {
-					String[] datas = m.split("-");
+					String[] datas = m.split(Utils.SEPARATOR);
 					String typeRequete = datas[0];
 					if( typeRequete.equals("player") ){
 						ServerBabyfoot.tplayer.setQuery(m);

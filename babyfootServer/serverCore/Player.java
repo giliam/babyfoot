@@ -2,6 +2,8 @@ package serverCore;
 
 import java.util.Hashtable;
 
+import clientCore.Utils;
+
 public class Player {
 	private Match match;
 	private String login;

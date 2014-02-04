@@ -12,6 +12,9 @@ public abstract class Utils {
 	public static enum States { WAITING, FULL, PLAYING, FINISHED };  
 	public static enum Sides { BOTTOM, UP };
 	
+	public static final int MATCH_END = 100;
+	
+	public static final String SEPARATOR = ";";
 	
 	/** Hache un mot de passe en se basant sur le principe de l'algorithme MD5. Retourne la chaine.
 	@param s contient le mot de passe à chiffrer. */
@@ -67,6 +70,15 @@ public abstract class Utils {
 	public static void printArray(String[] s){
 		for( int i = 0; i<s.length; i++){
 			System.out.println(i + ". " + s[i] );
+		}
+	}
+	
+	/** Affiche un array de à deux dimensions */
+	public static void printArray(int[][] s){
+		for( int i = 0; i<s.length; i++){
+			for( int j = 0; j<s[0].length; j++){
+				System.out.println(i + ". " + s[i][j] );
+			}
 		}
 	}
 }

@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 import clientCore.ClientBabyfoot;
+import clientCore.Utils;
 
 public class PlayerClient implements Runnable {
 	private Socket socket;
@@ -34,7 +35,7 @@ public class PlayerClient implements Runnable {
     }
     
     public boolean addPlayer(){
-    	out.println("player-add-" + main.getPlayer().getLogin() );
+    	out.println("player" + Utils.SEPARATOR  + "add" + Utils.SEPARATOR + main.getPlayer().getLogin() );
     	out.flush();
     	try {
 			Thread.currentThread();
@@ -46,13 +47,13 @@ public class PlayerClient implements Runnable {
     }
 
 	public boolean removePlayer(String login) {
-		out.println("player-remove-" + main.getPlayer().getLogin() );
+		out.println("player" + Utils.SEPARATOR  + "remove" + Utils.SEPARATOR + main.getPlayer().getLogin() );
 		out.flush();
 		return true;
 	}
 
 	public boolean addMatch(int type) {
-		out.println("match-add-" + main.getPlayer().getLogin() + "-" + type );
+		out.println("match" + Utils.SEPARATOR + "add" + Utils.SEPARATOR + main.getPlayer().getLogin() + Utils.SEPARATOR + type );
     	out.flush();
     	try {
 			Thread.currentThread();

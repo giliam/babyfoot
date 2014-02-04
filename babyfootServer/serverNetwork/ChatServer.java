@@ -1,10 +1,10 @@
 package serverNetwork;
 
+import clientCore.Utils;
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 
 import serverCore.Database;
-import serverCore.Utils;
 
 
 
@@ -17,7 +17,7 @@ public class ChatServer extends AbstractServer {
 	}
 	
 	public void handle(BufferedReader in, PrintWriter out){
-		String[] datas = query.split("-", 6);
+		String[] datas = query.split(Utils.SEPARATOR, 6);
 		String domain = datas[0];
 		String task = datas[1];
 		if( domain.equals("chat") ){
@@ -34,7 +34,7 @@ public class ChatServer extends AbstractServer {
 		    	}
 			}else if( task.equals("get")){
 				String serveur = datas[2];
-				out.println("chat-beginning");
+				out.println("chat" + Utils.SEPARATOR + "beginning");
     			out.flush();
 	    		String[] messages = getMessages( serveur );
 	    		out.println(messages.length);
@@ -43,13 +43,13 @@ public class ChatServer extends AbstractServer {
 	    			out.println(messages[i]);
 	    			out.flush();
 	    		}
-	    		out.println("chat-end");
+	    		out.println("chat" + Utils.SEPARATOR + "end");
     			out.flush();
 				
 			}
 		}else if( domain.equals("servers") ){
 			if( task.equals("get")){
-				out.println("server-beginning");
+				out.println("server" + Utils.SEPARATOR + "beginning");
     			out.flush();
 	    		String[] servers = getServers();
 	    		out.println(servers.length);
@@ -58,7 +58,7 @@ public class ChatServer extends AbstractServer {
 	    			out.println(servers[i]);
 	    			out.flush();
 	    		}
-	    		out.println("server-end");
+	    		out.println("server" + Utils.SEPARATOR + "end");
     			out.flush();
 			}
 		}

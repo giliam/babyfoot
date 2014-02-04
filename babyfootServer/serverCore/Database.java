@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import clientCore.Utils;
+
 public class Database {
 	Connection link;
 	public void connect(){
