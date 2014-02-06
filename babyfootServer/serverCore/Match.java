@@ -29,10 +29,6 @@ public class Match {
 	private final int STEP_X = 2;
 	private final int STEP_Y = 2;
 	
-	final int LINE_STRENGTH = 0;
-	final int GAP_EDGE = 2*20;	
-	final int BALL_RADIUS = 25;
-	
 	public static enum RodPositions { GARDIEN , DEFENSE, MILIEU, ATTAQUE };
 	@SuppressWarnings("unchecked")
 	private Hashtable<RodPositions, Integer>[] rodPositions = new Hashtable[2] ;
@@ -196,8 +192,8 @@ public class Match {
 	public void start() {
 		setBallX(450);
 		setBallY(350);
-		setBallSpeedX(( Math.random() > 0.5 ? 15 : -15 ));
-		setBallSpeedY(( Math.random() > 0.5 ? 15 : -15 ));
+		setBallSpeedX(( Math.random() > 0.5 ? 10 : -10 ));
+		setBallSpeedY(( Math.random() > 0.5 ? 10 : -10 ));
 		Thread t = new Thread(new RefreshBallPosition(this));
 		t.start();
 	}
@@ -241,6 +237,15 @@ public class Match {
 	public void addBallY(int ballY2) {
 		ballY += ballY2;
 	}
+
+	public void verifGoal() {
+		if( ballY >= Utils.HEIGHT/2-Utils.GOAL_SIZE/2 && ballY <= Utils.HEIGHT/2+Utils.GOAL_SIZE/2 ){
+			if( ballX >= Utils.WIDTH / 2 )
+				leftScore++;
+			else
+				rightScore++;
+		}
+	}
 	
 }
 
@@ -254,21 +259,20 @@ class RefreshBallPosition implements Runnable {
 	public void run() {
 		try{
 			while(true){
-				
 				//Si on a atteint le bord extérieur droit/gauche, on change de vitesse.
-				if( ( match.getBallX() + match.getBallSpeedX() ) <=  ( Utils.GAP_EDGE + Utils.LINE_STRENGTH + Utils.BALL_RADIUS ) || ( match.getBallX() + match.getBallSpeedX() ) >=  ( Utils.WIDTH - Utils.GAP_EDGE - Utils.LINE_STRENGTH - Utils.BALL_RADIUS ) ) {
+				if( ( match.getBallX() ) <=  ( Utils.GAP_EDGE + Utils.LINE_STRENGTH + Utils.BALL_RADIUS/2 - 10 ) || ( match.getBallX() + match.getBallSpeedX() ) >=  ( Utils.WIDTH - Utils.GAP_EDGE - Utils.LINE_STRENGTH - Utils.BALL_RADIUS + 10 ) ) {
 					match.setBallSpeedX((-1)*match.getBallSpeedX());
+					match.verifGoal();
 				}
-				
 				//Si on a atteint le bord extérieur haut/bas, on change de vitesse.
-				if( ( match.getBallY() + match.getBallSpeedY() ) <=  ( Utils.GAP_EDGE + Utils.LINE_STRENGTH + Utils.BALL_RADIUS ) || ( match.getBallY() + match.getBallSpeedY() ) >=  ( Utils.HEIGHT - Utils.GAP_EDGE - Utils.LINE_STRENGTH - Utils.BALL_RADIUS ) ) {
+				if( ( match.getBallY() ) <=  ( Utils.GAP_EDGE + Utils.LINE_STRENGTH + Utils.BALL_RADIUS/2 - 10 ) || ( match.getBallY() + match.getBallSpeedY() ) >=  ( Utils.HEIGHT - Utils.GAP_EDGE - Utils.LINE_STRENGTH - Utils.BALL_RADIUS*2 + 10 ) ) {
 					match.setBallSpeedY((-1)*match.getBallSpeedY());
 				}
 				
 				match.addBallX(match.getBallSpeedX());
 				match.addBallY(match.getBallSpeedY());
 				
-				Thread.sleep(100);
+				Thread.sleep(50);
 			}
 		}catch(InterruptedException e){
 			e.printStackTrace();

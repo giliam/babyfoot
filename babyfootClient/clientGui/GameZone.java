@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
@@ -45,11 +46,18 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	private boolean testMode;
 	
 	private MainFrame window;
+	private JPanel infoZone;
 	
 	@SuppressWarnings("unchecked")
 	public GameZone(MainFrame window, boolean testMode){
 		this.window = window;
 		this.testMode = testMode;
+		
+		infoZone = new JPanel();
+		infoZone.add(new JLabel("Coucou"));
+		infoZone.setBackground(Color.BLACK);
+		infoZone.setPreferredSize(new Dimension(100,700));
+		infoZone.setMinimumSize(new Dimension(100,700));
 		
 		yDecalDefault = new Hashtable<RodPositions, Integer>();
 		yDecalDefault.put(RodPositions.GARDIEN, 100);
@@ -293,13 +301,11 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 		if( rodPositions.length > 1 ){
 			//On met à jour les autres barres
 			if( s == Utils.Sides.UP ){
-				System.out.println("MAJ UP");
 				yDecal[0].put(RodPositions.GARDIEN, Integer.valueOf(rodPositions[0]));
 				yDecal[0].put(RodPositions.DEFENSE, Integer.valueOf(rodPositions[1]));
 				yDecal[0].put(RodPositions.MILIEU, Integer.valueOf(rodPositions[2]));
 				yDecal[0].put(RodPositions.ATTAQUE, Integer.valueOf(rodPositions[3]));
 			}else{
-				System.out.println("MAJ DOWN");
 				yDecal[1].put(RodPositions.GARDIEN, Integer.valueOf(rodPositions[4]));
 				yDecal[1].put(RodPositions.DEFENSE, Integer.valueOf(rodPositions[5]));
 				yDecal[1].put(RodPositions.MILIEU, Integer.valueOf(rodPositions[6]));
@@ -325,6 +331,10 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	public void setWindow(MainFrame window) {
 		this.window = window;
 	}
+	
+	public JPanel getInfoPanel(){
+		return infoZone;
+	}
 }
 
 
@@ -340,7 +350,7 @@ class RefreshRods implements Runnable {
 			//Alias pour faciliter la lecture
 			GameClient gc = gamezone.getWindow().getMain().getClient().getGc();
 			Player p = gamezone.getWindow().getMain().getPlayer();
-			gamezone.refreshPositions( gc.getPositions( p.getLogin() ) , p.getSide(), gc.getBallX(), gc.getBallY() );
+			gamezone.refreshPositions( gc.getPositions( p.getLogin(), false ) , p.getSide(), gc.getBallX(), gc.getBallY() );
 			try{
 				Thread.sleep(20);
 			}catch( InterruptedException e ){

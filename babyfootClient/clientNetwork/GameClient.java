@@ -55,9 +55,11 @@ public class GameClient implements Runnable {
     	out.flush();
 	}
     
-    public String[] getPositions(String login) {
-		out.println("match" + Utils.SEPARATOR + "getpositions" + Utils.SEPARATOR + login );
-    	out.flush();
+    public String[] getPositions(String login, boolean request ) {
+    	if( !request ){
+			out.println("match" + Utils.SEPARATOR + "getpositions" + Utils.SEPARATOR + login );
+	    	out.flush();
+    	}
     	return rodPositions;
 	}
     
@@ -125,7 +127,7 @@ class GameReceptionMessage implements Runnable{
 		System.out.println("Prêt à la réception pour les jeux !");
 		try {
 			while(true){
-				gc.getPositions( gc.getMain().getPlayer().getLogin() );
+				gc.getPositions( gc.getMain().getPlayer().getLogin(), true );
             	message = in.readLine();
             	if( message != null ){
 	            	String[] datas = message.split(Utils.SEPARATOR);
