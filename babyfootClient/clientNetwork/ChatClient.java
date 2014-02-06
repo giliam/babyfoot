@@ -123,13 +123,13 @@ class ChatReceptionMessage implements Runnable{
 		while(true){
             try {
             	String message = in.readLine();
-            	if( ( message.equals("server" + Utils.SEPARATOR + "beginning") ||message.equals("chat" + Utils.SEPARATOR + "beginning") ) && mode == 0 ){
+            	if( ( message.equals("server" + Utils.SEPARATOR + "beginning") || message.equals("chat" + Utils.SEPARATOR + "beginning") ) && mode == 0 ){
             		if( message.equals("chat" + Utils.SEPARATOR + "beginning") )
             			type = 1;
             		mode = 1;
             	}else if( mode == 1 ){
-            		ChatClient.s[type] = new String[Integer.valueOf(message)];
             		mode = 2;
+            		ChatClient.s[type] = new String[Integer.valueOf(message)];
             	}else if( ( message.equals("server" + Utils.SEPARATOR + "end")||message.equals("chat" + Utils.SEPARATOR + "end")) && mode == 2 ){
             		mode = 0;
             		n = 0;

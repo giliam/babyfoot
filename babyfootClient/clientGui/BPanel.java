@@ -9,12 +9,18 @@ import javax.swing.JPanel;
  par la suite : le LayoutManager qui est un BorderLayout, la couleur du fond (blanche) et la présence du header (cf. @Header) dans la zone NORTH
  du BorderLayout. */
 public abstract class BPanel extends JPanel {
-	MainFrame window;
+	private MainFrame window;
 	public BPanel(MainFrame f){
-		window = f;
-		window.getMain().actualPanel = this;
+		setWindow(f);
+		getWindow().getMain().actualPanel = this;
 		setLayout(new BorderLayout());
 		setBackground(Color.WHITE);
 		add(new Header(),BorderLayout.NORTH);
+	}
+	public MainFrame getWindow() {
+		return window;
+	}
+	public void setWindow(MainFrame window) {
+		this.window = window;
 	}
 }

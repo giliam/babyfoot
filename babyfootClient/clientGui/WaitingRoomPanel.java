@@ -35,9 +35,9 @@ public class WaitingRoomPanel extends BPanel implements ActionListener {
 	     * Case 1 contient le joueur1
 	     * Case 2 contient le joueur2 etc.
 	     */
-	    handleMatchInfo(window.getMain().getClient().getMc().getMatchInfo(window.getMain().getPlayer().getLogin()));
+	    handleMatchInfo(getWindow().getMain().getClient().getMc().getMatchInfo(getWindow().getMain().getPlayer().getLogin()));
 	    
-	    ChatPanel chat = new ChatPanel(window);
+	    ChatPanel chat = new ChatPanel(getWindow());
 		chat.setBackground(Color.BLACK);
 		chat.setPreferredSize(new Dimension(300,700));
 		chat.setMinimumSize(new Dimension(300,700));
@@ -141,18 +141,18 @@ public class WaitingRoomPanel extends BPanel implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		if( e.getSource() == bQuit ){
-			if( window.getMain().getPlayer().isBoss() ){
-				window.getMain().getPlayer().stopMatch();
+			if( getWindow().getMain().getPlayer().isBoss() ){
+				getWindow().getMain().getPlayer().stopMatch();
 			}
-			window.getMain().closeWindow();
+			getWindow().getMain().closeWindow();
 		}else if( e.getSource() == bReturn ){
-			if( window.getMain().getPlayer().isBoss() ){
-				window.getMain().getPlayer().stopMatch();
+			if( getWindow().getMain().getPlayer().isBoss() ){
+				getWindow().getMain().getPlayer().stopMatch();
 			}
-			window.setContentPane(new MenuPanel(window));
-		    window.setVisible(true);
-		}else if( e.getSource() == bGo && window.getMain().getPlayer().isBoss() && testIsReady() ){
-			window.getMain().getPlayer().runMatch();
+			getWindow().setContentPane(new MenuPanel(getWindow()));
+		    getWindow().setVisible(true);
+		}else if( e.getSource() == bGo && getWindow().getMain().getPlayer().isBoss() && testIsReady() ){
+			getWindow().getMain().getPlayer().runMatch();
 			startGame();
 		}
 	}
@@ -161,32 +161,32 @@ public class WaitingRoomPanel extends BPanel implements ActionListener {
 	private void startGame(){
 		boolean sideOk = false;
 		for( int i = 0; i < playersTeamOne.length; i++ ){
-			if( playersTeamOne[i].equals(window.getMain().getPlayer().getLogin())){
-				window.getMain().getPlayer().setSide(Utils.Sides.BOTTOM);
+			if( playersTeamOne[i].equals(getWindow().getMain().getPlayer().getLogin())){
+				getWindow().getMain().getPlayer().setSide(Utils.Sides.BOTTOM);
 				sideOk = true;
 				break;
 			}
 		}
 		if( !sideOk ){
-			window.getMain().getPlayer().setSide(Utils.Sides.UP);
+			getWindow().getMain().getPlayer().setSide(Utils.Sides.UP);
 		}
 		refreshRoom.run = false;
-		window.getMain().getClient().getGc().startThread();
-		window.setContentPane(new GamePanel(window,false));
-	    window.setVisible(true);
+		getWindow().getMain().getClient().getGc().startThread();
+		getWindow().setContentPane(new GamePanel(getWindow(),false));
+	    getWindow().setVisible(true);
 	}
 
 
 	public void refresh() {
-		handleMatchInfo(window.getMain().getClient().getMc().getMatchInfo(window.getMain().getPlayer().getLogin()));
-		if( window.getMain().getClient().getMc().isToDelete() ){
-			window.setContentPane(new MenuPanel(window));
-			window.getMain().getClient().getMc().setToDelete(false);
-		    window.setVisible(true);
+		handleMatchInfo(getWindow().getMain().getClient().getMc().getMatchInfo(getWindow().getMain().getPlayer().getLogin()));
+		if( getWindow().getMain().getClient().getMc().isToDelete() ){
+			getWindow().setContentPane(new MenuPanel(getWindow()));
+			getWindow().getMain().getClient().getMc().setToDelete(false);
+		    getWindow().setVisible(true);
 		}else{
 			listMembersTeamOne.setListData(playersTeamOne);
 			listMembersTeamTwo.setListData(playersTeamTwo);
-			if( testIsReady() && window.getMain().getPlayer().isBoss() )
+			if( testIsReady() && getWindow().getMain().getPlayer().isBoss() )
 				bGo.setEnabled(true);
 			else
 				bGo.setEnabled(false);

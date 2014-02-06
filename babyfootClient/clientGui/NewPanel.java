@@ -22,7 +22,7 @@ public class NewPanel extends BPanel implements ActionListener {
 	public NewPanel(MainFrame f) {
 		super(f);
 		
-	    ChatPanel chat = new ChatPanel(window);
+	    ChatPanel chat = new ChatPanel(getWindow());
 		chat.setBackground(Color.BLACK);
 		chat.setPreferredSize(new Dimension(300,700));
 		chat.setMinimumSize(new Dimension(300,700));
@@ -82,15 +82,15 @@ public class NewPanel extends BPanel implements ActionListener {
 	
 	public void actionPerformed(ActionEvent e) {
 		if( e.getSource() == bQuit ){
-			window.getMain().closeWindow();
+			getWindow().getMain().closeWindow();
 		}else if( e.getSource() == bReturn ){
-			window.setContentPane(new MenuPanel(window));
-		    window.setVisible(true);
+			getWindow().setContentPane(new MenuPanel(getWindow()));
+		    getWindow().setVisible(true);
 		}else if( e.getSource() == bGo ){
-			if( window.getMain().getPlayer().addMatch( bNumber1.isSelected() ? 1 : ( bNumber2.isSelected() ? 2 : 3 ) ) ){
-				window.getMain().getPlayer().setBoss(true);
-				window.setContentPane(new WaitingRoomPanel(window));
-			    window.setVisible(true);
+			if( getWindow().getMain().getPlayer().addMatch( bNumber1.isSelected() ? 1 : ( bNumber2.isSelected() ? 2 : 3 ) ) ){
+				getWindow().getMain().getPlayer().setBoss(true);
+				getWindow().setContentPane(new WaitingRoomPanel(getWindow()));
+			    getWindow().setVisible(true);
 			}
 		}
 	}

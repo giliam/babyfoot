@@ -22,7 +22,7 @@ public class ServersPanel extends BPanel implements ActionListener, MouseListene
 	public ServersPanel(MainFrame f) {
 		super(f);
 	    
-	    ChatPanel chat = new ChatPanel(window);
+	    ChatPanel chat = new ChatPanel(getWindow());
 		chat.setBackground(Color.BLACK);
 		chat.setPreferredSize(new Dimension(300,700));
 		chat.setMinimumSize(new Dimension(300,700));
@@ -36,7 +36,7 @@ public class ServersPanel extends BPanel implements ActionListener, MouseListene
 		add(menu,BorderLayout.CENTER);
 		
 		//On s'occupe de la liste des serveurs
-		listServers = window.getMain().getPlayer().getServers();
+		listServers = getWindow().getMain().getPlayer().getServers();
 		listServersLayout = new JList<String>(listServers);
 		listServersLayout.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		listServersLayout.setLayoutOrientation(JList.VERTICAL);
@@ -65,18 +65,18 @@ public class ServersPanel extends BPanel implements ActionListener, MouseListene
 	
 	public void actionPerformed(ActionEvent e) {
 		if( e.getSource() == bQuit ){
-			window.getMain().closeWindow();
+			getWindow().getMain().closeWindow();
 		}else if( e.getSource() == bReturn ){
-			window.setContentPane(new MenuPanel(window));
-		    window.setVisible(true);
+			getWindow().setContentPane(new MenuPanel(getWindow()));
+		    getWindow().setVisible(true);
 		}else if( e.getSource() == bRefresh ){
-			listServers = window.getMain().getPlayer().getServers();
+			listServers = getWindow().getMain().getPlayer().getServers();
 			listServersLayout.setListData(listServers);
 			bGo.setEnabled(false);
 		}else if( e.getSource() == bGo ){
-			if( window.getMain().getPlayer().setServer(selectedGame, listServers) ){
-				window.setContentPane(new WaitingRoomPanel(window));
-			    window.setVisible(true);
+			if( getWindow().getMain().getPlayer().setServer(selectedGame, listServers) ){
+				getWindow().setContentPane(new WaitingRoomPanel(getWindow()));
+			    getWindow().setVisible(true);
 			}
 		}
 	}
@@ -87,9 +87,9 @@ public class ServersPanel extends BPanel implements ActionListener, MouseListene
 		if( selectedGame >= 0 )
 			bGo.setEnabled(true);
 		if (e.getClickCount() == 2 && ( timeFirstClick - System.currentTimeMillis() ) < 1000 ) {
-			if( window.getMain().getPlayer().setServer(selectedGame, listServers) ){
-				window.setContentPane(new WaitingRoomPanel(window));
-			    window.setVisible(true);
+			if( getWindow().getMain().getPlayer().setServer(selectedGame, listServers) ){
+				getWindow().setContentPane(new WaitingRoomPanel(getWindow()));
+			    getWindow().setVisible(true);
 			}
 		}
 		timeFirstClick = System.currentTimeMillis();

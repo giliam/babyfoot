@@ -16,6 +16,17 @@ public abstract class Utils {
 	
 	public static final String SEPARATOR = ";";
 	
+	public static final int GOAL_SIZE = 2*100;
+	public static final int LINE_STRENGTH = 4;
+	public static final int GAP_EDGE = 2*20;
+	public static final int IMAGE_PLAYER_Y = 38;
+	public static final int IMAGE_PLAYER_X = 30;
+	public static final int MOVE_STEP = 20;
+	public static final int BALL_RADIUS = 25;
+	
+	public static final int HEIGHT = 700;
+	public static final int WIDTH = 900;
+	
 	/** Hache un mot de passe en se basant sur le principe de l'algorithme MD5. Retourne la chaine.
 	@param s contient le mot de passe à chiffrer. */
 	public static String hash(String s){

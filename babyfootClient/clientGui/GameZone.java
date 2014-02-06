@@ -17,8 +17,10 @@ import java.util.Hashtable;
 import javax.imageio.ImageIO;
 
 import clientCore.ClientBabyfoot;
+import clientCore.Player;
 import clientCore.Utils;
 import clientCore.Utils.Sides;
+import clientNetwork.GameClient;
 
 
 public class GameZone extends JPanel implements KeyListener, MouseMotionListener {
@@ -26,17 +28,6 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	/**
 	 * Taille des buts en pixels et épaisseur des traits
 	 */
-	private static final int goalSize = 2*100;
-	private static final int lineStrength = 4;
-	private static final int gapEdge = 2*20;
-	private static final int imagePlayerY = 38;
-	private static final int imagePlayerX = 30;
-	private static final int movePath = 20;
-	
-	
-	final int BALL_RADIUS = 25;
-	
-	
 	private int h;
 	private int w;
 	
@@ -98,16 +89,17 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 		g.fillRect(0,0,getWidth(),getHeight());
 		
 		drawLines(g);
+		drawBall(g);
 		drawGoals(g);
 		drawPlayers(g);
 		drawRodPosition(g);
-		drawBall(g);
+		
 	}
 	
 	private void drawBall(Graphics g) {
 		//Côté gauche
 		g.setColor(Color.WHITE);
-		g.fillOval(ballX, ballY, BALL_RADIUS, BALL_RADIUS);
+		g.fillOval(ballX, ballY, Utils.BALL_RADIUS, Utils.BALL_RADIUS);
 	}
 
 
@@ -115,43 +107,43 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 		//Côté gauche
 		g.setColor(Color.RED);
 		//Long côté
-		g.fillRect(gapEdge/2,h/2-goalSize/2,lineStrength,goalSize);
+		g.fillRect(Utils.GAP_EDGE/2,h/2-Utils.GOAL_SIZE/2,Utils.LINE_STRENGTH,Utils.GOAL_SIZE);
 		//petits côtés
-		g.fillRect(gapEdge/2,h/2-goalSize/2,gapEdge/2,lineStrength);
-		g.fillRect(gapEdge/2,h/2+goalSize/2,gapEdge/2,lineStrength);
+		g.fillRect(Utils.GAP_EDGE/2,h/2-Utils.GOAL_SIZE/2,Utils.GAP_EDGE/2,Utils.LINE_STRENGTH);
+		g.fillRect(Utils.GAP_EDGE/2,h/2+Utils.GOAL_SIZE/2,Utils.GAP_EDGE/2,Utils.LINE_STRENGTH);
 		//Côté droit
 		g.setColor(Color.BLUE);
 		//Long côté
-		g.fillRect(w-gapEdge/2-lineStrength,h/2-goalSize/2,lineStrength,goalSize);
+		g.fillRect(w-Utils.GAP_EDGE/2-Utils.LINE_STRENGTH,h/2-Utils.GOAL_SIZE/2,Utils.LINE_STRENGTH,Utils.GOAL_SIZE);
 		//petits côtés
-		g.fillRect(w-gapEdge,h/2-goalSize/2,gapEdge/2,lineStrength);
-		g.fillRect(w-gapEdge,h/2+goalSize/2,gapEdge/2,lineStrength);
+		g.fillRect(w-Utils.GAP_EDGE,h/2-Utils.GOAL_SIZE/2,Utils.GAP_EDGE/2,Utils.LINE_STRENGTH);
+		g.fillRect(w-Utils.GAP_EDGE,h/2+Utils.GOAL_SIZE/2,Utils.GAP_EDGE/2,Utils.LINE_STRENGTH);
 	}
 	
 	private void drawLines(Graphics g){
 		g.setColor(Color.WHITE);
 		//Milieu de terrain
-		g.fillRect((w-lineStrength)/2,0,lineStrength,h);
+		g.fillRect((w-Utils.LINE_STRENGTH)/2,0,Utils.LINE_STRENGTH,h);
 		//gauche
-		g.fillRect(gapEdge,0,lineStrength,h);
+		g.fillRect(Utils.GAP_EDGE,0,Utils.LINE_STRENGTH,h);
 		//haut
-		g.fillRect(0,gapEdge,w,lineStrength);
+		g.fillRect(0,Utils.GAP_EDGE,w,Utils.LINE_STRENGTH);
 		//droite
-		g.fillRect(w-gapEdge-lineStrength,0,lineStrength,h);
+		g.fillRect(w-Utils.GAP_EDGE-Utils.LINE_STRENGTH,0,Utils.LINE_STRENGTH,h);
 		//bas
-		g.fillRect(0,h-gapEdge-lineStrength,w,lineStrength);
+		g.fillRect(0,h-Utils.GAP_EDGE-Utils.LINE_STRENGTH,w,Utils.LINE_STRENGTH);
 	}
 	
 	private void drawPlayers(Graphics g){
-		drawPlayer(g, gapEdge+30, 0, h, 1, Color.RED, false, 1, RodPositions.GARDIEN);
-		drawPlayer(g, gapEdge+30+100, 0, h, 2, Color.RED, false, 1, RodPositions.DEFENSE);
-		drawPlayer(g, (w-lineStrength)/2-70, 0, h, 5, Color.RED, false, 1, RodPositions.MILIEU);
-		drawPlayer(g, w-lineStrength-gapEdge-230, 0, h, 3, Color.RED, false, 1, RodPositions.ATTAQUE);
+		drawPlayer(g, Utils.GAP_EDGE+30, 0, h, 1, Color.RED, false, 1, RodPositions.GARDIEN);
+		drawPlayer(g, Utils.GAP_EDGE+30+100, 0, h, 2, Color.RED, false, 1, RodPositions.DEFENSE);
+		drawPlayer(g, (w-Utils.LINE_STRENGTH)/2-70, 0, h, 5, Color.RED, false, 1, RodPositions.MILIEU);
+		drawPlayer(g, w-Utils.LINE_STRENGTH-Utils.GAP_EDGE-230, 0, h, 3, Color.RED, false, 1, RodPositions.ATTAQUE);
 		
-		drawPlayer(g, w-lineStrength-(gapEdge+30), 0, h, 1, Color.RED, true, 1, RodPositions.GARDIEN);
-		drawPlayer(g, w-lineStrength-(gapEdge+30+100), 0, h, 2, Color.RED, true, 1, RodPositions.DEFENSE);
-		drawPlayer(g, w-lineStrength-((w-lineStrength)/2-70), 0, h, 5, Color.RED, true, 1, RodPositions.MILIEU);
-		drawPlayer(g, w-lineStrength-(w-lineStrength-gapEdge-230), 0, h, 3, Color.RED, true, 1, RodPositions.ATTAQUE);
+		drawPlayer(g, w-Utils.LINE_STRENGTH-(Utils.GAP_EDGE+30), 0, h, 1, Color.RED, true, 1, RodPositions.GARDIEN);
+		drawPlayer(g, w-Utils.LINE_STRENGTH-(Utils.GAP_EDGE+30+100), 0, h, 2, Color.RED, true, 1, RodPositions.DEFENSE);
+		drawPlayer(g, w-Utils.LINE_STRENGTH-((w-Utils.LINE_STRENGTH)/2-70), 0, h, 5, Color.RED, true, 1, RodPositions.MILIEU);
+		drawPlayer(g, w-Utils.LINE_STRENGTH-(w-Utils.LINE_STRENGTH-Utils.GAP_EDGE-230), 0, h, 3, Color.RED, true, 1, RodPositions.ATTAQUE);
 	}
 	
 	/**
@@ -160,7 +152,7 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	private void drawPlayer(Graphics g, int x, int y, int h, int nb, Color color, boolean rightPlayer, int position, RodPositions rod ){
 		y += yDecal[rightPlayer ? 1 : 0].get(rod)-yDecalDefault.get(rod);
 		g.setColor(new Color(192, 192, 192));
-		g.fillRect(x,0,3*lineStrength/2,h);
+		g.fillRect(x,0,3*Utils.LINE_STRENGTH/2,h);
 		g.setColor(color);
 		for( int i=1; i<=nb;i++){
 			try {
@@ -170,11 +162,11 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 				else
 					img = ImageIO.read(new File("pictures/joueurgauche" + String.valueOf(position) + ".png"));
 				if(position==1)
-					g.drawImage(img, x-imagePlayerX/3, y+i*h/(1+nb)-imagePlayerY/2, this);
+					g.drawImage(img, x-Utils.IMAGE_PLAYER_X/3, y+i*h/(1+nb)-Utils.IMAGE_PLAYER_Y/2, this);
 				else if(position==2 && !rightPlayer )
-					g.drawImage(img, x-imagePlayerX/3-13, y+i*h/(1+nb)-imagePlayerY/2, this);
+					g.drawImage(img, x-Utils.IMAGE_PLAYER_X/3-13, y+i*h/(1+nb)-Utils.IMAGE_PLAYER_Y/2, this);
 				else if(position==2 && rightPlayer )
-					g.drawImage(img, x-imagePlayerX/3-48, y+i*h/(1+nb)-imagePlayerY/2, this);
+					g.drawImage(img, x-Utils.IMAGE_PLAYER_X/3-48, y+i*h/(1+nb)-Utils.IMAGE_PLAYER_Y/2, this);
 		    } catch (IOException e) {
 		    	e.printStackTrace();
 		    }                
@@ -185,16 +177,16 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 		g.setColor(Color.BLACK);
 		/*switch(rodPosition){
 			case GARDIEN:
-				g.fillRect(gapEdge+30,600,50,50);
+				g.fillRect(Utils.GAP_EDGE+30,600,50,50);
 				break;
 			case DEFENSE:
-				g.fillRect(gapEdge+30+100,600,50,50);
+				g.fillRect(Utils.GAP_EDGE+30+100,600,50,50);
 				break;
 			case MILIEU:
-				g.fillRect((w-lineStrength)/2-70,600,50,50);
+				g.fillRect((w-Utils.LINE_STRENGTH)/2-70,600,50,50);
 				break;
 			case ATTAQUE:
-				g.fillRect(w-lineStrength-gapEdge-230,600,50,50);
+				g.fillRect(w-Utils.LINE_STRENGTH-Utils.GAP_EDGE-230,600,50,50);
 				break;
 		}//*/
 	}
@@ -202,9 +194,9 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 
 	public void keyPressed(KeyEvent e) {
 		if( e.getKeyCode() == 38 ){
-			moveUpAndDown(true,movePath);
+			moveUpAndDown(true,Utils.MOVE_STEP);
 		}else if( e.getKeyCode() == 40 ){
-			moveUpAndDown(false,movePath);
+			moveUpAndDown(false,Utils.MOVE_STEP);
 		}
 	}
 	
@@ -287,9 +279,9 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	public void mouseMoved(MouseEvent e) {
 		int y = e.getYOnScreen();
 		if( y > ( 20 + oldY ) ){
-			moveUpAndDown(false, movePath);
+			moveUpAndDown(false, Utils.MOVE_STEP);
 		}else if( y < ( oldY - 17 )){
-			moveUpAndDown(true, movePath);
+			moveUpAndDown(true, Utils.MOVE_STEP);
 		}
 		if( ( y - oldY ) > 20 || ( oldY - y ) > 20 )
 			oldY = y;
@@ -297,21 +289,24 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 
 
 	public void refreshRodPositions(String[] rodPositions, Utils.Sides s) {
-		//On met à jour les autres barres
-		if( s == Utils.Sides.UP ){
-			System.out.println("MAJ UP");
-			yDecal[0].put(RodPositions.GARDIEN, Integer.valueOf(rodPositions[0]));
-			yDecal[0].put(RodPositions.DEFENSE, Integer.valueOf(rodPositions[1]));
-			yDecal[0].put(RodPositions.MILIEU, Integer.valueOf(rodPositions[2]));
-			yDecal[0].put(RodPositions.ATTAQUE, Integer.valueOf(rodPositions[3]));
-		}else{
-			System.out.println("MAJ DOWN");
-			yDecal[1].put(RodPositions.GARDIEN, Integer.valueOf(rodPositions[4]));
-			yDecal[1].put(RodPositions.DEFENSE, Integer.valueOf(rodPositions[5]));
-			yDecal[1].put(RodPositions.MILIEU, Integer.valueOf(rodPositions[6]));
-			yDecal[1].put(RodPositions.ATTAQUE, Integer.valueOf(rodPositions[7]));
+		
+		if( rodPositions.length > 1 ){
+			//On met à jour les autres barres
+			if( s == Utils.Sides.UP ){
+				System.out.println("MAJ UP");
+				yDecal[0].put(RodPositions.GARDIEN, Integer.valueOf(rodPositions[0]));
+				yDecal[0].put(RodPositions.DEFENSE, Integer.valueOf(rodPositions[1]));
+				yDecal[0].put(RodPositions.MILIEU, Integer.valueOf(rodPositions[2]));
+				yDecal[0].put(RodPositions.ATTAQUE, Integer.valueOf(rodPositions[3]));
+			}else{
+				System.out.println("MAJ DOWN");
+				yDecal[1].put(RodPositions.GARDIEN, Integer.valueOf(rodPositions[4]));
+				yDecal[1].put(RodPositions.DEFENSE, Integer.valueOf(rodPositions[5]));
+				yDecal[1].put(RodPositions.MILIEU, Integer.valueOf(rodPositions[6]));
+				yDecal[1].put(RodPositions.ATTAQUE, Integer.valueOf(rodPositions[7]));
+			}
+			repaint();
 		}
-		repaint();
 	}
 
 
@@ -342,8 +337,10 @@ class RefreshRods implements Runnable {
 	
 	public void run() {
 		while(true){
-			gamezone.refreshPositions(gamezone.getWindow().getMain().getClient().getGc().getPositions(gamezone.getWindow().getMain().getPlayer().getLogin()), 
-					gamezone.getWindow().getMain().getPlayer().getSide(), gamezone.getWindow().getMain().getClient().getGc().getBallX(), gamezone.getWindow().getMain().getClient().getGc().getBallY() );
+			//Alias pour faciliter la lecture
+			GameClient gc = gamezone.getWindow().getMain().getClient().getGc();
+			Player p = gamezone.getWindow().getMain().getPlayer();
+			gamezone.refreshPositions( gc.getPositions( p.getLogin() ) , p.getSide(), gc.getBallX(), gc.getBallY() );
 			try{
 				Thread.sleep(20);
 			}catch( InterruptedException e ){

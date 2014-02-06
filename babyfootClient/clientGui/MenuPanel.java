@@ -57,13 +57,13 @@ public class MenuPanel extends BPanel implements ActionListener {
 	
 	public void actionPerformed(ActionEvent e) {
 		if( e.getSource() == bQuit ){
-			window.getMain().closeWindow();
+			getWindow().getMain().closeWindow();
 		}else if( e.getSource() == bNewGame ){
-			window.setContentPane(new NewPanel(window));
-		    window.setVisible(true);
+			getWindow().setContentPane(new NewPanel(getWindow()));
+		    getWindow().setVisible(true);
 		}else if( e.getSource() == bJoinGame ){
-			window.setContentPane(new ServersPanel(window));
-		    window.setVisible(true);
+			getWindow().setContentPane(new ServersPanel(getWindow()));
+		    getWindow().setVisible(true);
 		}else if( e.getSource() == bSettings ){
 		}
 	}

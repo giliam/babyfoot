@@ -2,6 +2,8 @@ package serverCore;
 
 import java.util.Hashtable;
 
+import clientCore.Utils;
+
 import serverNetwork.ServerBabyfoot;
 
 
@@ -253,21 +255,16 @@ class RefreshBallPosition implements Runnable {
 		try{
 			while(true){
 				
-				if( ( match.getBallX() + match.getBallSpeedX() ) >=  ( match.BALL_RADIUS + 15 ) ) {
-					if( ( match.getBallX() + match.getBallSpeedX() ) >=  ( 900 - match.BALL_RADIUS ) ){
-						match.setBallSpeedX((-1)*match.getBallSpeedX());
-					}
-				}else if( match.getBallSpeedX() < 0 ){
+				//Si on a atteint le bord extérieur droit/gauche, on change de vitesse.
+				if( ( match.getBallX() + match.getBallSpeedX() ) <=  ( Utils.GAP_EDGE + Utils.LINE_STRENGTH + Utils.BALL_RADIUS ) || ( match.getBallX() + match.getBallSpeedX() ) >=  ( Utils.WIDTH - Utils.GAP_EDGE - Utils.LINE_STRENGTH - Utils.BALL_RADIUS ) ) {
 					match.setBallSpeedX((-1)*match.getBallSpeedX());
 				}
 				
-				if( ( match.getBallY() + match.getBallSpeedY() ) >=  ( match.BALL_RADIUS + 15 ) ){
-					if( ( match.getBallY() + match.getBallSpeedY() ) >=  ( 700 - 2*match.BALL_RADIUS - match.GAP_EDGE ) ){
-						match.setBallSpeedY((-1)*match.getBallSpeedY());
-					}
-				}else if( match.getBallSpeedY() < 0 ){
+				//Si on a atteint le bord extérieur haut/bas, on change de vitesse.
+				if( ( match.getBallY() + match.getBallSpeedY() ) <=  ( Utils.GAP_EDGE + Utils.LINE_STRENGTH + Utils.BALL_RADIUS ) || ( match.getBallY() + match.getBallSpeedY() ) >=  ( Utils.HEIGHT - Utils.GAP_EDGE - Utils.LINE_STRENGTH - Utils.BALL_RADIUS ) ) {
 					match.setBallSpeedY((-1)*match.getBallSpeedY());
 				}
+				
 				match.addBallX(match.getBallSpeedX());
 				match.addBallY(match.getBallSpeedY());
 				
