@@ -155,7 +155,8 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	}
 	
 	/**
-	 * rightPlayer : true = orienté vers la gauche, false orienté vers la droite. 
+	 * rightPlayer : true = orienté vers la gauche, false orienté vers la droite.
+	 * position : quelle est la position de la barre ? tir, droit, etc. 
 	 */
 	private void drawPlayer(Graphics g, int x, int y, int h, int nb, Color color, boolean rightPlayer, int position, RodPositions rod ){
 		y += yDecal[rightPlayer ? 1 : 0].get(rod)-yDecalDefault.get(rod);

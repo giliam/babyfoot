@@ -3,6 +3,7 @@ package serverCore;
 import java.util.Hashtable;
 
 import clientCore.Utils;
+import clientGui.GameZone.RodPositions;
 
 import serverNetwork.ServerBabyfoot;
 
@@ -26,10 +27,11 @@ public class Match {
 	private int ballSpeedX;
 	private int ballSpeedY;
 	
+	private Collisions collisions;
+	
 	private final int STEP_X = 2;
 	private final int STEP_Y = 2;
 	
-	public static enum RodPositions { GARDIEN , DEFENSE, MILIEU, ATTAQUE };
 	@SuppressWarnings("unchecked")
 	private Hashtable<RodPositions, Integer>[] rodPositions = new Hashtable[2] ;
 	
@@ -54,6 +56,8 @@ public class Match {
 		this.rodPositions[1].put( RodPositions.DEFENSE, 150 );
 		this.rodPositions[1].put( RodPositions.MILIEU, 100 );
 		this.rodPositions[1].put( RodPositions.ATTAQUE, 100 );
+		
+		this.collisions = new Collisions();
 	}
 
 	public boolean isPlayer( String login ){
@@ -246,6 +250,16 @@ public class Match {
 				rightScore++;
 		}
 	}
+
+	public void testCollisions() {
+		collisions.setBallPosition(ballX, ballY, ballSpeedX, ballSpeedY);
+		for( int i = 0; i < 2; i++ ){
+			collisions.testCollisions(rodPositions[i].get(RodPositions.GARDIEN),RodPositions.GARDIEN);
+			collisions.testCollisions(rodPositions[i].get(RodPositions.DEFENSE),RodPositions.DEFENSE);
+			collisions.testCollisions(rodPositions[i].get(RodPositions.MILIEU),RodPositions.MILIEU);
+			collisions.testCollisions(rodPositions[i].get(RodPositions.ATTAQUE),RodPositions.ATTAQUE);
+		}
+	}
 	
 }
 
@@ -271,7 +285,7 @@ class RefreshBallPosition implements Runnable {
 				
 				match.addBallX(match.getBallSpeedX());
 				match.addBallY(match.getBallSpeedY());
-				
+				match.testCollisions();
 				Thread.sleep(50);
 			}
 		}catch(InterruptedException e){
