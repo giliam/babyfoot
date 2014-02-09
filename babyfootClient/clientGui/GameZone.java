@@ -10,6 +10,7 @@ import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.io.IOException;
@@ -24,7 +25,7 @@ import clientCore.Utils.Sides;
 import clientNetwork.GameClient;
 
 
-public class GameZone extends JPanel implements KeyListener, MouseMotionListener {
+public class GameZone extends JPanel implements KeyListener, MouseMotionListener, MouseListener {
 	private static final long serialVersionUID = 1L;
 	/**
 	 * Taille des buts en pixels et épaisseur des traits
@@ -47,6 +48,7 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	
 	private MainFrame window;
 	private JPanel infoZone;
+	private long shootBeginning;
 	
 	@SuppressWarnings("unchecked")
 	public GameZone(MainFrame window, boolean testMode){
@@ -80,6 +82,7 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	    setPreferredSize(new Dimension(900,700));
 	    setMinimumSize(new Dimension(900,700));
 	    addKeyListener(this);
+	    addMouseListener(this);
 	    addMouseMotionListener(this);
 	    setFocusable(true);
 	    requestFocus();
@@ -335,6 +338,35 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	
 	public JPanel getInfoPanel(){
 		return infoZone;
+	}
+
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+	}
+
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+	}
+
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+	}
+
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		shootBeginning = System.currentTimeMillis();
+	}
+
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		long duration = System.currentTimeMillis() - shootBeginning;
+		shootBeginning = 0;
+		getWindow().getMain().getPlayer().sendShoot(duration);
 	}
 }
 

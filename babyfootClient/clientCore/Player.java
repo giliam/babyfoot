@@ -120,4 +120,8 @@ public class Player {
 	public void stopMatch() {
 		main.getClient().getMc().stopMatch(login);
 	}
+
+	public void sendShoot(long duration) {
+		// TODO Auto-generated method stub
+	}
 }
