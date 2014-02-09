@@ -44,13 +44,23 @@ public class Collisions {
 					return rod;
 				break;
 			case MILIEU:
-				yTopHitBox += Utils.HEIGHT/6;
+				xLeftHitBox = (Utils.WIDTH-Utils.LINE_STRENGTH)/2-70-Utils.IMAGE_PLAYER_X/3;
+				for( int i = 1; i < 6; i++ ){
+					yTopHitBox = position + Utils.GAP_EDGE + i*Utils.HEIGHT/6-Utils.IMAGE_PLAYER_Y/2;
+					if( isBallInCollision( xLeftHitBox, yTopHitBox, xLeftHitBox + Utils.IMAGE_PLAYER_X, yTopHitBox + Utils.IMAGE_PLAYER_Y ) ) 
+						return rod;
+				}
 				break;
 			case ATTAQUE:
-				yTopHitBox += Utils.HEIGHT/4;
+				xLeftHitBox = Utils.WIDTH-Utils.LINE_STRENGTH-Utils.GAP_EDGE-230-Utils.IMAGE_PLAYER_X/3;
+				for( int i = 1; i < 4; i++ ){
+					yTopHitBox = position + Utils.GAP_EDGE + i*Utils.HEIGHT/4-Utils.IMAGE_PLAYER_Y/2;
+					if( isBallInCollision( xLeftHitBox, yTopHitBox, xLeftHitBox + Utils.IMAGE_PLAYER_X, yTopHitBox + Utils.IMAGE_PLAYER_Y ) ) 
+						return rod;
+				}
 				break;
 		}
-		return rod;
+		return null;
 	}
 	
 	public boolean isBallInCollision(int xLeftTop, int yLeftTop, int xRightBottom, int yRightBottom ){

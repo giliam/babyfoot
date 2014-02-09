@@ -26,6 +26,8 @@ public abstract class Utils {
 	
 	public static final int HEIGHT = 700;
 	public static final int WIDTH = 900;
+
+	public static final int MAX_INITIAL_SPEED = 15;
 	
 	/** Hache un mot de passe en se basant sur le principe de l'algorithme MD5. Retourne la chaine.
 	@param s contient le mot de passe à chiffrer. */

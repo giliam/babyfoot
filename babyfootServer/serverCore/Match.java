@@ -196,8 +196,8 @@ public class Match {
 	public void start() {
 		setBallX(450);
 		setBallY(350);
-		setBallSpeedX(( Math.random() > 0.5 ? 10 : -10 ));
-		setBallSpeedY(( Math.random() > 0.5 ? 10 : -10 ));
+		setBallSpeedX(( Math.random() > 0.5 ? (int)(Math.random()*Utils.MAX_INITIAL_SPEED) + 2 : (-1)*(int)(Math.random()*Utils.MAX_INITIAL_SPEED) - 2 ));
+		setBallSpeedY(( Math.random() > 0.5 ? (int)(Math.random()*Utils.MAX_INITIAL_SPEED) + 2 : (-1)*(int)(Math.random()*Utils.MAX_INITIAL_SPEED) - 2 ));
 		Thread t = new Thread(new RefreshBallPosition(this));
 		t.start();
 	}
@@ -251,14 +251,19 @@ public class Match {
 		}
 	}
 
-	public void testCollisions() {
+	public boolean testCollisions() {
 		collisions.setBallPosition(ballX, ballY, ballSpeedX, ballSpeedY);
 		for( int i = 0; i < 2; i++ ){
-			collisions.testCollisions(rodPositions[i].get(RodPositions.GARDIEN),RodPositions.GARDIEN);
-			collisions.testCollisions(rodPositions[i].get(RodPositions.DEFENSE),RodPositions.DEFENSE);
-			collisions.testCollisions(rodPositions[i].get(RodPositions.MILIEU),RodPositions.MILIEU);
-			collisions.testCollisions(rodPositions[i].get(RodPositions.ATTAQUE),RodPositions.ATTAQUE);
+			if( collisions.testCollisions(rodPositions[i].get(RodPositions.GARDIEN),RodPositions.GARDIEN) != null )
+				return true;
+			else if( collisions.testCollisions(rodPositions[i].get(RodPositions.DEFENSE),RodPositions.DEFENSE) != null )
+				return true;
+			else if( collisions.testCollisions(rodPositions[i].get(RodPositions.MILIEU),RodPositions.MILIEU) != null )
+				return true;
+			else if( collisions.testCollisions(rodPositions[i].get(RodPositions.ATTAQUE),RodPositions.ATTAQUE) != null )
+				return true;
 		}
+		return false;
 	}
 	
 }
@@ -273,19 +278,32 @@ class RefreshBallPosition implements Runnable {
 	public void run() {
 		try{
 			while(true){
-				//Si on a atteint le bord extérieur droit/gauche, on change de vitesse.
-				if( ( match.getBallX() ) <=  ( Utils.GAP_EDGE + Utils.LINE_STRENGTH + Utils.BALL_RADIUS/2 - 10 ) || ( match.getBallX() + match.getBallSpeedX() ) >=  ( Utils.WIDTH - Utils.GAP_EDGE - Utils.LINE_STRENGTH - Utils.BALL_RADIUS + 10 ) ) {
-					match.setBallSpeedX((-1)*match.getBallSpeedX());
+				//Si on a atteint le bord extérieur gauche et que la vitesse est bien négative (donc vers la gauche), on change de vitesse.
+				if( ( match.getBallX() ) <=  ( Utils.GAP_EDGE + Utils.LINE_STRENGTH + Utils.BALL_RADIUS/2 - 10 )  ) {
+					if( match.getBallSpeedX() < 0 )
+						match.setBallSpeedX((-1)*match.getBallSpeedX()+2*match.getBallSpeedX()/7);
+					match.verifGoal();
+				//Si on a atteint le bord extérieur droit et que la vitesse est bien positive (donc vers la droite), on change de vitesse
+				}else if( ( match.getBallX() + match.getBallSpeedX() ) >=  ( Utils.WIDTH - Utils.GAP_EDGE - Utils.LINE_STRENGTH - Utils.BALL_RADIUS + 10 ) ){
+					if( match.getBallSpeedX() > 0 )
+						match.setBallSpeedX((-1)*match.getBallSpeedX()+2*match.getBallSpeedX()/7);
 					match.verifGoal();
 				}
-				//Si on a atteint le bord extérieur haut/bas, on change de vitesse.
-				if( ( match.getBallY() ) <=  ( Utils.GAP_EDGE + Utils.LINE_STRENGTH + Utils.BALL_RADIUS/2 - 10 ) || ( match.getBallY() + match.getBallSpeedY() ) >=  ( Utils.HEIGHT - Utils.GAP_EDGE - Utils.LINE_STRENGTH - Utils.BALL_RADIUS*2 + 10 ) ) {
-					match.setBallSpeedY((-1)*match.getBallSpeedY());
+				//Si on a atteint le bord extérieur haut et que la vitesse est bien négative (donc vers le haut), on change de vitesse.
+				if( ( match.getBallY() ) <=  ( Utils.GAP_EDGE + Utils.LINE_STRENGTH + Utils.BALL_RADIUS/2 - 10 ) ){
+					if( match.getBallSpeedY() < 0 )
+						match.setBallSpeedY((-1)*match.getBallSpeedY()+2*match.getBallSpeedY()/3);
+				//Si on a atteint le bord extérieur bas et que la vitesse est bien positive (donc vers le bas), on change de vitesse
+				}else if( ( match.getBallY() + match.getBallSpeedY() ) >=  ( Utils.HEIGHT - Utils.GAP_EDGE - Utils.LINE_STRENGTH - Utils.BALL_RADIUS*2 + 10 ) ) {
+					if( match.getBallSpeedY() > 0 )
+						match.setBallSpeedY((-1)*match.getBallSpeedY()+2*match.getBallSpeedY()/3);
 				}
+				
+				if( match.testCollisions() )
+					match.setBallSpeedX((-1)*match.getBallSpeedX()+2*match.getBallSpeedX()/7);
 				
 				match.addBallX(match.getBallSpeedX());
 				match.addBallY(match.getBallSpeedY());
-				match.testCollisions();
 				Thread.sleep(50);
 			}
 		}catch(InterruptedException e){

@@ -3,11 +3,12 @@ package serverCore;
 import java.util.Hashtable;
 
 import clientCore.Utils;
+import clientGui.GameZone.RodPositions;
 
 public class Player {
 	private Match match;
 	private String login;
-	private Hashtable<Match.RodPositions, Boolean> rodAvailables;
+	private Hashtable<RodPositions, Boolean> rodAvailables;
 	private Utils.Sides side;
 	
 	public Player(String login){
@@ -27,11 +28,11 @@ public class Player {
 	public void setLogin(String login) {
 		this.login = login;
 	}
-	public Hashtable<Match.RodPositions, Boolean> getRodAvailables() {
+	public Hashtable<RodPositions, Boolean> getRodAvailables() {
 		return rodAvailables;
 	}
 	public void setRodAvailables(
-			Hashtable<Match.RodPositions, Boolean> rodAvailables) {
+			Hashtable<RodPositions, Boolean> rodAvailables) {
 		this.rodAvailables = rodAvailables;
 	}
 
