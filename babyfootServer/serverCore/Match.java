@@ -22,10 +22,10 @@ public class Match {
 	private Player player3;
 	private Player player4;
 	
-	private int ballX;
-	private int ballY;
-	private int ballSpeedX;
-	private int ballSpeedY;
+	private float ballX;
+	private float ballY;
+	private float ballSpeedX;
+	private float ballSpeedY;
 	
 	private Collisions collisions;
 	
@@ -202,43 +202,43 @@ public class Match {
 		t.start();
 	}
 
-	public int getBallY() {
+	public float getBallY() {
 		return ballY;
 	}
 
-	public void setBallY(int ballY) {
+	public void setBallY(float ballY) {
 		this.ballY = ballY;
 	}
 
-	public int getBallSpeedY() {
+	public float getBallSpeedY() {
 		return ballSpeedY;
 	}
 
-	public void setBallSpeedY(int ballSpeedY) {
+	public void setBallSpeedY(float ballSpeedY) {
 		this.ballSpeedY = ballSpeedY;
 	}
 
-	public int getBallX() {
+	public float getBallX() {
 		return ballX;
 	}
 
-	public void setBallX(int ballX) {
+	public void setBallX(float ballX) {
 		this.ballX = ballX;
 	}
 
-	public int getBallSpeedX() {
+	public float getBallSpeedX() {
 		return ballSpeedX;
 	}
 
-	public void setBallSpeedX(int ballSpeedX) {
+	public void setBallSpeedX(float ballSpeedX) {
 		this.ballSpeedX = ballSpeedX;
 	}
 
-	public void addBallX(int ballX2) {
+	public void addBallX(float ballX2) {
 		ballX += ballX2;
 	}
 
-	public void addBallY(int ballY2) {
+	public void addBallY(float ballY2) {
 		ballY += ballY2;
 	}
 
@@ -264,6 +264,25 @@ public class Match {
 				return true;
 		}
 		return false;
+	}
+
+	public void shoot(String rod, String side) {
+		if( side.equals("BOTTOM") ){
+			if( rod.equals("GARDIEN") ){
+				if( ballX >= Utils.GARDIEN_POSITION && ballX <= Utils.GARDIEN_POSITION + 2*Utils.IMAGE_PLAYER_X + Utils.BALL_RADIUS && ballSpeedX <= 0 ){
+					ballSpeedX = 15;
+					ballSpeedY *= -1;
+				}
+			}else if( rod.equals("DEFENSE") ){
+				
+			}else if( rod.equals("MILIEU") ){
+				
+			}else if( rod.equals("ATTAQUE") ){
+				
+			}
+		}else{
+			
+		}
 	}
 	
 }

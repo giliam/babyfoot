@@ -29,6 +29,11 @@ public abstract class Utils {
 
 	public static final int MAX_INITIAL_SPEED = 15;
 	
+	public static final int GARDIEN_POSITION = GAP_EDGE+30;
+	public static final int DEFENSE_POSITION = GAP_EDGE+30+100;
+	public static final int MILIEU_POSITION = (WIDTH-LINE_STRENGTH)/2-70;
+	public static final int ATTAQUE_POSITION = WIDTH-Utils.LINE_STRENGTH-Utils.GAP_EDGE-230;	
+	
 	/** Hache un mot de passe en se basant sur le principe de l'algorithme MD5. Retourne la chaine.
 	@param s contient le mot de passe à chiffrer. */
 	public static String hash(String s){

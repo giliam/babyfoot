@@ -146,15 +146,15 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	}
 	
 	private void drawPlayers(Graphics g){
-		drawPlayer(g, Utils.GAP_EDGE+30, 0, h, 1, Color.RED, false, 1, RodPositions.GARDIEN);
-		drawPlayer(g, Utils.GAP_EDGE+30+100, 0, h, 2, Color.RED, false, 1, RodPositions.DEFENSE);
-		drawPlayer(g, (w-Utils.LINE_STRENGTH)/2-70, 0, h, 5, Color.RED, false, 1, RodPositions.MILIEU);
-		drawPlayer(g, w-Utils.LINE_STRENGTH-Utils.GAP_EDGE-230, 0, h, 3, Color.RED, false, 1, RodPositions.ATTAQUE);
+		drawPlayer(g, Utils.GARDIEN_POSITION, 0, h, 1, Color.RED, false, 1, RodPositions.GARDIEN);
+		drawPlayer(g, Utils.DEFENSE_POSITION, 0, h, 2, Color.RED, false, 1, RodPositions.DEFENSE);
+		drawPlayer(g, Utils.MILIEU_POSITION, 0, h, 5, Color.RED, false, 1, RodPositions.MILIEU);
+		drawPlayer(g, Utils.ATTAQUE_POSITION, 0, h, 3, Color.RED, false, 1, RodPositions.ATTAQUE);
 		
-		drawPlayer(g, w-Utils.LINE_STRENGTH-(Utils.GAP_EDGE+30), 0, h, 1, Color.RED, true, 1, RodPositions.GARDIEN);
-		drawPlayer(g, w-Utils.LINE_STRENGTH-(Utils.GAP_EDGE+30+100), 0, h, 2, Color.RED, true, 1, RodPositions.DEFENSE);
-		drawPlayer(g, w-Utils.LINE_STRENGTH-((w-Utils.LINE_STRENGTH)/2-70), 0, h, 5, Color.RED, true, 1, RodPositions.MILIEU);
-		drawPlayer(g, w-Utils.LINE_STRENGTH-(w-Utils.LINE_STRENGTH-Utils.GAP_EDGE-230), 0, h, 3, Color.RED, true, 1, RodPositions.ATTAQUE);
+		drawPlayer(g, w-Utils.LINE_STRENGTH-Utils.GARDIEN_POSITION, 0, h, 1, Color.RED, true, 1, RodPositions.GARDIEN);
+		drawPlayer(g, w-Utils.LINE_STRENGTH-Utils.DEFENSE_POSITION, 0, h, 2, Color.RED, true, 1, RodPositions.DEFENSE);
+		drawPlayer(g, w-Utils.LINE_STRENGTH-Utils.MILIEU_POSITION, 0, h, 5, Color.RED, true, 1, RodPositions.MILIEU);
+		drawPlayer(g, w-Utils.LINE_STRENGTH-Utils.ATTAQUE_POSITION, 0, h, 3, Color.RED, true, 1, RodPositions.ATTAQUE);
 	}
 	
 	/**
@@ -366,7 +366,7 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	public void mouseReleased(MouseEvent e) {
 		long duration = System.currentTimeMillis() - shootBeginning;
 		shootBeginning = 0;
-		getWindow().getMain().getPlayer().sendShoot(duration);
+		getWindow().getMain().getPlayer().sendShoot(duration, rodPosition, getWindow().getMain().getPlayer().getSide() );
 	}
 }
 

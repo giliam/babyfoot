@@ -121,7 +121,7 @@ public class Player {
 		main.getClient().getMc().stopMatch(login);
 	}
 
-	public void sendShoot(long duration) {
-		// TODO Auto-generated method stub
+	public void sendShoot(long duration, RodPositions rodPosition, Sides side) {
+		main.getClient().getMc().sendShoot(login, duration, rodPosition, side);
 	}
 }

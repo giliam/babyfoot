@@ -44,9 +44,19 @@ public class MatchServer extends AbstractServer {
     	}else if( task.equals( "stop" ) ){
     		String login = datas[2];
     		stopMatch( login );
+    	}else if(task.equals("shoot")){
+    		String login = datas[2];
+    		String rod = datas[3];
+    		String side = datas[4];
+    		shoot(login, rod, side);
     	}
 	}
 	
+	private void shoot(String login, String rod, String side) {
+		Match m = ServerBabyfoot.tplayer.getPlayer(login).getMatch();
+		m.shoot(rod, side);
+	}
+
 	private void stopMatch(String login) {
 		Match m = ServerBabyfoot.tplayer.getPlayer(login).getMatch();
 		m.stop();
@@ -129,7 +139,7 @@ public class MatchServer extends AbstractServer {
 	
 	private String getBallPositions(String login) {
 		Match m = ServerBabyfoot.tplayer.getPlayer(login).getMatch();
-		return Math.abs(m.getBallX()) + Utils.SEPARATOR + Math.abs(m.getBallY());
+		return Math.abs((int)m.getBallX()) + Utils.SEPARATOR + Math.abs((int)m.getBallY());
 	}
 
 	private void setRod(String login, int[] positions) {
