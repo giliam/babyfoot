@@ -1,6 +1,7 @@
 package clientTest;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 
 import serverNetwork.ServerBabyfoot;
@@ -15,31 +16,41 @@ public class Tester {
 		serveur.start();
 		
 		ClientBabyfoot m1 = new ClientBabyfoot();
-		Thread t1 = new Thread(new TesterThread(m1,true));
+		Thread t1 = new Thread(new TesterThread(m1));
 		t1.start();
-		
-		ClientBabyfoot m2 = new ClientBabyfoot();
-		Thread t2 = new Thread(new TesterThread(m2,false));
-		t2.start();
 	}
 }
 
 class TesterThread implements Runnable {
 	private ClientBabyfoot main;
-	private boolean isHoster;
-	public TesterThread(ClientBabyfoot m, boolean b){
+	public TesterThread(ClientBabyfoot m){
 		main = m;
-		isHoster = b;
 	}
 	public void run(){
 		main.init();
-		((ConnexionPanel) main.actualPanel).logIn( String.valueOf( (int)(Math.random()*10000000) ) );
-		if( isHoster ){
-			((MenuPanel) main.actualPanel).getWindow().setContentPane(new NewPanel(((MenuPanel) main.actualPanel).getWindow()));
-			((NewPanel) main.actualPanel).getWindow().setVisible(true);
-		}else{
-			((MenuPanel) main.actualPanel).getWindow().setContentPane(new ServersPanel(((MenuPanel) main.actualPanel).getWindow()));
-			((MenuPanel) main.actualPanel).getWindow().setVisible(true);
+		String loginHost = "bob";
+		((ConnexionPanel) main.actualPanel).logIn( loginHost );
+		((MenuPanel) main.actualPanel).getWindow().setContentPane(new NewPanel(((MenuPanel) main.actualPanel).getWindow()));
+		((NewPanel) main.actualPanel).getWindow().setVisible(true);
+		((NewPanel) main.actualPanel).getWindow().getMain().getPlayer().addMatch(1);
+		((NewPanel) main.actualPanel).getWindow().getMain().getPlayer().setBoss(true);
+		((NewPanel) main.actualPanel).getWindow().setContentPane(new WaitingRoomPanel(((NewPanel) main.actualPanel).getWindow()));
+		((WaitingRoomPanel) main.actualPanel).getWindow().setVisible(true);
+		PrintWriter out = ((WaitingRoomPanel) main.actualPanel).getWindow().getMain().getClient().getMc().getOut();
+		String login = "coucou";
+		out.println("player" + Utils.SEPARATOR + "add" + Utils.SEPARATOR + login);
+		out.flush();
+		out.println("player" + Utils.SEPARATOR + "joinmatch" + Utils.SEPARATOR + login + Utils.SEPARATOR + loginHost );
+		out.flush();
+		out.println("match" + Utils.SEPARATOR + "run" + Utils.SEPARATOR + loginHost );
+    	out.flush();
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
+		((WaitingRoomPanel) main.actualPanel).getWindow().getMain().getClient().getGc().startThread();
+		((WaitingRoomPanel) main.actualPanel).getWindow().setContentPane(new GamePanel(((WaitingRoomPanel) main.actualPanel).getWindow(),false));
+		((WaitingRoomPanel) main.actualPanel).getWindow().setVisible(true);
 	}
 }

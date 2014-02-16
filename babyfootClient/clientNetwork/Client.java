@@ -30,7 +30,7 @@ public class Client {
 	    try {
 	        Client.socketChat = new Socket("127.0.0.1",2010);
 	        System.out.println("Connexion établie avec le serveur pour le chat");
-	        setCc(new ChatClient( Client.socketChat, main ));
+	        cc = new ChatClient( Client.socketChat, main );
 	        tChat = new Thread(getCc());
 	        tChat.start();
 	        Client.socketPlayer = new Socket("127.0.0.1",2010);

@@ -206,7 +206,7 @@ class RefreshRoom implements Runnable{
 		while(run){
 			waitingroom.refresh();
 			try {
-				Thread.sleep(3000);
+				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

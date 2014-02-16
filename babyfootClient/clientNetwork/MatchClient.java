@@ -14,7 +14,11 @@ import clientGui.GameZone.RodPositions;
 public class MatchClient implements Runnable {
 	private Socket socket;
     private PrintWriter out = null;
-    private BufferedReader in = null;
+    public PrintWriter getOut() {
+		return out;
+	}
+
+	private BufferedReader in = null;
     private MatchReceptionMessage prc;
     private boolean ok;
     private String[] serverList;

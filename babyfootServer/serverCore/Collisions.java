@@ -36,7 +36,7 @@ public class Collisions {
 		RodPositions rodBottom = null;
 		RodPositions rodTop = testCollisionsTop(position, rod);
 		//rodBottom = testCollisionsBottom(position, rod);
-		if( rodTop != null ) System.out.println("TOP");
+		if( rodTop != null ) System.out.println("TOP" + rod);
 		if( rodBottom != null ) System.out.println("BOTTOM");
 		if( rodTop != null ||rodBottom != null ){
 			if( lastCollision > System.currentTimeMillis() - 1000 ) return null;
