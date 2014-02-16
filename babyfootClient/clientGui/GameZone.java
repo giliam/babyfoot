@@ -187,6 +187,57 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	
 	private void drawRodPosition(Graphics g){
 		g.setColor(Color.BLACK);
+		int position = 0;
+		int yTopHitBox = 0;
+		int xLeftHitBox = 0;
+		position = yDecal[1].get(RodPositions.GARDIEN);
+		yTopHitBox = position + Utils.HEIGHT/2-Utils.IMAGE_PLAYER_Y/2 - yDecalDefault.get(RodPositions.GARDIEN);
+		xLeftHitBox = Utils.WIDTH - (Utils.GARDIEN_POSITION-Utils.IMAGE_PLAYER_X/3);
+		g.fillRect( xLeftHitBox, yTopHitBox, 2*Utils.IMAGE_PLAYER_X/3, 2*Utils.IMAGE_PLAYER_Y/3 );
+		position = yDecal[1].get(RodPositions.DEFENSE);
+		yTopHitBox = position + Utils.HEIGHT/3-Utils.IMAGE_PLAYER_Y/2 - yDecalDefault.get(RodPositions.DEFENSE);
+		xLeftHitBox = Utils.WIDTH - (Utils.DEFENSE_POSITION-Utils.IMAGE_PLAYER_X/3);
+		g.fillRect( xLeftHitBox, yTopHitBox, 2*Utils.IMAGE_PLAYER_X/3, 2*Utils.IMAGE_PLAYER_Y/3 ); 
+		yTopHitBox = position + 2*Utils.HEIGHT/3-Utils.IMAGE_PLAYER_Y/2 - yDecalDefault.get(RodPositions.DEFENSE);
+		g.fillRect( xLeftHitBox, yTopHitBox, 2*Utils.IMAGE_PLAYER_X/3, 2*Utils.IMAGE_PLAYER_Y/3 ); 
+		position = yDecal[1].get(RodPositions.MILIEU);
+		xLeftHitBox = Utils.WIDTH - (Utils.MILIEU_POSITION-Utils.IMAGE_PLAYER_X/3);
+		for( int i = 1; i < 6; i++ ){
+			yTopHitBox = position + i*Utils.HEIGHT/6-Utils.IMAGE_PLAYER_Y/2 - yDecalDefault.get(RodPositions.MILIEU);
+			g.fillRect( xLeftHitBox, yTopHitBox, 2*Utils.IMAGE_PLAYER_X/3, 2*Utils.IMAGE_PLAYER_Y/3 ); 
+		}
+		position = yDecal[1].get(RodPositions.ATTAQUE);
+		xLeftHitBox = Utils.WIDTH - (Utils.ATTAQUE_POSITION-Utils.IMAGE_PLAYER_X/3);
+		for( int i = 1; i < 4; i++ ){
+			yTopHitBox = position + i*Utils.HEIGHT/4-Utils.IMAGE_PLAYER_Y/2 - yDecalDefault.get(RodPositions.ATTAQUE);
+			g.fillRect( xLeftHitBox, yTopHitBox, 2*Utils.IMAGE_PLAYER_X/3, 2*Utils.IMAGE_PLAYER_Y/3 ); 
+		}
+		
+		
+		
+		
+		position = yDecal[0].get(RodPositions.GARDIEN);
+		yTopHitBox = position + Utils.HEIGHT/2-Utils.IMAGE_PLAYER_Y/2 - yDecalDefault.get(RodPositions.GARDIEN);
+		xLeftHitBox = (Utils.GARDIEN_POSITION-Utils.IMAGE_PLAYER_X/3);
+		g.fillRect( xLeftHitBox, yTopHitBox, 2*Utils.IMAGE_PLAYER_X/3, 2*Utils.IMAGE_PLAYER_Y/3 );
+		position = yDecal[0].get(RodPositions.DEFENSE);
+		yTopHitBox = position + Utils.HEIGHT/3-Utils.IMAGE_PLAYER_Y/2 - yDecalDefault.get(RodPositions.DEFENSE);
+		xLeftHitBox = (Utils.DEFENSE_POSITION-Utils.IMAGE_PLAYER_X/3);
+		g.fillRect( xLeftHitBox, yTopHitBox, 2*Utils.IMAGE_PLAYER_X/3, 2*Utils.IMAGE_PLAYER_Y/3 ); 
+		yTopHitBox = position + 2*Utils.HEIGHT/3-Utils.IMAGE_PLAYER_Y/2 - yDecalDefault.get(RodPositions.DEFENSE);
+		g.fillRect( xLeftHitBox, yTopHitBox, 2*Utils.IMAGE_PLAYER_X/3, 2*Utils.IMAGE_PLAYER_Y/3 ); 
+		position = yDecal[0].get(RodPositions.MILIEU);
+		xLeftHitBox = (Utils.MILIEU_POSITION-Utils.IMAGE_PLAYER_X/3);
+		for( int i = 1; i < 6; i++ ){
+			yTopHitBox = position + i*Utils.HEIGHT/6-Utils.IMAGE_PLAYER_Y/2 - yDecalDefault.get(RodPositions.MILIEU);
+			g.fillRect( xLeftHitBox, yTopHitBox, 2*Utils.IMAGE_PLAYER_X/3, 2*Utils.IMAGE_PLAYER_Y/3 ); 
+		}
+		position = yDecal[0].get(RodPositions.ATTAQUE);
+		xLeftHitBox = (Utils.ATTAQUE_POSITION-Utils.IMAGE_PLAYER_X/3);
+		for( int i = 1; i < 4; i++ ){
+			yTopHitBox = position + i*Utils.HEIGHT/4-Utils.IMAGE_PLAYER_Y/2 - yDecalDefault.get(RodPositions.ATTAQUE);
+			g.fillRect( xLeftHitBox, yTopHitBox, 2*Utils.IMAGE_PLAYER_X/3, 2*Utils.IMAGE_PLAYER_Y/3 ); 
+		}
 		/*switch(rodPosition){
 			case GARDIEN:
 				g.fillRect(Utils.GAP_EDGE+30,600,50,50);
