@@ -110,7 +110,7 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	private void drawBall(Graphics g) {
 		//Côté gauche
 		g.setColor(Color.WHITE);
-		g.fillOval(ballX, ballY, Utils.BALL_RADIUS, Utils.BALL_RADIUS);
+		g.fillOval(ballX - Utils.BALL_RADIUS, ballY - Utils.BALL_RADIUS, Utils.BALL_RADIUS, Utils.BALL_RADIUS);
 	}
 
 

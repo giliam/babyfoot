@@ -256,14 +256,19 @@ public class Match {
 	public boolean testCollisions() {
 		collisions.setBallPosition(ballX, ballY, ballSpeedX, ballSpeedY);
 		for( int i = 0; i < 2; i++ ){
-			if( collisions.testCollisions(rodPositions[i].get(RodPositions.GARDIEN),RodPositions.GARDIEN) != null )
+			if( collisions.testCollisions(rodPositions[i].get(RodPositions.GARDIEN),RodPositions.GARDIEN) != null ){
+				System.out.println("Gardien");
 				return true;
-			else if( collisions.testCollisions(rodPositions[i].get(RodPositions.DEFENSE),RodPositions.DEFENSE) != null )
+			}else if( collisions.testCollisions(rodPositions[i].get(RodPositions.DEFENSE),RodPositions.DEFENSE) != null ){
+				System.out.println("Defe");
 				return true;
-			else if( collisions.testCollisions(rodPositions[i].get(RodPositions.MILIEU),RodPositions.MILIEU) != null )
+			}else if( collisions.testCollisions(rodPositions[i].get(RodPositions.MILIEU),RodPositions.MILIEU) != null ){
+				System.out.println("Milieu");
 				return true;
-			else if( collisions.testCollisions(rodPositions[i].get(RodPositions.ATTAQUE),RodPositions.ATTAQUE) != null )
+			}else if( collisions.testCollisions(rodPositions[i].get(RodPositions.ATTAQUE),RodPositions.ATTAQUE) != null ){
+				System.out.println("Attaq");
 				return true;
+			}
 		}
 		return false;
 	}
@@ -309,22 +314,22 @@ class RefreshBallPosition implements Runnable {
 		try{
 			while(true){
 				//Si on a atteint le bord extérieur gauche et que la vitesse est bien négative (donc vers la gauche), on change de vitesse.
-				if( ( match.getBallX() ) <=  ( Utils.GAP_EDGE + Utils.LINE_STRENGTH + Utils.BALL_RADIUS/2 - 10 )  ) {
+				if( ( match.getBallX() ) <=  ( Utils.GAP_EDGE + Utils.LINE_STRENGTH + Utils.BALL_RADIUS/2 )  ) {
 					if( match.getBallSpeedX() < 0 )
 						match.setBallSpeedX((-1)*match.getBallSpeedX()+( match.isSlow() ? 0 : match.getBallSpeedX()/Math.abs(match.getBallSpeedX())));
 					match.verifGoal();
 				//Si on a atteint le bord extérieur droit et que la vitesse est bien positive (donc vers la droite), on change de vitesse
-				}else if( ( match.getBallX() + match.getBallSpeedX() ) >=  ( Utils.WIDTH - Utils.GAP_EDGE - Utils.LINE_STRENGTH - Utils.BALL_RADIUS + 10 ) ){
+				}else if( ( match.getBallX() + match.getBallSpeedX() ) >=  ( Utils.WIDTH - Utils.GAP_EDGE - Utils.LINE_STRENGTH - Utils.BALL_RADIUS/2 ) ){
 					if( match.getBallSpeedX() > 0 )
 						match.setBallSpeedX((-1)*match.getBallSpeedX()+( match.isSlow() ? 0 : match.getBallSpeedX()/Math.abs(match.getBallSpeedX())));
 					match.verifGoal();
 				}
 				//Si on a atteint le bord extérieur haut et que la vitesse est bien négative (donc vers le haut), on change de vitesse.
-				if( ( match.getBallY() ) <=  ( Utils.GAP_EDGE + Utils.LINE_STRENGTH + Utils.BALL_RADIUS/2 - 10 ) ){
+				if( ( match.getBallY() ) <=  ( Utils.GAP_EDGE + Utils.LINE_STRENGTH + Utils.BALL_RADIUS/2 ) ){
 					if( match.getBallSpeedY() < 0 )
 						match.setBallSpeedY((-1)*match.getBallSpeedY()+( match.isSlow() ? 0 : match.getBallSpeedY()/Math.abs(match.getBallSpeedY())));
 				//Si on a atteint le bord extérieur bas et que la vitesse est bien positive (donc vers le bas), on change de vitesse
-				}else if( ( match.getBallY() + match.getBallSpeedY() ) >=  ( Utils.HEIGHT - Utils.GAP_EDGE - Utils.LINE_STRENGTH - Utils.BALL_RADIUS*2 + 10 ) ) {
+				}else if( ( match.getBallY() + match.getBallSpeedY() ) >=  ( Utils.HEIGHT - Utils.GAP_EDGE - Utils.LINE_STRENGTH - Utils.BALL_RADIUS/2 ) ) {
 					if( match.getBallSpeedY() > 0 )
 						match.setBallSpeedY((-1)*match.getBallSpeedY()+( match.isSlow() ? 0 : match.getBallSpeedY()/Math.abs(match.getBallSpeedY())));
 				}

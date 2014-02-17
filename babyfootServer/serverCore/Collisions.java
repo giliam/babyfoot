@@ -34,8 +34,9 @@ public class Collisions {
 		yDecalDefault.put(RodPositions.MILIEU, 100);
 		yDecalDefault.put(RodPositions.ATTAQUE, 100);
 		RodPositions rodBottom = null;
-		RodPositions rodTop = testCollisionsTop(position, rod);
-		//rodBottom = testCollisionsBottom(position, rod);
+		RodPositions rodTop = null;
+		rodTop = testCollisionsTop(position, rod);
+		rodBottom = testCollisionsBottom(position, rod);
 		if( rodTop != null ) System.out.println("TOP" + rod);
 		if( rodBottom != null ) System.out.println("BOTTOM");
 		if( rodTop != null ||rodBottom != null ){
@@ -124,8 +125,8 @@ public class Collisions {
 	}
 	
 	public boolean isBallInCollision(float xLeftTop, float yLeftTop, float xRightBottom, float yRightBottom ){
-		return ( ( ballX + Utils.BALL_RADIUS ) >= xLeftTop && ( ballX - Utils.BALL_RADIUS ) <= xRightBottom ) 
-				&& ( ( ballY + Utils.BALL_RADIUS ) >= yLeftTop && ( ballY - Utils.BALL_RADIUS ) <= yRightBottom );
+		return ( ( ballX + Utils.BALL_RADIUS ) >= xLeftTop && ballX <= xRightBottom ) 
+				&& ( ( ballY + Utils.BALL_RADIUS ) >= yLeftTop && ballY <= yRightBottom );
 	}
 
 	public void setBallPosition(float ballX, float ballY, float ballSpeedX, float ballSpeedY) {
