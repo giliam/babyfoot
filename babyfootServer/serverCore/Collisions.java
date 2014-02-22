@@ -36,7 +36,7 @@ public class Collisions {
 		RodPositions rodBottom = null;
 		RodPositions rodTop = null;
 		rodTop = testCollisionsTop(position, rod);
-		rodBottom = testCollisionsBottom(position, rod);
+		//rodBottom = testCollisionsBottom(position, rod);
 		/*if( rodTop != null ) System.out.println("TOP" + rod);
 		if( rodBottom != null ) System.out.println("BOTTOM" + rod);//*/
 		if( rodTop != null ||rodBottom != null ){
@@ -47,6 +47,8 @@ public class Collisions {
 	}
 	
 	public RodPositions testCollisionsTop(Integer position, RodPositions rod){
+		//y final : y + i*h/(1+nb)-Utils.IMAGE_PLAYER_Y/2 + yDecal[rightPlayer ? 1 : 0].get(rod)-Utils.Y_STAGGERING_DEFAULT.get(rod)
+		// i va de 0 à n-1 où n est le nombre de joueurs sur une barre
 		int yTopHitBox = position + Utils.GAP_EDGE;
 		int xLeftHitBox = 0;
 		switch(rod){

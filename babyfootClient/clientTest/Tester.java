@@ -44,11 +44,6 @@ class TesterThread implements Runnable {
 		out.flush();
 		out.println("match" + Utils.SEPARATOR + "run" + Utils.SEPARATOR + loginHost );
     	out.flush();
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 		((WaitingRoomPanel) main.actualPanel).getWindow().getMain().getClient().getGc().startThread();
 		((WaitingRoomPanel) main.actualPanel).getWindow().setContentPane(new GamePanel(((WaitingRoomPanel) main.actualPanel).getWindow(),false));
 		((WaitingRoomPanel) main.actualPanel).getWindow().setVisible(true);

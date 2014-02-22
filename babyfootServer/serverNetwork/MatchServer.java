@@ -139,6 +139,7 @@ public class MatchServer extends AbstractServer {
 	
 	private String getBallPositions(String login) {
 		Match m = ServerBabyfoot.tplayer.getPlayer(login).getMatch();
+		//return "1" + Utils.SEPARATOR + "1";
 		return Math.abs((int)m.getBallX()) + Utils.SEPARATOR + Math.abs((int)m.getBallY());
 	}
 
