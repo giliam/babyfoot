@@ -133,9 +133,7 @@ class GameReceptionMessage implements Runnable{
 	            	String[] datas = message.split(Utils.SEPARATOR);
 	            	if( datas.length < 9 ){
 	            		System.err.println("ajrzeioanra");
-	            		System.exit(0);
-	            	}
-	            	if( datas != null && datas[0].equals("positions") ){
+	            	}else if( datas != null && datas[0].equals("positions") ){
 	            		gc.setRodPositions(new String[8]);
 	            		for( int i = 0; i<8; i++ ){
 	            			gc.rodPositions[i] = datas[i+1];

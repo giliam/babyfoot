@@ -323,22 +323,22 @@ class RefreshBallPosition implements Runnable {
 		try{
 			while(true){
 				//Si on a atteint le bord extérieur gauche et que la vitesse est bien négative (donc vers la gauche), on change de vitesse.
-				if( ( match.getBallX() ) <=  ( Utils.GAP_EDGE + Utils.LINE_STRENGTH )  ) {
+				if( ( match.getBallX() -5 - Utils.BALL_RADIUS ) <=  ( Utils.GAP_EDGE + Utils.LINE_STRENGTH )  ) {
 					if( match.getBallSpeedX() < 0 )
 						match.setBallSpeedX((-1)*match.getBallSpeedX()+( match.isSlow() ? 0 : match.getBallSpeedX()/Math.abs(match.getBallSpeedX())));
 					match.verifGoal();
 				//Si on a atteint le bord extérieur droit et que la vitesse est bien positive (donc vers la droite), on change de vitesse
-				}else if( ( match.getBallX() + match.getBallSpeedX() ) >=  ( Utils.WIDTH - Utils.GAP_EDGE - Utils.LINE_STRENGTH - Utils.BALL_RADIUS ) ){
+				}else if( ( match.getBallX()+5 ) >=  ( Utils.WIDTH - Utils.GAP_EDGE - Utils.LINE_STRENGTH - Utils.BALL_RADIUS ) ){
 					if( match.getBallSpeedX() > 0 )
 						match.setBallSpeedX((-1)*match.getBallSpeedX()+( match.isSlow() ? 0 : match.getBallSpeedX()/Math.abs(match.getBallSpeedX())));
 					match.verifGoal();
 				}
 				//Si on a atteint le bord extérieur haut et que la vitesse est bien négative (donc vers le haut), on change de vitesse.
-				if( ( match.getBallY() ) <=  ( Utils.GAP_EDGE + Utils.LINE_STRENGTH ) ){
+				if( ( match.getBallY()-5 - Utils.BALL_RADIUS  ) <=  ( Utils.GAP_EDGE + Utils.LINE_STRENGTH ) ){
 					if( match.getBallSpeedY() < 0 )
 						match.setBallSpeedY((-1)*match.getBallSpeedY()+( match.isSlow() ? 0 : match.getBallSpeedY()/Math.abs(match.getBallSpeedY())));
 				//Si on a atteint le bord extérieur bas et que la vitesse est bien positive (donc vers le bas), on change de vitesse
-				}else if( ( match.getBallY() + match.getBallSpeedY() ) >=  ( Utils.HEIGHT - Utils.GAP_EDGE - Utils.LINE_STRENGTH - Utils.BALL_RADIUS ) ) {
+				}else if( ( match.getBallY() +5+ Utils.BALL_RADIUS  ) >=  ( Utils.HEIGHT - Utils.GAP_EDGE - Utils.LINE_STRENGTH ) ) {
 					if( match.getBallSpeedY() > 0 )
 						match.setBallSpeedY((-1)*match.getBallSpeedY()+( match.isSlow() ? 0 : match.getBallSpeedY()/Math.abs(match.getBallSpeedY())));
 				}
@@ -348,7 +348,7 @@ class RefreshBallPosition implements Runnable {
 					match.setBallSpeedX((-1)*match.getBallSpeedX()+( match.isSlow() ? 0 : 2*match.getBallSpeedX()/7));
 				else if( resultatsCollisions == CollisionType.UPANDDOWN )
 					match.setBallSpeedY((-1)*match.getBallSpeedY()+( match.isSlow() ? 0 : 2*match.getBallSpeedY()/7));
-				
+
 				match.addBallX(match.getBallSpeedX());
 				match.addBallY(match.getBallSpeedY());
 				Thread.sleep(50);

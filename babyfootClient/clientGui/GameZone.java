@@ -102,7 +102,7 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	private void drawBall(Graphics g) {
 		//Côté gauche
 		g.setColor(Color.WHITE);
-		g.fillOval(ballX, ballY, Utils.BALL_RADIUS, Utils.BALL_RADIUS);
+		g.fillOval(ballX-Utils.BALL_RADIUS, ballY-Utils.BALL_RADIUS, Utils.BALL_RADIUS*2, Utils.BALL_RADIUS*2);
 	}
 
 
@@ -358,10 +358,12 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 				yDecal[0].put(RodPositions.MILIEU, Integer.valueOf(rodPositions[2]));
 				yDecal[0].put(RodPositions.ATTAQUE, Integer.valueOf(rodPositions[3]));
 			}else{
-				yDecal[1].put(RodPositions.GARDIEN, Integer.valueOf(rodPositions[4]));
-				yDecal[1].put(RodPositions.DEFENSE, Integer.valueOf(rodPositions[5]));
-				yDecal[1].put(RodPositions.MILIEU, Integer.valueOf(rodPositions[6]));
-				yDecal[1].put(RodPositions.ATTAQUE, Integer.valueOf(rodPositions[7]));
+				if( rodPositions.length == 8 ){
+					yDecal[1].put(RodPositions.GARDIEN, Integer.valueOf(rodPositions[4]));
+					yDecal[1].put(RodPositions.DEFENSE, Integer.valueOf(rodPositions[5]));
+					yDecal[1].put(RodPositions.MILIEU, Integer.valueOf(rodPositions[6]));
+					yDecal[1].put(RodPositions.ATTAQUE, Integer.valueOf(rodPositions[7]));
+				}
 			}
 			repaint();
 		}

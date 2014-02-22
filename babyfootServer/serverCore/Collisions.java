@@ -141,10 +141,10 @@ public class Collisions {
 	}
 	
 	public CollisionType isBallInCollision(float xLeftTop, float yLeftTop, float xRightBottom, float yRightBottom ){
-		if( ( Math.pow( (ballX + Utils.BALL_RADIUS / 2 ) - xLeftTop, 2) + Math.pow( (ballY + Utils.BALL_RADIUS / 2 ) - yLeftTop, 2 ) ) <= Math.pow( Utils.BALL_RADIUS, 2 )
-				|| ( Math.pow( (ballX + Utils.BALL_RADIUS / 2 ) - xRightBottom, 2) + Math.pow( (ballY + Utils.BALL_RADIUS / 2 ) - yRightBottom, 2 ) ) <= Math.pow( Utils.BALL_RADIUS, 2 ) ){
-			if( Math.abs(ballX - xLeftTop) / Utils.IMAGE_PLAYER_X <= Math.abs(ballY - yLeftTop) / Utils.IMAGE_PLAYER_Y ) return CollisionType.SIDES;
-			else return CollisionType.UPANDDOWN;
+		if( ( Math.pow( ballX - xLeftTop, 2) + Math.pow( ballY - yLeftTop, 2 ) ) <= Math.pow( Utils.BALL_RADIUS, 2 )
+				|| ( Math.pow( ballX - xRightBottom, 2) + Math.pow( ballY - yRightBottom, 2 ) ) <= Math.pow( Utils.BALL_RADIUS, 2 ) ){
+			if( Math.abs(ballX - Utils.BALL_RADIUS - xLeftTop) / Utils.IMAGE_PLAYER_X <= Math.abs(ballY - Utils.BALL_RADIUS  - yLeftTop) / Utils.IMAGE_PLAYER_Y ) return CollisionType.UPANDDOWN;
+			else return CollisionType.SIDES;
 		}
 		return null;
 	}
