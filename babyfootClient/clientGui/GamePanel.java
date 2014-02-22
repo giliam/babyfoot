@@ -16,7 +16,8 @@ public class GamePanel extends JPanel implements ActionListener {
 	 */
 	public GamePanel(MainFrame f, boolean testMode) {
 		window = f;
-		f.setSize(1300,700);
+		//Nécessaire de mettre 729 car décalage inhérent à l'affichage
+		f.setSize(1300,729);
 		setLayout(new BorderLayout());
 		JPanel chat = null;
 		if( !testMode ){
@@ -25,8 +26,8 @@ public class GamePanel extends JPanel implements ActionListener {
 			chat = new JPanel();
 		}
 		chat.setBackground(Color.BLACK);
-		chat.setPreferredSize(new Dimension(300,700));
-		chat.setMinimumSize(new Dimension(300,700));
+		chat.setPreferredSize(new Dimension(300,729));
+		chat.setMinimumSize(new Dimension(300,729));
 		add(chat,BorderLayout.EAST);
 		
 		gameZone = new GameZone(window, testMode);

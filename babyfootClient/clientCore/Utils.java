@@ -39,7 +39,7 @@ public abstract class Utils {
 	
 	
 	@SuppressWarnings("serial")
-	public static final Hashtable<RodPositions, Integer> Y_STAGGERING_DEFAULT = new Hashtable<RodPositions, Integer>(){{ put(RodPositions.GARDIEN, 100); put(RodPositions.DEFENSE, 1500 ); put(RodPositions.MILIEU, 100); put(RodPositions.ATTAQUE, 100); } };
+	public static final Hashtable<RodPositions, Integer> Y_STAGGERING_DEFAULT = new Hashtable<RodPositions, Integer>(){{ put(RodPositions.GARDIEN, 100); put(RodPositions.DEFENSE, 150 ); put(RodPositions.MILIEU, 100); put(RodPositions.ATTAQUE, 100); } };
 	
 	
 

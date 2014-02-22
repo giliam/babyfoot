@@ -47,15 +47,13 @@ public class Collisions {
 	}
 	
 	public RodPositions testCollisionsTop(Integer position, RodPositions rod){
-		//y final : y + i*h/(1+nb)-Utils.IMAGE_PLAYER_Y/2 + yDecal[rightPlayer ? 1 : 0].get(rod)-Utils.Y_STAGGERING_DEFAULT.get(rod)
-		// i va de 0 à n-1 où n est le nombre de joueurs sur une barre
 		int yTopHitBox = position + Utils.GAP_EDGE;
 		int xLeftHitBox = 0;
 		switch(rod){
 			case GARDIEN:
 				yTopHitBox = position + Utils.HEIGHT/2-Utils.IMAGE_PLAYER_Y/2 - yDecalDefault.get(RodPositions.GARDIEN);
-				xLeftHitBox = Utils.WIDTH - (Utils.GARDIEN_POSITION-Utils.IMAGE_PLAYER_X/3);
-				if( isBallInCollision( xLeftHitBox, yTopHitBox, xLeftHitBox + 2*Utils.IMAGE_PLAYER_X/3, yTopHitBox + 2*Utils.IMAGE_PLAYER_Y/3 ) ) 
+				xLeftHitBox = Utils.WIDTH - (Utils.GARDIEN_POSITION+Utils.IMAGE_PLAYER_X/3);
+				if( isBallInCollision( xLeftHitBox, yTopHitBox, xLeftHitBox + 2*(float)Utils.IMAGE_PLAYER_X/3, yTopHitBox + 2*(float)Utils.IMAGE_PLAYER_Y/3 ) ) 
 					return rod;
 				break;
 			case DEFENSE:
@@ -68,20 +66,20 @@ public class Collisions {
 					return rod;
 				break;
 			case MILIEU:
-				xLeftHitBox = Utils.WIDTH - (Utils.MILIEU_POSITION-Utils.IMAGE_PLAYER_X/3);
+				/*xLeftHitBox = Utils.WIDTH - (Utils.MILIEU_POSITION-Utils.IMAGE_PLAYER_X/3);
 				for( int i = 1; i < 6; i++ ){
 					yTopHitBox = position + i*Utils.HEIGHT/6-Utils.IMAGE_PLAYER_Y/2 - yDecalDefault.get(RodPositions.MILIEU);
 					if( isBallInCollision( xLeftHitBox, yTopHitBox, xLeftHitBox + 2*Utils.IMAGE_PLAYER_X/3, yTopHitBox + 2*Utils.IMAGE_PLAYER_Y/3 ) ) 
 						return rod;
-				}
+				}*/
 				break;
 			case ATTAQUE:
-				xLeftHitBox = Utils.WIDTH - (Utils.ATTAQUE_POSITION-Utils.IMAGE_PLAYER_X/3);
+				/*xLeftHitBox = Utils.WIDTH - (Utils.ATTAQUE_POSITION-Utils.IMAGE_PLAYER_X/3);
 				for( int i = 1; i < 4; i++ ){
 					yTopHitBox = position + i*Utils.HEIGHT/4-Utils.IMAGE_PLAYER_Y/2 - yDecalDefault.get(RodPositions.ATTAQUE);
 					if( isBallInCollision( xLeftHitBox, yTopHitBox, xLeftHitBox + 2*Utils.IMAGE_PLAYER_X/3, yTopHitBox + 2*Utils.IMAGE_PLAYER_Y/3 ) ) 
 						return rod;
-				}
+				}*/
 				break;
 		}
 		return null;
