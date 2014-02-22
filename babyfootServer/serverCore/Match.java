@@ -3,7 +3,7 @@ package serverCore;
 import java.util.Hashtable;
 
 import clientCore.Utils;
-import clientGui.GameZone.RodPositions;
+import clientCore.Utils.RodPositions;
 
 import serverNetwork.ServerBabyfoot;
 
@@ -198,10 +198,10 @@ public class Match {
 	public void start() {
 		setBallX(450-Utils.BALL_RADIUS/2);
 		setBallY(350-Utils.BALL_RADIUS/2);
-		setBallSpeedX(5);
-		setBallSpeedY(0);
-		//setBallSpeedX(( Math.random() > 0.5 ? (int)(Math.random()*Utils.MAX_INITIAL_SPEED) + 2 : (-1)*(int)(Math.random()*Utils.MAX_INITIAL_SPEED) - 2 ));
-		//setBallSpeedY(( Math.random() > 0.5 ? (int)(Math.random()*Utils.MAX_INITIAL_SPEED) + 2 : (-1)*(int)(Math.random()*Utils.MAX_INITIAL_SPEED) - 2 ));
+		//setBallSpeedX(5);
+		//setBallSpeedY(0);
+		setBallSpeedX(( Math.random() > 0.5 ? (int)(Math.random()*Utils.MAX_INITIAL_SPEED) + 2 : (-1)*(int)(Math.random()*Utils.MAX_INITIAL_SPEED) - 2 ));
+		setBallSpeedY(( Math.random() > 0.5 ? (int)(Math.random()*Utils.MAX_INITIAL_SPEED) + 2 : (-1)*(int)(Math.random()*Utils.MAX_INITIAL_SPEED) - 2 ));
 		Thread t = new Thread(new RefreshBallPosition(this));
 		t.start();
 	}

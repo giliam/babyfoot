@@ -162,7 +162,7 @@ public class WaitingRoomPanel extends BPanel implements ActionListener {
 		boolean sideOk = false;
 		for( int i = 0; i < playersTeamOne.length; i++ ){
 			if( playersTeamOne[i].equals(getWindow().getMain().getPlayer().getLogin())){
-				getWindow().getMain().getPlayer().setSide(Utils.Sides.BOTTOM);
+				getWindow().getMain().getPlayer().setSide(Utils.Sides.DOWN);
 				sideOk = true;
 				break;
 			}

@@ -5,7 +5,7 @@ import java.util.Hashtable;
 
 import clientCore.Utils.Sides;
 import clientGui.GameZone;
-import clientGui.GameZone.RodPositions;
+import clientCore.Utils.RodPositions;
 
 
 
@@ -15,14 +15,14 @@ si il est le maitre de jeu (celui qui a créé la partie).  Elle contient aussi 
 principales requêtes. */
 public class Player {
 	private String login;
-	private Hashtable<GameZone.RodPositions, Boolean> rodAvailables;
-	private Utils.Sides side = Utils.Sides.BOTTOM;
+	private Hashtable<RodPositions, Boolean> rodAvailables;
+	private Utils.Sides side = Utils.Sides.DOWN;
 	private boolean boss;
 	private ClientBabyfoot main;
 	public Player(String l, ClientBabyfoot m){
 		main = m;
 		
-		rodAvailables = new Hashtable<GameZone.RodPositions, Boolean>();
+		rodAvailables = new Hashtable<RodPositions, Boolean>();
 		//A priori on donne tous les accès, ce qui pourra être modifié par la suite.
 		rodAvailables.put(RodPositions.GARDIEN, true);
 		rodAvailables.put(RodPositions.DEFENSE, true);
@@ -57,8 +57,8 @@ public class Player {
 	}
 	
 	/** Envoie les modifications de positions des barres au serveur pour le joueur actuel. */
-	public void setRod(Hashtable<GameZone.RodPositions, Integer> rodPositionsHash){
-		int[] rodPositions = { rodPositionsHash.get(GameZone.RodPositions.GARDIEN), rodPositionsHash.get(GameZone.RodPositions.DEFENSE),rodPositionsHash.get(GameZone.RodPositions.MILIEU),rodPositionsHash.get(GameZone.RodPositions.ATTAQUE) };
+	public void setRod(Hashtable<RodPositions, Integer> rodPositionsHash){
+		int[] rodPositions = { rodPositionsHash.get(RodPositions.GARDIEN), rodPositionsHash.get(RodPositions.DEFENSE),rodPositionsHash.get(RodPositions.MILIEU),rodPositionsHash.get(RodPositions.ATTAQUE) };
 		main.getClient().getMc().setRodPositions(login, rodPositions);
 	}
 
@@ -70,11 +70,11 @@ public class Player {
 		this.login = login;
 	}
 	
-	public Hashtable<GameZone.RodPositions, Boolean> getRodAvailables() {
+	public Hashtable<RodPositions, Boolean> getRodAvailables() {
 		return rodAvailables;
 	}
 
-	public void setRodAvailables(Hashtable<GameZone.RodPositions, Boolean> rodAvailables) {
+	public void setRodAvailables(Hashtable<RodPositions, Boolean> rodAvailables) {
 		this.rodAvailables = rodAvailables;
 	}
 	

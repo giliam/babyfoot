@@ -8,7 +8,7 @@ import java.net.Socket;
 
 import clientCore.Utils;
 import clientCore.Utils.Sides;
-import clientGui.GameZone.RodPositions;
+import clientCore.Utils.RodPositions;
 
 
 public class MatchClient implements Runnable {

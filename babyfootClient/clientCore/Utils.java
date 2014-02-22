@@ -6,16 +6,18 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Hashtable;
 
-import clientGui.GameZone.RodPositions;
-
 /** Cette classe dipose de fonctions utiles qui peuvent être nécessaires par toutes les parties du programme. Elle contient aussi
 les constantes nécessaires (par exemple de type enum) concernant le programme. */
 public abstract class Utils {
 	public static enum Types { ONEVSONE, TWOVSTWO, ONEVSTWO };
 	public static enum States { WAITING, FULL, PLAYING, FINISHED };  
-	public static enum Sides { BOTTOM, UP };
+	public static enum Sides { DOWN, UP };
 	
 	public static final int MATCH_END = 100;
+	
+	public static enum RodPositions { GARDIEN , DEFENSE, MILIEU, ATTAQUE };
+
+	public static enum CollisionType { SIDES, UPANDDOWN };
 	
 	public static final String SEPARATOR = ";";
 	
@@ -30,7 +32,7 @@ public abstract class Utils {
 	public static final int HEIGHT = 700;
 	public static final int WIDTH = 900;
 
-	public static final int MAX_INITIAL_SPEED = 5;
+	public static final int MAX_INITIAL_SPEED = 15;
 	
 	public static final int GARDIEN_POSITION = GAP_EDGE+30;
 	public static final int DEFENSE_POSITION = GAP_EDGE+30+100;

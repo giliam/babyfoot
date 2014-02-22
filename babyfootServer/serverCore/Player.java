@@ -51,13 +51,13 @@ public class Player {
 			case ONEVSONE:
 			case ONEVSTWO:
 				if( i == 1 )
-					side = Utils.Sides.BOTTOM;
+					side = Utils.Sides.DOWN;
 				else
 					side = Utils.Sides.UP;
 				break;
 			case TWOVSTWO:
 				if( i < 3 )
-					side = Utils.Sides.BOTTOM;
+					side = Utils.Sides.DOWN;
 				else
 					side = Utils.Sides.UP;
 				break;
