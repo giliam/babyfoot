@@ -257,16 +257,12 @@ public class Match {
 		collisions.setBallPosition(ballX, ballY, ballSpeedX, ballSpeedY);
 		for( int i = 0; i < 2; i++ ){
 			if( collisions.testCollisions(rodPositions[i].get(RodPositions.GARDIEN),RodPositions.GARDIEN) != null ){
-				System.out.println("Gardien");
 				return true;
 			}else if( collisions.testCollisions(rodPositions[i].get(RodPositions.DEFENSE),RodPositions.DEFENSE) != null ){
-				System.out.println("Defe");
 				return true;
 			}else if( collisions.testCollisions(rodPositions[i].get(RodPositions.MILIEU),RodPositions.MILIEU) != null ){
-				System.out.println("Milieu");
 				return true;
 			}else if( collisions.testCollisions(rodPositions[i].get(RodPositions.ATTAQUE),RodPositions.ATTAQUE) != null ){
-				System.out.println("Attaq");
 				return true;
 			}
 		}

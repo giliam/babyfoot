@@ -37,8 +37,8 @@ public class Collisions {
 		RodPositions rodTop = null;
 		rodTop = testCollisionsTop(position, rod);
 		rodBottom = testCollisionsBottom(position, rod);
-		if( rodTop != null ) System.out.println("TOP" + rod);
-		if( rodBottom != null ) System.out.println("BOTTOM");
+		/*if( rodTop != null ) System.out.println("TOP" + rod);
+		if( rodBottom != null ) System.out.println("BOTTOM" + rod);//*/
 		if( rodTop != null ||rodBottom != null ){
 			if( lastCollision > System.currentTimeMillis() - 1000 ) return null;
 			else lastCollision = System.currentTimeMillis();
@@ -125,8 +125,8 @@ public class Collisions {
 	}
 	
 	public boolean isBallInCollision(float xLeftTop, float yLeftTop, float xRightBottom, float yRightBottom ){
-		return ( ( ballX + Utils.BALL_RADIUS ) >= xLeftTop && ballX <= xRightBottom ) 
-				&& ( ( ballY + Utils.BALL_RADIUS ) >= yLeftTop && ballY <= yRightBottom );
+		return ( Math.pow( (ballX + Utils.BALL_RADIUS / 2 ) - xLeftTop, 2) + Math.pow( (ballY + Utils.BALL_RADIUS / 2 ) - yLeftTop, 2 ) ) <= Math.pow( Utils.BALL_RADIUS, 2 )
+				|| ( Math.pow( (ballX + Utils.BALL_RADIUS / 2 ) - xRightBottom, 2) + Math.pow( (ballY + Utils.BALL_RADIUS / 2 ) - yRightBottom, 2 ) ) <= Math.pow( Utils.BALL_RADIUS, 2 );
 	}
 
 	public void setBallPosition(float ballX, float ballY, float ballSpeedX, float ballSpeedY) {
