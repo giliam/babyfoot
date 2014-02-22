@@ -8,7 +8,7 @@ import java.util.LinkedList;
 
 import clientCore.Utils;
 import serverCore.Match;
-import clientGui.GameZone.RodPositions;
+import clientCore.Utils.RodPositions;
 
 
 public class MatchServer extends AbstractServer {

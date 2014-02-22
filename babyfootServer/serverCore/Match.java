@@ -4,6 +4,7 @@ import java.util.Hashtable;
 
 import clientCore.Utils;
 import clientCore.Utils.RodPositions;
+import clientCore.Utils.CollisionType;
 
 import serverNetwork.ServerBabyfoot;
 
@@ -255,20 +256,30 @@ public class Match {
 		}
 	}
 
-	public boolean testCollisions() {
+	public CollisionType testCollisions() {
 		collisions.setBallPosition(ballX, ballY, ballSpeedX, ballSpeedY);
 		for( int i = 0; i < 2; i++ ){
-			if( collisions.testCollisions(rodPositions[i].get(RodPositions.GARDIEN),RodPositions.GARDIEN) != null ){
-				return true;
-			}else if( collisions.testCollisions(rodPositions[i].get(RodPositions.DEFENSE),RodPositions.DEFENSE) != null ){
-				return true;
-			}else if( collisions.testCollisions(rodPositions[i].get(RodPositions.MILIEU),RodPositions.MILIEU) != null ){
-				return true;
-			}else if( collisions.testCollisions(rodPositions[i].get(RodPositions.ATTAQUE),RodPositions.ATTAQUE) != null ){
-				return true;
+			CollisionType gardien = collisions.testCollisions(rodPositions[i].get(RodPositions.GARDIEN),RodPositions.GARDIEN);
+			if( gardien != null ){
+				return gardien;
+			}
+			
+			CollisionType defense = collisions.testCollisions(rodPositions[i].get(RodPositions.DEFENSE),RodPositions.DEFENSE);
+			if( defense != null ){
+				return defense;
+			}
+			
+			CollisionType milieu = collisions.testCollisions(rodPositions[i].get(RodPositions.MILIEU),RodPositions.MILIEU);
+			if( milieu != null ){
+				return milieu;
+			}
+			
+			CollisionType attaque = collisions.testCollisions(rodPositions[i].get(RodPositions.ATTAQUE),RodPositions.ATTAQUE); 
+			if( attaque != null ){
+				return attaque;
 			}
 		}
-		return false;
+		return null;
 	}
 
 	public void shoot(String rod, String side) {
@@ -332,8 +343,11 @@ class RefreshBallPosition implements Runnable {
 						match.setBallSpeedY((-1)*match.getBallSpeedY()+( match.isSlow() ? 0 : match.getBallSpeedY()/Math.abs(match.getBallSpeedY())));
 				}
 				
-				if( match.testCollisions() )
+				CollisionType resultatsCollisions = match.testCollisions();
+				if( resultatsCollisions == CollisionType.SIDES )
 					match.setBallSpeedX((-1)*match.getBallSpeedX()+( match.isSlow() ? 0 : 2*match.getBallSpeedX()/7));
+				else if( resultatsCollisions == CollisionType.UPANDDOWN )
+					match.setBallSpeedY((-1)*match.getBallSpeedY()+( match.isSlow() ? 0 : 2*match.getBallSpeedY()/7));
 				
 				match.addBallX(match.getBallSpeedX());
 				match.addBallY(match.getBallSpeedY());

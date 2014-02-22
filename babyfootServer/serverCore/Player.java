@@ -3,7 +3,7 @@ package serverCore;
 import java.util.Hashtable;
 
 import clientCore.Utils;
-import clientGui.GameZone.RodPositions;
+import clientCore.Utils.RodPositions;
 
 public class Player {
 	private Match match;

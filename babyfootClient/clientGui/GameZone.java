@@ -185,25 +185,28 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 		int xLeftHitBox = 0;
 		position = yDecal[1].get(RodPositions.GARDIEN);
 		yTopHitBox = position + Utils.HEIGHT/2-Utils.IMAGE_PLAYER_Y/2 - Utils.Y_STAGGERING_DEFAULT.get(RodPositions.GARDIEN);
-		xLeftHitBox = Utils.WIDTH - (Utils.GARDIEN_POSITION+Utils.IMAGE_PLAYER_X/3);
-		g.fillRect( xLeftHitBox, yTopHitBox,  (int)(2*(float)(Utils.IMAGE_PLAYER_X/3)), (int)(2*(float)(Utils.IMAGE_PLAYER_Y/3)) );
+		xLeftHitBox = Utils.WIDTH - (int)(Utils.GARDIEN_POSITION+(float)(Utils.IMAGE_PLAYER_X/3));
+		g.fillRect( xLeftHitBox, yTopHitBox, Utils.IMAGE_PLAYER_X, Utils.IMAGE_PLAYER_Y );
+		
 		position = yDecal[1].get(RodPositions.DEFENSE);
 		yTopHitBox = position + Utils.HEIGHT/3-Utils.IMAGE_PLAYER_Y/2 - Utils.Y_STAGGERING_DEFAULT.get(RodPositions.DEFENSE);
-		xLeftHitBox = Utils.WIDTH - (Utils.DEFENSE_POSITION+Utils.IMAGE_PLAYER_X/3);
-		g.fillRect( xLeftHitBox, yTopHitBox,  (int)(2*(float)(Utils.IMAGE_PLAYER_X/3)), (int)(2*(float)(Utils.IMAGE_PLAYER_Y/3)) ); 
+		xLeftHitBox = Utils.WIDTH - (int)(Utils.DEFENSE_POSITION+(float)(Utils.IMAGE_PLAYER_X/3));
+		g.fillRect( xLeftHitBox, yTopHitBox, Utils.IMAGE_PLAYER_X, Utils.IMAGE_PLAYER_Y ); 
 		yTopHitBox = position + 2*Utils.HEIGHT/3-Utils.IMAGE_PLAYER_Y/2 - Utils.Y_STAGGERING_DEFAULT.get(RodPositions.DEFENSE);
-		g.fillRect( xLeftHitBox, yTopHitBox,  (int)(2*(float)(Utils.IMAGE_PLAYER_X/3)), (int)(2*(float)(Utils.IMAGE_PLAYER_Y/3)) ); 
+		g.fillRect( xLeftHitBox, yTopHitBox, Utils.IMAGE_PLAYER_X, Utils.IMAGE_PLAYER_Y ); 
+		
 		position = yDecal[1].get(RodPositions.MILIEU);
-		xLeftHitBox = Utils.WIDTH - (Utils.MILIEU_POSITION+Utils.IMAGE_PLAYER_X/3);
+		xLeftHitBox = Utils.WIDTH - (int)(Utils.MILIEU_POSITION+(float)(Utils.IMAGE_PLAYER_X/3));
 		for( int i = 1; i < 6; i++ ){
 			yTopHitBox = position + i*Utils.HEIGHT/6-Utils.IMAGE_PLAYER_Y/2 - Utils.Y_STAGGERING_DEFAULT.get(RodPositions.MILIEU);
-			g.fillRect( xLeftHitBox, yTopHitBox,  (int)(2*(float)(Utils.IMAGE_PLAYER_X/3)), (int)(2*(float)(Utils.IMAGE_PLAYER_Y/3)) ); 
+			g.fillRect( xLeftHitBox, yTopHitBox, Utils.IMAGE_PLAYER_X, Utils.IMAGE_PLAYER_Y ); 
 		}
+		
 		position = yDecal[1].get(RodPositions.ATTAQUE);
-		xLeftHitBox = Utils.WIDTH - (Utils.ATTAQUE_POSITION+Utils.IMAGE_PLAYER_X/3);
+		xLeftHitBox = Utils.WIDTH - (int)(Utils.ATTAQUE_POSITION+(float)(Utils.IMAGE_PLAYER_X/3));
 		for( int i = 1; i < 4; i++ ){
 			yTopHitBox = position + i*Utils.HEIGHT/4-Utils.IMAGE_PLAYER_Y/2 - Utils.Y_STAGGERING_DEFAULT.get(RodPositions.ATTAQUE);
-			g.fillRect( xLeftHitBox, yTopHitBox,  (int)(2*(float)(Utils.IMAGE_PLAYER_X/3)), (int)(2*(float)(Utils.IMAGE_PLAYER_Y/3)) ); 
+			g.fillRect( xLeftHitBox, yTopHitBox, Utils.IMAGE_PLAYER_X, Utils.IMAGE_PLAYER_Y ); 
 		}
 		
 		
