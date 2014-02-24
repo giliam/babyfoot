@@ -46,14 +46,10 @@ public class Collisions {
 		CollisionType rodTop = null;
 		rodTop = testCollisionsTop(position, rod);
 		rodBottom = testCollisionsBottom(position, rod);
-		/*if( rodTop != null ) System.out.println("TOP" + rod);
-		if( rodBottom != null ) System.out.println("BOTTOM" + rod);//*/
 		if( rodTop != null || rodBottom != null ){
 			Sides side = ( rodTop != null ? Sides.UP : Sides.DOWN );
 			Sides otherSide = ( rodTop != null ? Sides.DOWN : Sides.UP );
-			System.out.println(System.currentTimeMillis() - (lastCollision.get(side)).get(rod));
 			if( (lastCollision.get(side)).get(rod) > 0L && System.currentTimeMillis() - (lastCollision.get(side)).get(rod) < 101 ){
-				System.out.println("Collision avortée !");
 				/*if( (lastCollision.get(otherSide)).get(rod) > System.currentTimeMillis() - 3000 ) {
 					(lastCollision.get(otherSide)).put(rod,System.currentTimeMillis());
 				}else{
@@ -62,7 +58,6 @@ public class Collisions {
 				return null;
 			}
 			else{
-				System.out.println("Collision effective !");
 				(lastCollision.get(side)).put(rod,System.currentTimeMillis());
 			}
 		}
