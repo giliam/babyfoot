@@ -180,7 +180,7 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	
 	private void drawRodPosition(Graphics g){
 		g.setColor(Color.BLACK);
-		int position = 0;
+		/*int position = 0;
 		int yTopHitBox = 0;
 		int xLeftHitBox = 0;
 		position = yDecal[1].get(RodPositions.GARDIEN);

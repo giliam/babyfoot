@@ -348,7 +348,7 @@ class RefreshBallPosition implements Runnable {
 					match.setBallSpeedX((-1)*match.getBallSpeedX()+( match.isSlow() ? 0 : 2*match.getBallSpeedX()/7));
 				else if( resultatsCollisions == CollisionType.UPANDDOWN )
 					match.setBallSpeedY((-1)*match.getBallSpeedY()+( match.isSlow() ? 0 : 2*match.getBallSpeedY()/7));
-
+				
 				match.addBallX(match.getBallSpeedX());
 				match.addBallY(match.getBallSpeedY());
 				Thread.sleep(50);
