@@ -3,7 +3,7 @@ package serverCore;
 import java.util.Hashtable;
 
 import clientCore.Utils;
-import clientCore.Utils.RodPositions;
+import clientCore.Utils.Rod;
 import clientCore.Utils.CollisionType;
 import clientCore.Utils.Sides;
 
@@ -37,7 +37,7 @@ public class Match {
 	private final int STEP_Y = 2;
 	
 	@SuppressWarnings("unchecked")
-	private Hashtable<RodPositions, Integer>[] rodPositions = new Hashtable[2] ;
+	private Hashtable<Rod, Integer>[] yRodPositions = new Hashtable[2] ;
 	
 	
 	
@@ -46,20 +46,20 @@ public class Match {
 		this.player1 = ServerBabyfoot.tplayer.getPlayer(login);
 		this.player1.setMatch(this);
 		this.type = type;
-		this.rodPositions = new Hashtable[2];
+		this.yRodPositions = new Hashtable[2];
 		
-		this.rodPositions[0] = new Hashtable<RodPositions, Integer>();
-		this.rodPositions[1] = new Hashtable<RodPositions, Integer>();
+		this.yRodPositions[0] = new Hashtable<Rod, Integer>();
+		this.yRodPositions[1] = new Hashtable<Rod, Integer>();
 		
-		this.rodPositions[0].put( RodPositions.GARDIEN, 100 );
-		this.rodPositions[0].put( RodPositions.DEFENSE, 150 );
-		this.rodPositions[0].put( RodPositions.MILIEU, 100 );
-		this.rodPositions[0].put( RodPositions.ATTAQUE, 100 );
+		this.yRodPositions[0].put( Rod.GARDIEN, 100 );
+		this.yRodPositions[0].put( Rod.DEFENSE, 150 );
+		this.yRodPositions[0].put( Rod.MILIEU, 100 );
+		this.yRodPositions[0].put( Rod.ATTAQUE, 100 );
 		
-		this.rodPositions[1].put( RodPositions.GARDIEN, 100 );
-		this.rodPositions[1].put( RodPositions.DEFENSE, 150 );
-		this.rodPositions[1].put( RodPositions.MILIEU, 100 );
-		this.rodPositions[1].put( RodPositions.ATTAQUE, 100 );
+		this.yRodPositions[1].put( Rod.GARDIEN, 100 );
+		this.yRodPositions[1].put( Rod.DEFENSE, 150 );
+		this.yRodPositions[1].put( Rod.MILIEU, 100 );
+		this.yRodPositions[1].put( Rod.ATTAQUE, 100 );
 		
 		this.collisions = new Collisions();
 	}
@@ -133,16 +133,16 @@ public class Match {
 		this.player4 = player4;
 	}
 
-	public Hashtable<RodPositions, Integer>[] getRodPositions() {
-		return rodPositions;
+	public Hashtable<Rod, Integer>[] getRodPositions() {
+		return yRodPositions;
 	}
 	
-	/*public void setRodPositions(Hashtable<RodPositions, Integer>[] rodPositions) {
-		this.rodPositions = rodPositions;
+	/*public void setRodPositions(Hashtable<RodPositions, Integer>[] yRodPositions) {
+		this.yRodPositions = yRodPositions;
 	}*/
 	
-	public void setRodPositions(Hashtable<RodPositions, Integer> rodPositions, int i) {
-		this.rodPositions[i] = rodPositions;
+	public void setRodPositions(Hashtable<Rod, Integer> yRodPositions, int i) {
+		this.yRodPositions[i] = yRodPositions;
 	}
 
 	public String addPlayer(Player p) {
@@ -182,8 +182,8 @@ public class Match {
 		}
 	}
 
-	public int getRodPosition(boolean b, RodPositions i) {
-		return rodPositions[b ? 1 : 0].get(i);
+	public int getRodPosition(boolean b, Rod i) {
+		return yRodPositions[b ? 1 : 0].get(i);
 	}
 
 	public void stop() {
@@ -260,22 +260,22 @@ public class Match {
 	public CollisionType testCollisions() {
 		collisions.setBallPosition(ballX, ballY, ballSpeedX, ballSpeedY);
 		for( int i = 0; i < 2; i++ ){
-			CollisionType gardien = collisions.testCollisions(rodPositions[i].get(RodPositions.GARDIEN),RodPositions.GARDIEN);
+			CollisionType gardien = collisions.testCollisions(yRodPositions[i].get(Rod.GARDIEN),Rod.GARDIEN);
 			if( gardien != null ){
 				return gardien;
 			}
 			
-			CollisionType defense = collisions.testCollisions(rodPositions[i].get(RodPositions.DEFENSE),RodPositions.DEFENSE);
+			CollisionType defense = collisions.testCollisions(yRodPositions[i].get(Rod.DEFENSE),Rod.DEFENSE);
 			if( defense != null ){
 				return defense;
 			}
 			
-			CollisionType milieu = collisions.testCollisions(rodPositions[i].get(RodPositions.MILIEU),RodPositions.MILIEU);
+			CollisionType milieu = collisions.testCollisions(yRodPositions[i].get(Rod.MILIEU),Rod.MILIEU);
 			if( milieu != null ){
 				return milieu;
 			}
 			
-			CollisionType attaque = collisions.testCollisions(rodPositions[i].get(RodPositions.ATTAQUE),RodPositions.ATTAQUE); 
+			CollisionType attaque = collisions.testCollisions(yRodPositions[i].get(Rod.ATTAQUE),Rod.ATTAQUE); 
 			if( attaque != null ){
 				return attaque;
 			}
@@ -286,7 +286,7 @@ public class Match {
 	public void shoot(String rod, String side) {
 		if( side.equals("DOWN") ){
 			if( rod.equals("GARDIEN") ){
-				int yPosition = Utils.getYPositionPlayer(rodPositions, RodPositions.GARDIEN, 1, 1, Sides.DOWN);
+				int yPosition = Utils.getYPositionPlayer(yRodPositions, Rod.GARDIEN, 1, 1, Sides.DOWN);
 				if( ballX >= Utils.GARDIEN_POSITION && ballX <= Utils.GARDIEN_POSITION + Utils.IMAGE_PLAYER_SHOOTING_X + Utils.BALL_RADIUS 
 						//&& ballSpeedX <= 0
 						&& ballY >= yPosition && ballY <= Utils.IMAGE_PLAYER_Y + yPosition ){
@@ -297,7 +297,7 @@ public class Match {
 			}else if( rod.equals("DEFENSE") ){
 				boolean test = false;
 				for( int i = 1; i <= 2; i++ ){
-					int yPosition = Utils.getYPositionPlayer(rodPositions, RodPositions.DEFENSE, i, 2, Sides.DOWN);
+					int yPosition = Utils.getYPositionPlayer(yRodPositions, Rod.DEFENSE, i, 2, Sides.DOWN);
 					test |= ( ballY >= yPosition && ballY <= Utils.IMAGE_PLAYER_Y + yPosition );
 					if( test ) break;
 				}
@@ -311,7 +311,7 @@ public class Match {
 			}else if( rod.equals("MILIEU") ){
 				boolean test = false;
 				for( int i = 1; i <= 5; i++ ){
-					int yPosition = Utils.getYPositionPlayer(rodPositions, RodPositions.MILIEU, i, 5, Sides.DOWN);
+					int yPosition = Utils.getYPositionPlayer(yRodPositions, Rod.MILIEU, i, 5, Sides.DOWN);
 					test |= ( ballY >= yPosition && ballY <= Utils.IMAGE_PLAYER_Y + yPosition );
 					if( test ) break;
 				}
@@ -325,7 +325,7 @@ public class Match {
 			}else if( rod.equals("ATTAQUE") ){
 				boolean test = false;
 				for( int i = 1; i <= 3; i++ ){
-					int yPosition = Utils.getYPositionPlayer(rodPositions, RodPositions.ATTAQUE, i, 3, Sides.DOWN);
+					int yPosition = Utils.getYPositionPlayer(yRodPositions, Rod.ATTAQUE, i, 3, Sides.DOWN);
 					test |= ( ballY >= yPosition - Utils.BALL_RADIUS && ballY <= Utils.BALL_RADIUS + Utils.IMAGE_PLAYER_Y + yPosition );
 					if( test ) break;
 				}

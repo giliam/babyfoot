@@ -8,7 +8,7 @@ import java.util.LinkedList;
 
 import clientCore.Utils;
 import serverCore.Match;
-import clientCore.Utils.RodPositions;
+import clientCore.Utils.Rod;
 
 
 public class MatchServer extends AbstractServer {
@@ -125,15 +125,15 @@ public class MatchServer extends AbstractServer {
 	private int[][] getRodPositions(String login) {
 		Match m = ServerBabyfoot.tplayer.getPlayer(login).getMatch();
 		int[][] r = new int[2][4];
-		r[0][0] = Math.abs(m.getRodPosition(false,RodPositions.GARDIEN));
-		r[0][1] = Math.abs(m.getRodPosition(false,RodPositions.DEFENSE));
-		r[0][2] = Math.abs(m.getRodPosition(false,RodPositions.MILIEU));
-		r[0][3] = Math.abs(m.getRodPosition(false,RodPositions.ATTAQUE));
+		r[0][0] = Math.abs(m.getRodPosition(false,Rod.GARDIEN));
+		r[0][1] = Math.abs(m.getRodPosition(false,Rod.DEFENSE));
+		r[0][2] = Math.abs(m.getRodPosition(false,Rod.MILIEU));
+		r[0][3] = Math.abs(m.getRodPosition(false,Rod.ATTAQUE));
 		
-		r[1][0] = Math.abs(m.getRodPosition(true,RodPositions.GARDIEN));
-		r[1][1] = Math.abs(m.getRodPosition(true,RodPositions.DEFENSE));
-		r[1][2] = Math.abs(m.getRodPosition(true,RodPositions.MILIEU));
-		r[1][3] = Math.abs(m.getRodPosition(true,RodPositions.ATTAQUE));
+		r[1][0] = Math.abs(m.getRodPosition(true,Rod.GARDIEN));
+		r[1][1] = Math.abs(m.getRodPosition(true,Rod.DEFENSE));
+		r[1][2] = Math.abs(m.getRodPosition(true,Rod.MILIEU));
+		r[1][3] = Math.abs(m.getRodPosition(true,Rod.ATTAQUE));
 		return r;
 	}
 	
@@ -144,12 +144,12 @@ public class MatchServer extends AbstractServer {
 
 	private void setRod(String login, int[] positions) {
 		Match m = ServerBabyfoot.tplayer.getPlayer(login).getMatch();
-		Hashtable<RodPositions, Integer> positionsToSend = new Hashtable<RodPositions, Integer>();
+		Hashtable<Rod, Integer> positionsToSend = new Hashtable<Rod, Integer>();
 		
-		positionsToSend.put(RodPositions.GARDIEN, positions[0]);
-		positionsToSend.put(RodPositions.DEFENSE, positions[1]);
-		positionsToSend.put(RodPositions.MILIEU, positions[2]);
-		positionsToSend.put(RodPositions.ATTAQUE, positions[3]);
+		positionsToSend.put(Rod.GARDIEN, positions[0]);
+		positionsToSend.put(Rod.DEFENSE, positions[1]);
+		positionsToSend.put(Rod.MILIEU, positions[2]);
+		positionsToSend.put(Rod.ATTAQUE, positions[3]);
 		
 		m.setRodPositions( positionsToSend, ServerBabyfoot.tplayer.getPlayer(login).getSide() );
 	}

@@ -22,7 +22,7 @@ import clientCore.ClientBabyfoot;
 import clientCore.Player;
 import clientCore.Utils;
 import clientCore.Utils.Sides;
-import clientCore.Utils.RodPositions;
+import clientCore.Utils.Rod;
 import clientNetwork.GameClient;
 
 
@@ -33,10 +33,12 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	 */
 	private int oldY = 0;
 	
-	private Hashtable<RodPositions, Integer>[] yDecal;
+	private Hashtable<Rod, Integer>[] yPosition;
+	
+	private Hashtable<Rod, Boolean> rodPositions;
 	
 	
-	RodPositions rodPosition;
+	Rod rodPosition;
 	
 	private int ballX;
 	private int ballY;
@@ -58,19 +60,19 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 		infoZone.setPreferredSize(new Dimension(100,729));
 		infoZone.setMinimumSize(new Dimension(100,729));
 		
-		yDecal = new Hashtable[2];
-		yDecal[0] = new Hashtable<RodPositions, Integer>();
-		yDecal[0].put(RodPositions.GARDIEN, Utils.Y_STAGGERING_DEFAULT.get(RodPositions.GARDIEN));
-		yDecal[0].put(RodPositions.DEFENSE, Utils.Y_STAGGERING_DEFAULT.get(RodPositions.DEFENSE));
-		yDecal[0].put(RodPositions.MILIEU, Utils.Y_STAGGERING_DEFAULT.get(RodPositions.MILIEU));
-		yDecal[0].put(RodPositions.ATTAQUE, Utils.Y_STAGGERING_DEFAULT.get(RodPositions.ATTAQUE));
-		yDecal[1] = new Hashtable<RodPositions, Integer>();
-		yDecal[1].put(RodPositions.GARDIEN, Utils.Y_STAGGERING_DEFAULT.get(RodPositions.GARDIEN));
-		yDecal[1].put(RodPositions.DEFENSE, Utils.Y_STAGGERING_DEFAULT.get(RodPositions.DEFENSE));
-		yDecal[1].put(RodPositions.MILIEU, Utils.Y_STAGGERING_DEFAULT.get(RodPositions.MILIEU));
-		yDecal[1].put(RodPositions.ATTAQUE, Utils.Y_STAGGERING_DEFAULT.get(RodPositions.ATTAQUE));
+		yPosition = new Hashtable[2];
+		yPosition[0] = new Hashtable<Rod, Integer>();
+		yPosition[0].put(Rod.GARDIEN, Utils.Y_STAGGERING_DEFAULT.get(Rod.GARDIEN));
+		yPosition[0].put(Rod.DEFENSE, Utils.Y_STAGGERING_DEFAULT.get(Rod.DEFENSE));
+		yPosition[0].put(Rod.MILIEU, Utils.Y_STAGGERING_DEFAULT.get(Rod.MILIEU));
+		yPosition[0].put(Rod.ATTAQUE, Utils.Y_STAGGERING_DEFAULT.get(Rod.ATTAQUE));
+		yPosition[1] = new Hashtable<Rod, Integer>();
+		yPosition[1].put(Rod.GARDIEN, Utils.Y_STAGGERING_DEFAULT.get(Rod.GARDIEN));
+		yPosition[1].put(Rod.DEFENSE, Utils.Y_STAGGERING_DEFAULT.get(Rod.DEFENSE));
+		yPosition[1].put(Rod.MILIEU, Utils.Y_STAGGERING_DEFAULT.get(Rod.MILIEU));
+		yPosition[1].put(Rod.ATTAQUE, Utils.Y_STAGGERING_DEFAULT.get(Rod.ATTAQUE));
 		
-		rodPosition = RodPositions.MILIEU;
+		rodPosition = Rod.MILIEU;
 	    setPreferredSize(new Dimension(900,729));
 	    setMinimumSize(new Dimension(900,729));
 	    
@@ -138,15 +140,15 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	}
 	
 	private void drawPlayers(Graphics g){
-		drawPlayer(g, Utils.GARDIEN_POSITION, 0, 1, Color.RED, Sides.DOWN, 1, RodPositions.GARDIEN);
-		drawPlayer(g, Utils.DEFENSE_POSITION, 0, 2, Color.RED, Sides.DOWN, 1, RodPositions.DEFENSE);
-		drawPlayer(g, Utils.MILIEU_POSITION, 0, 5, Color.RED, Sides.DOWN, 1, RodPositions.MILIEU);
-		drawPlayer(g, Utils.ATTAQUE_POSITION, 0, 3, Color.RED, Sides.DOWN, 1, RodPositions.ATTAQUE);
+		drawPlayer(g, Utils.GARDIEN_POSITION, 0, 1, Color.RED, Sides.DOWN, 1, Rod.GARDIEN);
+		drawPlayer(g, Utils.DEFENSE_POSITION, 0, 2, Color.RED, Sides.DOWN, 1, Rod.DEFENSE);
+		drawPlayer(g, Utils.MILIEU_POSITION, 0, 5, Color.RED, Sides.DOWN, 1, Rod.MILIEU);
+		drawPlayer(g, Utils.ATTAQUE_POSITION, 0, 3, Color.RED, Sides.DOWN, 1, Rod.ATTAQUE);
 		
-		drawPlayer(g, Utils.WIDTH-Utils.LINE_STRENGTH-Utils.GARDIEN_POSITION, 0, 1, Color.RED, Sides.UP, 1, RodPositions.GARDIEN);
-		drawPlayer(g, Utils.WIDTH-Utils.LINE_STRENGTH-Utils.DEFENSE_POSITION, 0, 2, Color.RED, Sides.UP, 1, RodPositions.DEFENSE);
-		drawPlayer(g, Utils.WIDTH-Utils.LINE_STRENGTH-Utils.MILIEU_POSITION, 0, 5, Color.RED, Sides.UP, 1, RodPositions.MILIEU);
-		drawPlayer(g, Utils.WIDTH-Utils.LINE_STRENGTH-Utils.ATTAQUE_POSITION, 0, 3, Color.RED, Sides.UP, 1, RodPositions.ATTAQUE);
+		drawPlayer(g, Utils.WIDTH-Utils.LINE_STRENGTH-Utils.GARDIEN_POSITION, 0, 1, Color.RED, Sides.UP, 1, Rod.GARDIEN);
+		drawPlayer(g, Utils.WIDTH-Utils.LINE_STRENGTH-Utils.DEFENSE_POSITION, 0, 2, Color.RED, Sides.UP, 1, Rod.DEFENSE);
+		drawPlayer(g, Utils.WIDTH-Utils.LINE_STRENGTH-Utils.MILIEU_POSITION, 0, 5, Color.RED, Sides.UP, 1, Rod.MILIEU);
+		drawPlayer(g, Utils.WIDTH-Utils.LINE_STRENGTH-Utils.ATTAQUE_POSITION, 0, 3, Color.RED, Sides.UP, 1, Rod.ATTAQUE);
 	}
 	
 	/**
@@ -154,7 +156,7 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	 * position : quelle est la position de la barre ? tir, droit, etc. 
 	 */
 	
-	private void drawPlayer(Graphics g, int x, int y, int nb, Color color, Sides side, int position, RodPositions rod ){
+	private void drawPlayer(Graphics g, int x, int y, int nb, Color color, Sides side, int position, Rod rod ){
 		g.setColor(new Color(192, 192, 192));
 		g.fillRect(x,0,3*Utils.LINE_STRENGTH/2,Utils.HEIGHT);
 		g.setColor(color);
@@ -166,11 +168,11 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 				else
 					img = ImageIO.read(new File("pictures/joueurgauche" + String.valueOf(position) + ".png"));
 				if(position==1)
-					g.drawImage(img, x-Utils.IMAGE_PLAYER_X/3, Utils.getYPositionPlayer(yDecal, rod, i, nb, side), this);
+					g.drawImage(img, x-Utils.IMAGE_PLAYER_X/3, Utils.getYPositionPlayer(yPosition, rod, i, nb, side), this);
 				else if(position==2 && side == Sides.DOWN )
-					g.drawImage(img, x-Utils.IMAGE_PLAYER_X/3-13, Utils.getYPositionPlayer(yDecal, rod, i, nb, side), this);
+					g.drawImage(img, x-Utils.IMAGE_PLAYER_X/3-13, Utils.getYPositionPlayer(yPosition, rod, i, nb, side), this);
 				else if(position==2 && side == Sides.UP )
-					g.drawImage(img, x-Utils.IMAGE_PLAYER_X/3-48, Utils.getYPositionPlayer(yDecal, rod, i, nb, side), this);
+					g.drawImage(img, x-Utils.IMAGE_PLAYER_X/3-48, Utils.getYPositionPlayer(yPosition, rod, i, nb, side), this);
 		    } catch (IOException e) {
 		    	e.printStackTrace();
 		    }                
@@ -182,26 +184,26 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 		/*int position = 0;
 		int yTopHitBox = 0;
 		int xLeftHitBox = 0;
-		position = yDecal[1].get(RodPositions.GARDIEN);
+		position = yPosition[1].get(RodPositions.GARDIEN);
 		yTopHitBox = position + Utils.HEIGHT/2-Utils.IMAGE_PLAYER_Y/2 - Utils.Y_STAGGERING_DEFAULT.get(RodPositions.GARDIEN);
 		xLeftHitBox = Utils.WIDTH - (int)(Utils.GARDIEN_POSITION+(float)(Utils.IMAGE_PLAYER_X/3));
 		g.fillRect( xLeftHitBox, yTopHitBox, Utils.IMAGE_PLAYER_X, Utils.IMAGE_PLAYER_Y );
 		
-		position = yDecal[1].get(RodPositions.DEFENSE);
+		position = yPosition[1].get(RodPositions.DEFENSE);
 		yTopHitBox = position + Utils.HEIGHT/3-Utils.IMAGE_PLAYER_Y/2 - Utils.Y_STAGGERING_DEFAULT.get(RodPositions.DEFENSE);
 		xLeftHitBox = Utils.WIDTH - (int)(Utils.DEFENSE_POSITION+(float)(Utils.IMAGE_PLAYER_X/3));
 		g.fillRect( xLeftHitBox, yTopHitBox, Utils.IMAGE_PLAYER_X, Utils.IMAGE_PLAYER_Y ); 
 		yTopHitBox = position + 2*Utils.HEIGHT/3-Utils.IMAGE_PLAYER_Y/2 - Utils.Y_STAGGERING_DEFAULT.get(RodPositions.DEFENSE);
 		g.fillRect( xLeftHitBox, yTopHitBox, Utils.IMAGE_PLAYER_X, Utils.IMAGE_PLAYER_Y ); 
 		
-		position = yDecal[1].get(RodPositions.MILIEU);
+		position = yPosition[1].get(RodPositions.MILIEU);
 		xLeftHitBox = Utils.WIDTH - (int)(Utils.MILIEU_POSITION+(float)(Utils.IMAGE_PLAYER_X/3));
 		for( int i = 1; i < 6; i++ ){
 			yTopHitBox = position + i*Utils.HEIGHT/6-Utils.IMAGE_PLAYER_Y/2 - Utils.Y_STAGGERING_DEFAULT.get(RodPositions.MILIEU);
 			g.fillRect( xLeftHitBox, yTopHitBox, Utils.IMAGE_PLAYER_X, Utils.IMAGE_PLAYER_Y ); 
 		}
 		
-		position = yDecal[1].get(RodPositions.ATTAQUE);
+		position = yPosition[1].get(RodPositions.ATTAQUE);
 		xLeftHitBox = Utils.WIDTH - (int)(Utils.ATTAQUE_POSITION+(float)(Utils.IMAGE_PLAYER_X/3));
 		for( int i = 1; i < 4; i++ ){
 			yTopHitBox = position + i*Utils.HEIGHT/4-Utils.IMAGE_PLAYER_Y/2 - Utils.Y_STAGGERING_DEFAULT.get(RodPositions.ATTAQUE);
@@ -211,23 +213,23 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 		
 		
 		
-		position = yDecal[0].get(RodPositions.GARDIEN);
+		position = yPosition[0].get(RodPositions.GARDIEN);
 		yTopHitBox = position + Utils.HEIGHT/2-Utils.IMAGE_PLAYER_Y/2 - Utils.Y_STAGGERING_DEFAULT.get(RodPositions.GARDIEN);
 		xLeftHitBox = (Utils.GARDIEN_POSITION-Utils.IMAGE_PLAYER_X/3);
 		g.fillRect( xLeftHitBox, yTopHitBox, (int)(2*(float)(Utils.IMAGE_PLAYER_X/3)), (int)(2*(float)(Utils.IMAGE_PLAYER_Y/3)));
-		position = yDecal[0].get(RodPositions.DEFENSE);
+		position = yPosition[0].get(RodPositions.DEFENSE);
 		yTopHitBox = position + Utils.HEIGHT/3-Utils.IMAGE_PLAYER_Y/2 - Utils.Y_STAGGERING_DEFAULT.get(RodPositions.DEFENSE);
 		xLeftHitBox = (Utils.DEFENSE_POSITION-Utils.IMAGE_PLAYER_X/3);
 		g.fillRect( xLeftHitBox, yTopHitBox, (int)(2*(float)(Utils.IMAGE_PLAYER_X/3)), (int)(2*(float)(Utils.IMAGE_PLAYER_Y/3))); 
 		yTopHitBox = position + 2*Utils.HEIGHT/3-Utils.IMAGE_PLAYER_Y/2 - Utils.Y_STAGGERING_DEFAULT.get(RodPositions.DEFENSE);
 		g.fillRect( xLeftHitBox, yTopHitBox, (int)(2*(float)(Utils.IMAGE_PLAYER_X/3)), (int)(2*(float)(Utils.IMAGE_PLAYER_Y/3))); 
-		position = yDecal[0].get(RodPositions.MILIEU);
+		position = yPosition[0].get(RodPositions.MILIEU);
 		xLeftHitBox = (Utils.MILIEU_POSITION-Utils.IMAGE_PLAYER_X/3);
 		for( int i = 1; i < 6; i++ ){
 			yTopHitBox = position + i*Utils.HEIGHT/6-Utils.IMAGE_PLAYER_Y/2 - Utils.Y_STAGGERING_DEFAULT.get(RodPositions.MILIEU);
 			g.fillRect( xLeftHitBox, yTopHitBox, (int)(2*(float)(Utils.IMAGE_PLAYER_X/3)), (int)(2*(float)(Utils.IMAGE_PLAYER_Y/3))); 
 		}
-		position = yDecal[0].get(RodPositions.ATTAQUE);
+		position = yPosition[0].get(RodPositions.ATTAQUE);
 		xLeftHitBox = (Utils.ATTAQUE_POSITION-Utils.IMAGE_PLAYER_X/3);
 		for( int i = 1; i < 4; i++ ){
 			yTopHitBox = position + i*Utils.HEIGHT/4-Utils.IMAGE_PLAYER_Y/2 - Utils.Y_STAGGERING_DEFAULT.get(RodPositions.ATTAQUE);
@@ -281,20 +283,20 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 				break;
 		}
 		int upOrDown = getWindow().getMain().getPlayer().getSide() == Utils.Sides.DOWN ? 0 : 1;
-		if( up && yDecal[upOrDown].get(rodPosition) > (limitSup+2*path) ){
-			/*yDecal[upOrDown].put(rodPosition, yDecal[upOrDown].get(rodPosition)-path);
-			Main.getPlayer().setRod(yDecal[upOrDown]);
+		if( up && yPosition[upOrDown].get(rodPosition) > (limitSup+2*path) ){
+			/*yPosition[upOrDown].put(rodPosition, yPosition[upOrDown].get(rodPosition)-path);
+			Main.getPlayer().setRod(yPosition[upOrDown]);
 			repaint();*/
-			yDecal[upOrDown].put(rodPosition, yDecal[upOrDown].get(rodPosition)-path);
-			getWindow().getMain().getPlayer().setRod(yDecal[upOrDown]);
+			yPosition[upOrDown].put(rodPosition, yPosition[upOrDown].get(rodPosition)-path);
+			getWindow().getMain().getPlayer().setRod(yPosition[upOrDown]);
 			repaint();
-		}else if( !up && yDecal[upOrDown].get(rodPosition) < (limiInf-2*path) ){
+		}else if( !up && yPosition[upOrDown].get(rodPosition) < (limiInf-2*path) ){
 			/*
-			yDecal[upOrDown].put(rodPosition, yDecal[upOrDown].get(rodPosition)+path);
-			Main.getPlayer().setRod(yDecal[upOrDown]);
+			yPosition[upOrDown].put(rodPosition, yPosition[upOrDown].get(rodPosition)+path);
+			Main.getPlayer().setRod(yPosition[upOrDown]);
 			repaint();*/
-			yDecal[upOrDown].put(rodPosition, yDecal[upOrDown].get(rodPosition)+path);
-			getWindow().getMain().getPlayer().setRod(yDecal[upOrDown]);
+			yPosition[upOrDown].put(rodPosition, yPosition[upOrDown].get(rodPosition)+path);
+			getWindow().getMain().getPlayer().setRod(yPosition[upOrDown]);
 			repaint();
 		}
 	}
@@ -306,23 +308,23 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 
 	public void keyTyped(KeyEvent e) {
 		if( e.getKeyChar() == 'a' || e.getKeyChar() == 'A' ){
-			if( getWindow().getMain().getPlayer().getRodAvailables().get(RodPositions.GARDIEN) ){
-				rodPosition = RodPositions.GARDIEN;
+			if( getWindow().getMain().getPlayer().getRodAvailables().get(Rod.GARDIEN) ){
+				rodPosition = Rod.GARDIEN;
 				repaint();
 			}
 		}else if( e.getKeyChar() == 'z'|| e.getKeyChar() == 'Z' ){
-			if( getWindow().getMain().getPlayer().getRodAvailables().get(RodPositions.DEFENSE) ){
-				rodPosition = RodPositions.DEFENSE;
+			if( getWindow().getMain().getPlayer().getRodAvailables().get(Rod.DEFENSE) ){
+				rodPosition = Rod.DEFENSE;
 				repaint();
 			}
 		}else if( e.getKeyChar() == 'e'|| e.getKeyChar() == 'E' ){
-			if( getWindow().getMain().getPlayer().getRodAvailables().get(RodPositions.MILIEU) ){
-				rodPosition = RodPositions.MILIEU;
+			if( getWindow().getMain().getPlayer().getRodAvailables().get(Rod.MILIEU) ){
+				rodPosition = Rod.MILIEU;
 				repaint();
 			}
 		}else if( e.getKeyChar() == 'r'|| e.getKeyChar() == 'R' ){
-			if( getWindow().getMain().getPlayer().getRodAvailables().get(RodPositions.ATTAQUE) ){
-				rodPosition = RodPositions.ATTAQUE;
+			if( getWindow().getMain().getPlayer().getRodAvailables().get(Rod.ATTAQUE) ){
+				rodPosition = Rod.ATTAQUE;
 				repaint();
 			}
 		}
@@ -352,16 +354,16 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 		if( rodPositions.length > 1 ){
 			//On met à jour les autres barres
 			if( s == Utils.Sides.UP ){
-				yDecal[0].put(RodPositions.GARDIEN, Integer.valueOf(rodPositions[0]));
-				yDecal[0].put(RodPositions.DEFENSE, Integer.valueOf(rodPositions[1]));
-				yDecal[0].put(RodPositions.MILIEU, Integer.valueOf(rodPositions[2]));
-				yDecal[0].put(RodPositions.ATTAQUE, Integer.valueOf(rodPositions[3]));
+				yPosition[0].put(Rod.GARDIEN, Integer.valueOf(rodPositions[0]));
+				yPosition[0].put(Rod.DEFENSE, Integer.valueOf(rodPositions[1]));
+				yPosition[0].put(Rod.MILIEU, Integer.valueOf(rodPositions[2]));
+				yPosition[0].put(Rod.ATTAQUE, Integer.valueOf(rodPositions[3]));
 			}else{
 				if( rodPositions.length == 8 ){
-					yDecal[1].put(RodPositions.GARDIEN, Integer.valueOf(rodPositions[4]));
-					yDecal[1].put(RodPositions.DEFENSE, Integer.valueOf(rodPositions[5]));
-					yDecal[1].put(RodPositions.MILIEU, Integer.valueOf(rodPositions[6]));
-					yDecal[1].put(RodPositions.ATTAQUE, Integer.valueOf(rodPositions[7]));
+					yPosition[1].put(Rod.GARDIEN, Integer.valueOf(rodPositions[4]));
+					yPosition[1].put(Rod.DEFENSE, Integer.valueOf(rodPositions[5]));
+					yPosition[1].put(Rod.MILIEU, Integer.valueOf(rodPositions[6]));
+					yPosition[1].put(Rod.ATTAQUE, Integer.valueOf(rodPositions[7]));
 				}
 			}
 			repaint();

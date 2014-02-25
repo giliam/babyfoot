@@ -9,7 +9,7 @@ import javax.imageio.ImageIO;
 
 import clientCore.Utils;
 import clientCore.Utils.CollisionType;
-import clientCore.Utils.RodPositions;
+import clientCore.Utils.Rod;
 import clientCore.Utils.Sides;
 import clientCore.Utils.*;
 
@@ -20,28 +20,28 @@ public class Collisions {
 	private float ballSpeedX;
 	private float ballSpeedY;
 	
-	private Hashtable<Sides, Hashtable<RodPositions, Long>> lastCollision;
+	private Hashtable<Sides, Hashtable<Rod, Long>> lastCollision;
 	
 	@SuppressWarnings("unchecked")
-	private Hashtable<RodPositions, Integer>[] rodPositions = new Hashtable[2] ;
+	private Hashtable<Rod, Integer>[] rodPositions = new Hashtable[2] ;
 	
 	public Collisions() {
-		lastCollision = new Hashtable<Sides, Hashtable<RodPositions, Long>>();
-		Hashtable<RodPositions, Long> tUp = new Hashtable<RodPositions, Long>();
-		tUp.put(RodPositions.GARDIEN, 0L);
-		tUp.put(RodPositions.DEFENSE, 0L);
-		tUp.put(RodPositions.MILIEU, 0L);
-		tUp.put(RodPositions.ATTAQUE, 0L);
-		Hashtable<RodPositions, Long> tDown = new Hashtable<RodPositions, Long>();
-		tDown.put(RodPositions.GARDIEN, 0L);
-		tDown.put(RodPositions.DEFENSE, 0L);
-		tDown.put(RodPositions.MILIEU, 0L);
-		tDown.put(RodPositions.ATTAQUE, 0L);
+		lastCollision = new Hashtable<Sides, Hashtable<Rod, Long>>();
+		Hashtable<Rod, Long> tUp = new Hashtable<Rod, Long>();
+		tUp.put(Rod.GARDIEN, 0L);
+		tUp.put(Rod.DEFENSE, 0L);
+		tUp.put(Rod.MILIEU, 0L);
+		tUp.put(Rod.ATTAQUE, 0L);
+		Hashtable<Rod, Long> tDown = new Hashtable<Rod, Long>();
+		tDown.put(Rod.GARDIEN, 0L);
+		tDown.put(Rod.DEFENSE, 0L);
+		tDown.put(Rod.MILIEU, 0L);
+		tDown.put(Rod.ATTAQUE, 0L);
 		lastCollision.put(Sides.UP, tUp);
 		lastCollision.put(Sides.DOWN, tDown);
 	}
 	
-	public CollisionType testCollisions(Integer position, RodPositions rod){
+	public CollisionType testCollisions(Integer position, Rod rod){
 		CollisionType rodBottom = null;
 		CollisionType rodTop = null;
 		rodTop = testCollisionsTop(position, rod);
@@ -64,7 +64,7 @@ public class Collisions {
 		return ( rodTop == null ? rodBottom : rodTop );
 	}
 	
-	public CollisionType testCollisionsTop(Integer position, RodPositions rod){
+	public CollisionType testCollisionsTop(Integer position, Rod rod){
 		//y final : y + i*h/(1+nb)-Utils.IMAGE_PLAYER_Y/2 + yDecal[rightPlayer ? 1 : 0].get(rod)-Utils.Y_STAGGERING_DEFAULT.get(rod)
 		// i va de 1 à nb où nb est le nombre de joueurs sur une barre
 		float yTopHitBox = position + Utils.GAP_EDGE;
@@ -73,19 +73,19 @@ public class Collisions {
 		switch(rod){
 		//Utils.WIDTH-Utils.LINE_STRENGTH-Utils.GARDIEN_POSITION-Utils.IMAGE_PLAYER_X/3
 			case GARDIEN:
-				yTopHitBox = position + Utils.HEIGHT/2-Utils.IMAGE_PLAYER_Y/2 - Utils.Y_STAGGERING_DEFAULT.get(RodPositions.GARDIEN);
+				yTopHitBox = position + Utils.HEIGHT/2-Utils.IMAGE_PLAYER_Y/2 - Utils.Y_STAGGERING_DEFAULT.get(Rod.GARDIEN);
 				xLeftHitBox = Utils.WIDTH - (Utils.GARDIEN_POSITION+(float)(Utils.IMAGE_PLAYER_X/3));
 				ballPosition = isBallInCollision( xLeftHitBox, yTopHitBox, xLeftHitBox + Utils.IMAGE_PLAYER_X, yTopHitBox + Utils.IMAGE_PLAYER_Y/2 );
 				if( ballPosition != null ) 
 					return ballPosition;
 				break;
 			case DEFENSE:
-				yTopHitBox = position + Utils.GAP_EDGE + Utils.HEIGHT/3-Utils.IMAGE_PLAYER_Y/2 - Utils.Y_STAGGERING_DEFAULT.get(RodPositions.DEFENSE);
+				yTopHitBox = position + Utils.GAP_EDGE + Utils.HEIGHT/3-Utils.IMAGE_PLAYER_Y/2 - Utils.Y_STAGGERING_DEFAULT.get(Rod.DEFENSE);
 				xLeftHitBox = Utils.WIDTH - (Utils.DEFENSE_POSITION+(float)(Utils.IMAGE_PLAYER_X/3));
 				ballPosition = isBallInCollision( xLeftHitBox, yTopHitBox, xLeftHitBox + Utils.IMAGE_PLAYER_X, yTopHitBox + Utils.IMAGE_PLAYER_Y/2 );
 				if( ballPosition != null ) 
 					return ballPosition;
-				yTopHitBox = position + 2*Utils.HEIGHT/3-(float)(Utils.IMAGE_PLAYER_Y/2) - Utils.Y_STAGGERING_DEFAULT.get(RodPositions.DEFENSE);
+				yTopHitBox = position + 2*Utils.HEIGHT/3-(float)(Utils.IMAGE_PLAYER_Y/2) - Utils.Y_STAGGERING_DEFAULT.get(Rod.DEFENSE);
 				ballPosition = isBallInCollision( xLeftHitBox, yTopHitBox, xLeftHitBox + Utils.IMAGE_PLAYER_X, yTopHitBox + Utils.IMAGE_PLAYER_Y/2 );
 				if( ballPosition != null ) 
 					return ballPosition;
@@ -93,7 +93,7 @@ public class Collisions {
 			case MILIEU:
 				xLeftHitBox = Utils.WIDTH - (Utils.MILIEU_POSITION+(float)(Utils.IMAGE_PLAYER_X/3));
 				for( int i = 1; i < 6; i++ ){
-					yTopHitBox = position + i*Utils.HEIGHT/6-(float)(Utils.IMAGE_PLAYER_Y/2) - Utils.Y_STAGGERING_DEFAULT.get(RodPositions.MILIEU);
+					yTopHitBox = position + i*Utils.HEIGHT/6-(float)(Utils.IMAGE_PLAYER_Y/2) - Utils.Y_STAGGERING_DEFAULT.get(Rod.MILIEU);
 					ballPosition = isBallInCollision( xLeftHitBox, yTopHitBox, xLeftHitBox + Utils.IMAGE_PLAYER_X, yTopHitBox + Utils.IMAGE_PLAYER_Y/2 );
 					if( ballPosition != null ) 
 						return ballPosition;
@@ -102,7 +102,7 @@ public class Collisions {
 			case ATTAQUE:
 				xLeftHitBox = Utils.WIDTH - (Utils.ATTAQUE_POSITION+(float)(Utils.IMAGE_PLAYER_X/3));
 				for( int i = 1; i < 4; i++ ){
-					yTopHitBox = position + i*Utils.HEIGHT/4-(float)(Utils.IMAGE_PLAYER_Y/2) - Utils.Y_STAGGERING_DEFAULT.get(RodPositions.ATTAQUE);
+					yTopHitBox = position + i*Utils.HEIGHT/4-(float)(Utils.IMAGE_PLAYER_Y/2) - Utils.Y_STAGGERING_DEFAULT.get(Rod.ATTAQUE);
 					ballPosition = isBallInCollision( xLeftHitBox, yTopHitBox, xLeftHitBox + Utils.IMAGE_PLAYER_X, yTopHitBox + Utils.IMAGE_PLAYER_Y/2 );
 					if( ballPosition != null ) 
 						return ballPosition;
@@ -112,25 +112,25 @@ public class Collisions {
 		return null;
 	}
 	
-	public CollisionType testCollisionsBottom(Integer position, RodPositions rod){
+	public CollisionType testCollisionsBottom(Integer position, Rod rod){
 		int yTopHitBox = position + Utils.GAP_EDGE;
 		int xLeftHitBox = 0;
 		CollisionType ballPosition = null;
 		switch(rod){
 			case GARDIEN:
-				yTopHitBox = position + Utils.HEIGHT/2-Utils.IMAGE_PLAYER_Y/2 - Utils.Y_STAGGERING_DEFAULT.get(RodPositions.GARDIEN);
+				yTopHitBox = position + Utils.HEIGHT/2-Utils.IMAGE_PLAYER_Y/2 - Utils.Y_STAGGERING_DEFAULT.get(Rod.GARDIEN);
 				xLeftHitBox = Utils.GARDIEN_POSITION-Utils.IMAGE_PLAYER_X/3;
 				ballPosition = isBallInCollision( xLeftHitBox, yTopHitBox, xLeftHitBox + Utils.IMAGE_PLAYER_X, yTopHitBox + Utils.IMAGE_PLAYER_Y );
 				if( ballPosition != null ) 
 					return ballPosition;
 				break;
 			case DEFENSE:
-				yTopHitBox = position + Utils.HEIGHT/3-Utils.IMAGE_PLAYER_Y/2 - Utils.Y_STAGGERING_DEFAULT.get(RodPositions.DEFENSE);
+				yTopHitBox = position + Utils.HEIGHT/3-Utils.IMAGE_PLAYER_Y/2 - Utils.Y_STAGGERING_DEFAULT.get(Rod.DEFENSE);
 				xLeftHitBox = Utils.DEFENSE_POSITION-Utils.IMAGE_PLAYER_X/3;
 				ballPosition = isBallInCollision( xLeftHitBox, yTopHitBox, xLeftHitBox + Utils.IMAGE_PLAYER_X, yTopHitBox + Utils.IMAGE_PLAYER_Y );
 				if( ballPosition != null ) 
 					return ballPosition;
-				yTopHitBox = position + 2*Utils.HEIGHT/3-Utils.IMAGE_PLAYER_Y/2 - Utils.Y_STAGGERING_DEFAULT.get(RodPositions.DEFENSE);
+				yTopHitBox = position + 2*Utils.HEIGHT/3-Utils.IMAGE_PLAYER_Y/2 - Utils.Y_STAGGERING_DEFAULT.get(Rod.DEFENSE);
 				ballPosition = isBallInCollision( xLeftHitBox, yTopHitBox, xLeftHitBox + Utils.IMAGE_PLAYER_X, yTopHitBox + Utils.IMAGE_PLAYER_Y );
 				if( ballPosition != null ) 
 					return ballPosition;
@@ -138,7 +138,7 @@ public class Collisions {
 			case MILIEU:
 				xLeftHitBox = Utils.MILIEU_POSITION-Utils.IMAGE_PLAYER_X/3;
 				for( int i = 1; i < 6; i++ ){
-					yTopHitBox = position + i*Utils.HEIGHT/6-Utils.IMAGE_PLAYER_Y/2 - Utils.Y_STAGGERING_DEFAULT.get(RodPositions.MILIEU);
+					yTopHitBox = position + i*Utils.HEIGHT/6-Utils.IMAGE_PLAYER_Y/2 - Utils.Y_STAGGERING_DEFAULT.get(Rod.MILIEU);
 					ballPosition = isBallInCollision( xLeftHitBox, yTopHitBox, xLeftHitBox + Utils.IMAGE_PLAYER_X, yTopHitBox + Utils.IMAGE_PLAYER_Y );
 					if( ballPosition != null ) 
 						return ballPosition;
@@ -147,7 +147,7 @@ public class Collisions {
 			case ATTAQUE:
 				xLeftHitBox = Utils.ATTAQUE_POSITION-Utils.IMAGE_PLAYER_X/3;
 				for( int i = 1; i < 4; i++ ){
-					yTopHitBox = position + i*Utils.HEIGHT/4-Utils.IMAGE_PLAYER_Y/2 - Utils.Y_STAGGERING_DEFAULT.get(RodPositions.ATTAQUE);
+					yTopHitBox = position + i*Utils.HEIGHT/4-Utils.IMAGE_PLAYER_Y/2 - Utils.Y_STAGGERING_DEFAULT.get(Rod.ATTAQUE);
 					ballPosition = isBallInCollision( xLeftHitBox, yTopHitBox, xLeftHitBox + Utils.IMAGE_PLAYER_X, yTopHitBox + Utils.IMAGE_PLAYER_Y );
 					if( ballPosition != null ) 
 						return ballPosition;

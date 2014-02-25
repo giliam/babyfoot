@@ -15,7 +15,7 @@ public abstract class Utils {
 	
 	public static final int MATCH_END = 100;
 	
-	public static enum RodPositions { GARDIEN , DEFENSE, MILIEU, ATTAQUE };
+	public static enum Rod { GARDIEN , DEFENSE, MILIEU, ATTAQUE };
 
 	public static enum CollisionType { SIDES, UPANDDOWN };
 	
@@ -41,12 +41,12 @@ public abstract class Utils {
 	
 	
 	@SuppressWarnings("serial")
-	public static final Hashtable<RodPositions, Integer> Y_STAGGERING_DEFAULT = new Hashtable<RodPositions, Integer>(){{ put(RodPositions.GARDIEN, 100); put(RodPositions.DEFENSE, 150 ); put(RodPositions.MILIEU, 100); put(RodPositions.ATTAQUE, 100); } };
+	public static final Hashtable<Rod, Integer> Y_STAGGERING_DEFAULT = new Hashtable<Rod, Integer>(){{ put(Rod.GARDIEN, 100); put(Rod.DEFENSE, 150 ); put(Rod.MILIEU, 100); put(Rod.ATTAQUE, 100); } };
 
 	public static final int IMAGE_PLAYER_SHOOTING_X = 30;
 	
 	
-	public static int getYPositionPlayer( Hashtable<RodPositions, Integer>[] yDecal, RodPositions rod, int i, int nb, Sides side ){
+	public static int getYPositionPlayer( Hashtable<Rod, Integer>[] yDecal, Rod rod, int i, int nb, Sides side ){
 		return yDecal[side == Sides.UP ? 1 : 0].get(rod)-Utils.Y_STAGGERING_DEFAULT.get(rod)+i*Utils.HEIGHT/(1+nb)-Utils.IMAGE_PLAYER_Y/2;
 	}
 

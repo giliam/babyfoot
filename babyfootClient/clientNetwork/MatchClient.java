@@ -8,7 +8,7 @@ import java.net.Socket;
 
 import clientCore.Utils;
 import clientCore.Utils.Sides;
-import clientCore.Utils.RodPositions;
+import clientCore.Utils.Rod;
 
 
 public class MatchClient implements Runnable {
@@ -194,7 +194,7 @@ public class MatchClient implements Runnable {
 		this.toDelete = toDelete;
 	}
 
-	public void sendShoot(String login, long duration, RodPositions rodPosition, Sides side) {
+	public void sendShoot(String login, long duration, Rod rodPosition, Sides side) {
 		out.println("match" + Utils.SEPARATOR + "shoot" + Utils.SEPARATOR + login + Utils.SEPARATOR + rodPosition + Utils.SEPARATOR + side );
     	out.flush();
 	}
