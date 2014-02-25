@@ -18,10 +18,22 @@ public class ClientBabyfoot {
 	private Client client;
 	private MainFrame mainFrame;
 	
+	private int port;
+	
 	public JPanel actualPanel;
 	
+	public ClientBabyfoot(int port) {
+		this.port = port;
+	}
+
 	public static void main(String[] args){
-		ClientBabyfoot m = new ClientBabyfoot();
+		int port = 2010;
+		if( args.length >= 1 ){
+			if( args[0].equals("-port") && args[1].length() > 0 ){
+				port = Integer.valueOf(args[1]);
+			}
+		}
+		ClientBabyfoot m = new ClientBabyfoot(port);
 		m.init();
 	}
 	
@@ -66,6 +78,14 @@ public class ClientBabyfoot {
 
 	public void setClient(Client client) {
 		this.client = client;
+	}
+
+	public int getPort() {
+		return port;
+	}
+
+	public void setPort(int port) {
+		this.port = port;
 	}
 }
 

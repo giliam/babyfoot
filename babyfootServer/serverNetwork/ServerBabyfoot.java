@@ -44,9 +44,15 @@ public class ServerBabyfoot implements Runnable {
 	}
 	
 	public static void main(String[] args){
+		int port = 2010;
+		if( args.length >= 1 ){
+			if( args[0].equals("-port") && args[1].length() > 0 ){
+				port = Integer.valueOf(args[1]);
+			}
+		}
 		try{	
 			System.out.println("Lancement du serveur en cours...");
-			ServerBabyfoot s = new ServerBabyfoot(new ServerSocket(2010));
+			ServerBabyfoot s = new ServerBabyfoot(new ServerSocket(port));
 			System.out.println("Serveur prêt !");
 			Thread serveur = new Thread(s);
 			serveur.start();

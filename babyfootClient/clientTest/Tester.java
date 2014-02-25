@@ -15,7 +15,7 @@ public class Tester {
 		Thread serveur = new Thread(s);
 		serveur.start();
 		
-		ClientBabyfoot m1 = new ClientBabyfoot();
+		ClientBabyfoot m1 = new ClientBabyfoot(2010);
 		Thread t1 = new Thread(new TesterThread(m1));
 		t1.start();
 	}
