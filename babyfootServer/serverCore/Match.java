@@ -5,6 +5,7 @@ import java.util.Hashtable;
 import clientCore.Utils;
 import clientCore.Utils.RodPositions;
 import clientCore.Utils.CollisionType;
+import clientCore.Utils.Sides;
 
 import serverNetwork.ServerBabyfoot;
 
@@ -30,7 +31,7 @@ public class Match {
 	
 	private Collisions collisions;
 
-	private boolean slow = true;
+	private boolean noSlow = false;
 
 	private final int STEP_X = 2;
 	private final int STEP_Y = 2;
@@ -283,18 +284,58 @@ public class Match {
 	}
 
 	public void shoot(String rod, String side) {
-		if( side.equals("BOTTOM") ){
+		if( side.equals("DOWN") ){
 			if( rod.equals("GARDIEN") ){
-				if( ballX >= Utils.GARDIEN_POSITION && ballX <= Utils.GARDIEN_POSITION + 2*Utils.IMAGE_PLAYER_X + Utils.BALL_RADIUS && ballSpeedX <= 0 ){
+				int yPosition = Utils.getYPositionPlayer(rodPositions, RodPositions.GARDIEN, 1, 1, Sides.DOWN);
+				if( ballX >= Utils.GARDIEN_POSITION && ballX <= Utils.GARDIEN_POSITION + Utils.IMAGE_PLAYER_SHOOTING_X + Utils.BALL_RADIUS 
+						//&& ballSpeedX <= 0
+						&& ballY >= yPosition && ballY <= Utils.IMAGE_PLAYER_Y + yPosition ){
 					ballSpeedX = 15;
 					ballSpeedY *= -1;
+					System.out.println("GARDIEN !");
 				}
 			}else if( rod.equals("DEFENSE") ){
-				
+				boolean test = false;
+				for( int i = 1; i <= 2; i++ ){
+					int yPosition = Utils.getYPositionPlayer(rodPositions, RodPositions.DEFENSE, i, 2, Sides.DOWN);
+					test |= ( ballY >= yPosition && ballY <= Utils.IMAGE_PLAYER_Y + yPosition );
+					if( test ) break;
+				}
+				if( ballX >= Utils.DEFENSE_POSITION && ballX <= Utils.DEFENSE_POSITION + Utils.IMAGE_PLAYER_SHOOTING_X + Utils.BALL_RADIUS 
+						//&& ballSpeedX <= 0
+						&& test ){
+					ballSpeedX = 15;
+					ballSpeedY *= -1;
+					System.out.println("DEFENSE !");
+				}
 			}else if( rod.equals("MILIEU") ){
-				
+				boolean test = false;
+				for( int i = 1; i <= 5; i++ ){
+					int yPosition = Utils.getYPositionPlayer(rodPositions, RodPositions.MILIEU, i, 5, Sides.DOWN);
+					test |= ( ballY >= yPosition && ballY <= Utils.IMAGE_PLAYER_Y + yPosition );
+					if( test ) break;
+				}
+				if( ballX >= Utils.MILIEU_POSITION && ballX <= Utils.MILIEU_POSITION + Utils.IMAGE_PLAYER_SHOOTING_X + Utils.BALL_RADIUS 
+						//&& ballSpeedX <= 0
+						&& test ){
+					ballSpeedX = 15;
+					ballSpeedY *= -1;
+					System.out.println("MILIEU !");
+				}
 			}else if( rod.equals("ATTAQUE") ){
-				
+				boolean test = false;
+				for( int i = 1; i <= 3; i++ ){
+					int yPosition = Utils.getYPositionPlayer(rodPositions, RodPositions.ATTAQUE, i, 3, Sides.DOWN);
+					test |= ( ballY >= yPosition - Utils.BALL_RADIUS && ballY <= Utils.BALL_RADIUS + Utils.IMAGE_PLAYER_Y + yPosition );
+					if( test ) break;
+				}
+				if( ballX >= Utils.ATTAQUE_POSITION && ballX <= Utils.ATTAQUE_POSITION + Utils.IMAGE_PLAYER_SHOOTING_X + Utils.BALL_RADIUS 
+						//&& ballSpeedX <= 0
+						&& test ){
+					ballSpeedX = 15;
+					ballSpeedY *= -1;
+					System.out.println("Attaque !");
+				}
 			}
 		}else{
 			
@@ -304,11 +345,11 @@ public class Match {
 	
 
 	public boolean isSlow() {
-		return slow;
+		return noSlow;
 	}
 
 	public void setSlow(boolean slow) {
-		this.slow = slow;
+		this.noSlow = slow;
 	}
 }
 

@@ -42,8 +42,13 @@ public abstract class Utils {
 	
 	@SuppressWarnings("serial")
 	public static final Hashtable<RodPositions, Integer> Y_STAGGERING_DEFAULT = new Hashtable<RodPositions, Integer>(){{ put(RodPositions.GARDIEN, 100); put(RodPositions.DEFENSE, 150 ); put(RodPositions.MILIEU, 100); put(RodPositions.ATTAQUE, 100); } };
+
+	public static final int IMAGE_PLAYER_SHOOTING_X = 30;
 	
 	
+	public static int getYPositionPlayer( Hashtable<RodPositions, Integer>[] yDecal, RodPositions rod, int i, int nb, Sides side ){
+		return yDecal[side == Sides.UP ? 1 : 0].get(rod)-Utils.Y_STAGGERING_DEFAULT.get(rod)+i*Utils.HEIGHT/(1+nb)-Utils.IMAGE_PLAYER_Y/2;
+	}
 
 	
 	/** Hache un mot de passe en se basant sur le principe de l'algorithme MD5. Retourne la chaine.

@@ -138,40 +138,39 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	}
 	
 	private void drawPlayers(Graphics g){
-		drawPlayer(g, Utils.GARDIEN_POSITION, 0, 1, Color.RED, false, 1, RodPositions.GARDIEN);
-		drawPlayer(g, Utils.DEFENSE_POSITION, 0, 2, Color.RED, false, 1, RodPositions.DEFENSE);
-		drawPlayer(g, Utils.MILIEU_POSITION, 0, 5, Color.RED, false, 1, RodPositions.MILIEU);
-		drawPlayer(g, Utils.ATTAQUE_POSITION, 0, 3, Color.RED, false, 1, RodPositions.ATTAQUE);
+		drawPlayer(g, Utils.GARDIEN_POSITION, 0, 1, Color.RED, Sides.DOWN, 1, RodPositions.GARDIEN);
+		drawPlayer(g, Utils.DEFENSE_POSITION, 0, 2, Color.RED, Sides.DOWN, 1, RodPositions.DEFENSE);
+		drawPlayer(g, Utils.MILIEU_POSITION, 0, 5, Color.RED, Sides.DOWN, 1, RodPositions.MILIEU);
+		drawPlayer(g, Utils.ATTAQUE_POSITION, 0, 3, Color.RED, Sides.DOWN, 1, RodPositions.ATTAQUE);
 		
-		drawPlayer(g, Utils.WIDTH-Utils.LINE_STRENGTH-Utils.GARDIEN_POSITION, 0, 1, Color.RED, true, 1, RodPositions.GARDIEN);
-		drawPlayer(g, Utils.WIDTH-Utils.LINE_STRENGTH-Utils.DEFENSE_POSITION, 0, 2, Color.RED, true, 1, RodPositions.DEFENSE);
-		drawPlayer(g, Utils.WIDTH-Utils.LINE_STRENGTH-Utils.MILIEU_POSITION, 0, 5, Color.RED, true, 1, RodPositions.MILIEU);
-		drawPlayer(g, Utils.WIDTH-Utils.LINE_STRENGTH-Utils.ATTAQUE_POSITION, 0, 3, Color.RED, true, 1, RodPositions.ATTAQUE);
+		drawPlayer(g, Utils.WIDTH-Utils.LINE_STRENGTH-Utils.GARDIEN_POSITION, 0, 1, Color.RED, Sides.UP, 1, RodPositions.GARDIEN);
+		drawPlayer(g, Utils.WIDTH-Utils.LINE_STRENGTH-Utils.DEFENSE_POSITION, 0, 2, Color.RED, Sides.UP, 1, RodPositions.DEFENSE);
+		drawPlayer(g, Utils.WIDTH-Utils.LINE_STRENGTH-Utils.MILIEU_POSITION, 0, 5, Color.RED, Sides.UP, 1, RodPositions.MILIEU);
+		drawPlayer(g, Utils.WIDTH-Utils.LINE_STRENGTH-Utils.ATTAQUE_POSITION, 0, 3, Color.RED, Sides.UP, 1, RodPositions.ATTAQUE);
 	}
 	
 	/**
-	 * rightPlayer : true = orienté vers la gauche, false orienté vers la droite.
+	 * side : true = orienté vers la gauche, false orienté vers la droite.
 	 * position : quelle est la position de la barre ? tir, droit, etc. 
 	 */
 	
-	private void drawPlayer(Graphics g, int x, int y, int nb, Color color, boolean rightPlayer, int position, RodPositions rod ){
-		y += yDecal[rightPlayer ? 1 : 0].get(rod)-Utils.Y_STAGGERING_DEFAULT.get(rod);
+	private void drawPlayer(Graphics g, int x, int y, int nb, Color color, Sides side, int position, RodPositions rod ){
 		g.setColor(new Color(192, 192, 192));
 		g.fillRect(x,0,3*Utils.LINE_STRENGTH/2,Utils.HEIGHT);
 		g.setColor(color);
 		for( int i=1; i<=nb;i++){
 			try {
 				Image img = null;
-				if(rightPlayer)
+				if(side == Sides.UP)
 					img = ImageIO.read(new File("pictures/joueurdroit" + String.valueOf(position) + ".png"));
 				else
 					img = ImageIO.read(new File("pictures/joueurgauche" + String.valueOf(position) + ".png"));
 				if(position==1)
-					g.drawImage(img, x-Utils.IMAGE_PLAYER_X/3, y+i*Utils.HEIGHT/(1+nb)-Utils.IMAGE_PLAYER_Y/2, this);
-				else if(position==2 && !rightPlayer )
-					g.drawImage(img, x-Utils.IMAGE_PLAYER_X/3-13, y+i*Utils.HEIGHT/(1+nb)-Utils.IMAGE_PLAYER_Y/2, this);
-				else if(position==2 && rightPlayer )
-					g.drawImage(img, x-Utils.IMAGE_PLAYER_X/3-48, y+i*Utils.HEIGHT/(1+nb)-Utils.IMAGE_PLAYER_Y/2, this);
+					g.drawImage(img, x-Utils.IMAGE_PLAYER_X/3, Utils.getYPositionPlayer(yDecal, rod, i, nb, side), this);
+				else if(position==2 && side == Sides.DOWN )
+					g.drawImage(img, x-Utils.IMAGE_PLAYER_X/3-13, Utils.getYPositionPlayer(yDecal, rod, i, nb, side), this);
+				else if(position==2 && side == Sides.UP )
+					g.drawImage(img, x-Utils.IMAGE_PLAYER_X/3-48, Utils.getYPositionPlayer(yDecal, rod, i, nb, side), this);
 		    } catch (IOException e) {
 		    	e.printStackTrace();
 		    }                
