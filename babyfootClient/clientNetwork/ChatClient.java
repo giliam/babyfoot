@@ -43,6 +43,11 @@ public class ChatClient implements Runnable {
     	out.println("chat" + Utils.SEPARATOR + "add" + Utils.SEPARATOR + main.getChat().getServer() + Utils.SEPARATOR + main.getPlayer().getLogin() + Utils.SEPARATOR + Utils.hash( main.getChat().getServer() + "salt" + text + main.getPlayer().getLogin() + "42$1a" ) + Utils.SEPARATOR + text);
 		out.flush();
     }
+    
+    public void addServer(String name){
+    	out.println("servers" + Utils.SEPARATOR + "add" + Utils.SEPARATOR + name);
+		out.flush();
+    }
     /*
     public static void main(String[] args){
     	Scanner sc = new Scanner(System.in);
