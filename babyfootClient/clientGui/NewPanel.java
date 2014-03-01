@@ -88,8 +88,10 @@ public class NewPanel extends BPanel implements ActionListener {
 		    getWindow().setVisible(true);
 		}else if( e.getSource() == bGo ){
 			if( getWindow().getMain().getPlayer().addMatch( bNumber1.isSelected() ? 1 : ( bNumber2.isSelected() ? 2 : 3 ) ) ){
+				getWindow().getMain().getClient().getCc().addServer( "Partie de " + getWindow().getMain().getPlayer().getLogin() );
 				getWindow().getMain().getPlayer().setBoss(true);
 				getWindow().setContentPane(new WaitingRoomPanel(getWindow()));
+				getWindow().getMain().getChat().setServerByItsName( "Partie de " + getWindow().getMain().getPlayer().getLogin() );
 			    getWindow().setVisible(true);
 			}
 		}

@@ -59,7 +59,7 @@ public class ChatServer extends AbstractServer {
 	    		out.println("server" + Utils.SEPARATOR + "end");
     			out.flush();
 			}else if( task.equals("add")){
-	    		
+	    		chat.addServer(datas[2]);
 			}
 		}
 	}

@@ -92,6 +92,7 @@ public class ChatPanel extends JPanel implements ActionListener, MouseListener, 
 	
 	/** Met à jour les messages affichées en les récupérant depuis core.Main.getChat().getMessage() */
 	public void updateMessages(){
+		serverName.setText(window.getMain().getChat().getServer());
 		String[] datas = window.getMain().getChat().getMessages();
 		String s = "";
 		for( int i = 0; i < datas.length; i++ ){
