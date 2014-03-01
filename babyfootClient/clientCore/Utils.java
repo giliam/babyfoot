@@ -87,8 +87,10 @@ public abstract class Utils {
 	@param list est un ensemble de chaines de caractères de la forme "foo - bar". Le programme récupère bar et renvoie le tableau des "bar" */
 	public static String[] formatStringArray(String[] list){
 		for(int i = 0; i<list.length; i++){
-			String[] m = list[i].split(" - ",2);
-			list[i] = m[1];
+			if( !list[i].equals("Pas de messages") ){
+				String[] m = list[i].split(" - ",2);
+				list[i] = m[1];
+			}
 		}
 		return list;
 	}
@@ -97,7 +99,13 @@ public abstract class Utils {
 	/** Retourne une date formatée à partir d'une chaine de caractère de type timestamp. 
 	@param date est de type Timestamp */
 	public static String formatDate(String date){
-		Date d = new Date((long)Integer.valueOf(date));
+		return formatDate(Integer.valueOf(date));
+	}
+	
+	/** Retourne une date formatée à partir d'une chaine de caractère de type timestamp. 
+	@param date est de type Timestamp */
+	public static String formatDate(int date){
+		Date d = new Date((long)date);
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM hh:mm:ss");
 		return formatter.format(d);
 	}

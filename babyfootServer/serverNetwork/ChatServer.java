@@ -4,16 +4,15 @@ import clientCore.Utils;
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 
-import serverCore.Database;
+import serverCore.Chat;
 
 
 
 public class ChatServer extends AbstractServer {
-	private Database db;
+	private Chat chat;
 	
 	public ChatServer(){
-		db = new Database();
-		db.connect();
+		chat = new Chat();
 	}
 	
 	public void handle(BufferedReader in, PrintWriter out){
@@ -28,7 +27,6 @@ public class ChatServer extends AbstractServer {
 		    	String hashTag = datas[4];
 		    	if( hashTag.equals(Utils.hash(serveur + "salt" + message + login + "42$1a" ) ) ){
 		    		addMessage(serveur, login, message );
-		    		System.out.println("ENVOI REUSSI");
 		    	}else{
 		    		System.out.println("Requête non valide par le type !");
 		    	}
@@ -67,14 +65,14 @@ public class ChatServer extends AbstractServer {
 	}
 
 	private String[] getServers() {
-		return db.getServers();
+		return chat.getServers();
 	}
 
 	private String[] getMessages(String serveur) {
-		return db.getMessages(serveur);
+		return chat.getMessages(serveur);
 	}
 
 	private void addMessage(String serveur, String login, String message) {
-		db.addMessage(serveur, login, message);
+		chat.addMessage(serveur, login, message);
 	}
 }
