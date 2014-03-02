@@ -26,7 +26,8 @@ public class WaitingRoomPanel extends BPanel implements ActionListener {
 	public WaitingRoomPanel(MainFrame f) {
 		super(f);
 
-		setbReturn(new JButton("Retour"));
+		bReturn = new JButton("Retour");
+		bReturn.setEnabled(false);
 		bGo = new JButton("Lancer la partie");
 		bGo.setEnabled(false);
 	    bQuit = new JButton("Quitter");
@@ -149,6 +150,8 @@ public class WaitingRoomPanel extends BPanel implements ActionListener {
 		}else if( e.getSource() == getbReturn() ){
 			if( getWindow().getMain().getPlayer().isBoss() ){
 				getWindow().getMain().getPlayer().stopMatch();
+			}else{
+				getWindow().getMain().getPlayer().quitMatch();
 			}
 			refreshRoom.run = false;
 			getWindow().getMain().getChat().setServerByItsName("Global");
@@ -157,7 +160,7 @@ public class WaitingRoomPanel extends BPanel implements ActionListener {
 		    getWindow().setVisible(true);
 		}else if( e.getSource() == bGo && getWindow().getMain().getPlayer().isBoss() && testIsReady() ){
 			getWindow().getMain().getPlayer().runMatch();
-			startGame();
+			//startGame();
 		}
 	}
 	
@@ -184,6 +187,8 @@ public class WaitingRoomPanel extends BPanel implements ActionListener {
 	public void refresh() {
 		handleMatchInfo(getWindow().getMain().getClient().getMc().getMatchInfo(getWindow().getMain().getPlayer().getLogin()));
 		if( getWindow().getMain().getClient().getMc().isToDelete() ){
+			refreshRoom.run = false;
+			getWindow().getMain().getChat().setServerByItsName("Global");
 			getWindow().setContentPane(new MenuPanel(getWindow()));
 			getWindow().getMain().getClient().getMc().setToDelete(false);
 		    getWindow().setVisible(true);
@@ -222,7 +227,6 @@ class RefreshRoom implements Runnable{
 			}
 			waitingroom.getbReturn().setEnabled(true);
 		}
-		System.out.println("RefreshRoom is stopped !");
 	}
 }
 

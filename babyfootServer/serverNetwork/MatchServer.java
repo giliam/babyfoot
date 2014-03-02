@@ -8,6 +8,7 @@ import java.util.LinkedList;
 
 import clientCore.Utils;
 import serverCore.Match;
+import serverCore.Player;
 import clientCore.Utils.Rod;
 
 
@@ -44,6 +45,9 @@ public class MatchServer extends AbstractServer {
     	}else if( task.equals( "stop" ) ){
     		String login = datas[2];
     		stopMatch( login );
+    	}else if( task.equals( "quit" ) ){
+    		String login = datas[2];
+    		quitMatch( login );
     	}else if(task.equals("shoot")){
     		String login = datas[2];
     		String rod = datas[3];
@@ -52,6 +56,15 @@ public class MatchServer extends AbstractServer {
     	}
 	}
 	
+	private void quitMatch(String login) {
+		Player p = ServerBabyfoot.tplayer.getPlayer(login);
+		Match m = p.getMatch();
+		if( m != null ){
+			m.removePlayer(login);
+			p.setMatch(null);
+		}
+	}
+
 	private void shoot(String login, String rod, String side) {
 		Match m = ServerBabyfoot.tplayer.getPlayer(login).getMatch();
 		m.shoot(rod, side);

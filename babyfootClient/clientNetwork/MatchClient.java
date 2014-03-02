@@ -198,6 +198,11 @@ public class MatchClient implements Runnable {
 		out.println("match" + Utils.SEPARATOR + "shoot" + Utils.SEPARATOR + login + Utils.SEPARATOR + rodPosition + Utils.SEPARATOR + side );
     	out.flush();
 	}
+
+	public void quitMatch(String login) {
+		out.println("match" + Utils.SEPARATOR + "quit" + Utils.SEPARATOR + login );
+    	out.flush();
+	}
 }
 
 class MatchReceptionMessage implements Runnable{

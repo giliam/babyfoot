@@ -124,4 +124,8 @@ public class Player {
 	public void sendShoot(long duration, Rod rodPosition, Sides side) {
 		main.getClient().getMc().sendShoot(login, duration, rodPosition, side);
 	}
+
+	public void quitMatch() {
+		main.getClient().getMc().quitMatch(login);
+	}
 }
