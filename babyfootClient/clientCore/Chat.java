@@ -45,13 +45,11 @@ public class Chat {
 	}
 
 	public void setServerByItsName(String serverName) {
-		System.out.println("Ancien server : " + server);
 		String[] servers = Utils.formatStringArray(main.getClient().getCc().getServers());
 		int n = servers.length;
 		for( int i = 0; i < n; i++ ){
 			if( servers[i].equals(serverName))
 				server = servers[i];
 		}
-		System.out.println("Nouveau server : " + server);
 	}
 }

@@ -95,6 +95,10 @@ public abstract class Utils {
 		return list;
 	}
 	
+	public static String getChatServerNameFromHost(String loginHost){
+		return "Partie de " + loginHost;
+	}
+	
 	
 	/** Retourne une date formatée à partir d'une chaine de caractère de type timestamp. 
 	@param date est de type Timestamp */

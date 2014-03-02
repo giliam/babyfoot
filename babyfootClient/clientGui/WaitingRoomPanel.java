@@ -26,7 +26,7 @@ public class WaitingRoomPanel extends BPanel implements ActionListener {
 	public WaitingRoomPanel(MainFrame f) {
 		super(f);
 
-		bReturn = new JButton("Retour");
+		setbReturn(new JButton("Retour"));
 		bGo = new JButton("Lancer la partie");
 		bGo.setEnabled(false);
 	    bQuit = new JButton("Quitter");
@@ -74,7 +74,7 @@ public class WaitingRoomPanel extends BPanel implements ActionListener {
 		
 		JPanel buttonsList = new JPanel();
 		buttonsList.setBackground(Color.ORANGE);
-		buttonsList.add(bReturn);
+		buttonsList.add(getbReturn());
 		buttonsList.add(bGo);
 		buttonsList.add(bQuit);
 		menu.add(buttonsList);
@@ -82,7 +82,7 @@ public class WaitingRoomPanel extends BPanel implements ActionListener {
 		Thread tRefreshRoom = new Thread(refreshRoom);
 		tRefreshRoom.start();
 		
-		bReturn.addActionListener(this);
+		getbReturn().addActionListener(this);
 		bGo.addActionListener(this);
 		bQuit.addActionListener(this);
 	}
@@ -144,11 +144,15 @@ public class WaitingRoomPanel extends BPanel implements ActionListener {
 			if( getWindow().getMain().getPlayer().isBoss() ){
 				getWindow().getMain().getPlayer().stopMatch();
 			}
+			refreshRoom.run = false;
 			getWindow().getMain().closeWindow();
-		}else if( e.getSource() == bReturn ){
+		}else if( e.getSource() == getbReturn() ){
 			if( getWindow().getMain().getPlayer().isBoss() ){
 				getWindow().getMain().getPlayer().stopMatch();
 			}
+			refreshRoom.run = false;
+			getWindow().getMain().getChat().setServerByItsName("Global");
+			
 			getWindow().setContentPane(new MenuPanel(getWindow()));
 		    getWindow().setVisible(true);
 		}else if( e.getSource() == bGo && getWindow().getMain().getPlayer().isBoss() && testIsReady() ){
@@ -192,6 +196,12 @@ public class WaitingRoomPanel extends BPanel implements ActionListener {
 				bGo.setEnabled(false);
 		}
 	}
+
+
+
+	public JButton getbReturn() {
+		return bReturn;
+	}
 }
 
 class RefreshRoom implements Runnable{
@@ -210,7 +220,9 @@ class RefreshRoom implements Runnable{
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+			waitingroom.getbReturn().setEnabled(true);
 		}
+		System.out.println("RefreshRoom is stopped !");
 	}
 }
 

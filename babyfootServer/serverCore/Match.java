@@ -351,6 +351,10 @@ public class Match {
 	public void setSlow(boolean slow) {
 		this.noSlow = slow;
 	}
+
+	public String getBoss() {
+		return player1.getLogin();
+	}
 }
 
 class RefreshBallPosition implements Runnable {

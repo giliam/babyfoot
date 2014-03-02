@@ -59,8 +59,9 @@ public class MatchServer extends AbstractServer {
 
 	private void stopMatch(String login) {
 		Match m = ServerBabyfoot.tplayer.getPlayer(login).getMatch();
+		ServerBabyfoot.tchat.getChat().deleteServerFromMatch(m.getBoss());
 		m.stop();
-		m = null;
+		liste.remove(m);
 	}
 
 	private void runMatch(String login, PrintWriter out) {

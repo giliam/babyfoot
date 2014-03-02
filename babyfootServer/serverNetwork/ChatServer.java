@@ -12,7 +12,7 @@ public class ChatServer extends AbstractServer {
 	private Chat chat;
 	
 	public ChatServer(){
-		chat = new Chat();
+		setChat(new Chat());
 	}
 	
 	public void handle(BufferedReader in, PrintWriter out){
@@ -59,20 +59,28 @@ public class ChatServer extends AbstractServer {
 	    		out.println("server" + Utils.SEPARATOR + "end");
     			out.flush();
 			}else if( task.equals("add")){
-	    		chat.addServer(datas[2]);
+	    		getChat().addServer(datas[2]);
 			}
 		}
 	}
 
 	private String[] getServers() {
-		return chat.getServers();
+		return getChat().getServers();
 	}
 
 	private String[] getMessages(String serveur) {
-		return chat.getMessages(serveur);
+		return getChat().getMessages(serveur);
 	}
 
 	private void addMessage(String serveur, String login, String message) {
-		chat.addMessage(serveur, login, message);
+		getChat().addMessage(serveur, login, message);
+	}
+
+	public Chat getChat() {
+		return chat;
+	}
+
+	public void setChat(Chat chat) {
+		this.chat = chat;
 	}
 }

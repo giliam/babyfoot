@@ -6,6 +6,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import clientCore.ClientBabyfoot;
+import clientCore.Utils;
 
 
 @SuppressWarnings("serial")
@@ -88,6 +89,9 @@ public class ServersPanel extends BPanel implements ActionListener, MouseListene
 			bGo.setEnabled(true);
 		if (e.getClickCount() == 2 && ( timeFirstClick - System.currentTimeMillis() ) < 1000 ) {
 			if( getWindow().getMain().getPlayer().setServer(selectedGame, listServers) ){
+				String[] datas = listServers[selectedGame].split("-");
+				String loginHost = datas[1].trim();
+				getWindow().getMain().getChat().setServer(Utils.getChatServerNameFromHost(loginHost));
 				getWindow().setContentPane(new WaitingRoomPanel(getWindow()));
 			    getWindow().setVisible(true);
 			}

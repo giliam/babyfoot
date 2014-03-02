@@ -42,7 +42,7 @@ public class Chat {
 	
 	public Server getServerByItsName(String name){
 		int i = serversNames.indexOf(name);
-		return ( i == -1 ? null : servers.get(serversNames.indexOf(name) ) );
+		return ( i == -1 || i >= servers.size() ? null : servers.get( serversNames.indexOf(name) ) );
 	}
 
 	public String[] getServers() {
@@ -51,6 +51,13 @@ public class Chat {
 		for (int i = 0; i < n; i++)
 		    s[i] = i + " - " + servers.get(i).toString();
 		return s;
+	}
+
+	public void deleteServerFromMatch(String name) {
+		int i = serversNames.indexOf( "Partie de " + name );
+		if( i > -1 ){
+			servers.remove(i);
+		}
 	}
 }
 

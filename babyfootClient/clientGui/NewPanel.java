@@ -6,6 +6,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import clientCore.ClientBabyfoot;
+import clientCore.Utils;
 
 
 @SuppressWarnings("serial")
@@ -87,12 +88,19 @@ public class NewPanel extends BPanel implements ActionListener {
 			getWindow().setContentPane(new MenuPanel(getWindow()));
 		    getWindow().setVisible(true);
 		}else if( e.getSource() == bGo ){
+			System.out.println("Test !");
 			if( getWindow().getMain().getPlayer().addMatch( bNumber1.isSelected() ? 1 : ( bNumber2.isSelected() ? 2 : 3 ) ) ){
-				getWindow().getMain().getClient().getCc().addServer( "Partie de " + getWindow().getMain().getPlayer().getLogin() );
+				System.out.println("Test 1");
+				getWindow().getMain().getClient().getCc().addServer( Utils.getChatServerNameFromHost( getWindow().getMain().getPlayer().getLogin()) );
+				System.out.println("Test 2");
 				getWindow().getMain().getPlayer().setBoss(true);
+				System.out.println("Test 3");
 				getWindow().setContentPane(new WaitingRoomPanel(getWindow()));
-				getWindow().getMain().getChat().setServerByItsName( "Partie de " + getWindow().getMain().getPlayer().getLogin() );
+				System.out.println("Test 4");
+				getWindow().getMain().getChat().setServerByItsName(Utils.getChatServerNameFromHost( getWindow().getMain().getPlayer().getLogin()) );
+				System.out.println("Test 5");
 			    getWindow().setVisible(true);
+			    System.out.println("Test 6");
 			}
 		}
 	}
