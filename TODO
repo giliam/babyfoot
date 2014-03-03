@@ -16,9 +16,9 @@ OPTIONS
 ===========
 	-- Sensibilité du déplacement des joueurs : paramétrable.
 	-- Couleur des joueurs et du terrain.
-
 	
 ===========
 GESTION D'UNE PARTIE
 ===========
 	-- Différents états (100 = fini)
+	-- Pause : un membre de chaque équipe doit être d'accord.

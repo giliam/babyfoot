@@ -32,6 +32,8 @@ public class Match {
 	private Collisions collisions;
 
 	private boolean noSlow = false;
+	
+	private boolean pause = false;
 
 	private final int STEP_X = 2;
 	private final int STEP_Y = 2;
@@ -364,6 +366,14 @@ public class Match {
 
 	public String getBoss() {
 		return player1.getLogin();
+	}
+
+	public boolean isPause() {
+		return pause;
+	}
+	
+	public void setPause(boolean s){
+		pause = s;
 	}
 }
 

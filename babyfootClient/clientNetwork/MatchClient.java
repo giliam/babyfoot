@@ -227,8 +227,8 @@ class MatchReceptionMessage implements Runnable{
             	if(message.equals("matchinfo" + Utils.SEPARATOR + "deleted")){
             		matchClient.deleteMatch();
             	}
-            	if( ( message.equals("matchlist" + Utils.SEPARATOR + "beginning") || message.equals("matchinfo" + Utils.SEPARATOR + "beginning") ) && mode == 0 ){
-            		if( message.equals("matchinfo" + Utils.SEPARATOR + "beginning") ){
+            	if( ( message.equals("matchlist" + Utils.SEPARATOR + "beginning") || message.equals("matchdata" + Utils.SEPARATOR + "beginning") ) && mode == 0 ){
+            		if( message.equals("matchdata" + Utils.SEPARATOR + "beginning") ){
             			type = 1;
             			matchClient.initMatchDatas(5);
             			mode = 2;
@@ -238,7 +238,7 @@ class MatchReceptionMessage implements Runnable{
             		if( type == 0)
             			matchClient.setServerList(new String[Integer.valueOf(message)]);
             		mode = 2;
-            	}else if( ( message.equals("matchlist" + Utils.SEPARATOR + "end") || message.equals("matchinfo" + Utils.SEPARATOR + "end") )  && mode == 2 ){
+            	}else if( ( message.equals("matchlist" + Utils.SEPARATOR + "end") || message.equals("matchdata" + Utils.SEPARATOR + "end") )  && mode == 2 ){
             		mode = 0;
             		type = 0;
             		n = 0;

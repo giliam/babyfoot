@@ -89,7 +89,9 @@ public class MatchServer extends AbstractServer {
 			out.println("matchinfo" + Utils.SEPARATOR + "deleted");
 			out.flush();
 		}else{
-			out.println("matchinfo" + Utils.SEPARATOR + "beginning");
+			out.println("matchinfo" + Utils.SEPARATOR + m.getLeftScore() + Utils.SEPARATOR + m.getRightScore() + Utils.SEPARATOR + m.isPause() );
+			out.flush();
+			out.println("matchdata" + Utils.SEPARATOR + "beginning");
 			String display = String.valueOf( m.getState() == Match.States.PLAYING ? 1 : 0 ) + Utils.SEPARATOR;
 			display += String.valueOf(m.getType() == Match.Types.TWOVSTWO ? 2 : ( m.getType() == Match.Types.ONEVSONE ? 1 : 3 ));
 			if( m.getPlayer1() != null ){
@@ -103,7 +105,7 @@ public class MatchServer extends AbstractServer {
 			}
 			display += Utils.SEPARATOR + " " + Utils.SEPARATOR + " " + Utils.SEPARATOR + " " + Utils.SEPARATOR + " ";
 			out.println(display);
-			out.println("matchinfo" + Utils.SEPARATOR + "end");
+			out.println("matchdata" + Utils.SEPARATOR + "end");
 			out.flush();
 		}
 	}
