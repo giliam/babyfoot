@@ -23,6 +23,9 @@ public class MatchClient implements Runnable {
     private boolean ok;
     private String[] serverList;
     private String[] matchDatas;
+    private int leftScore = 0;
+    private int rightScore = 0;
+    private boolean pause = false;
     private boolean toDelete = false;
 
 	public MatchClient(Socket s){
@@ -203,6 +206,37 @@ public class MatchClient implements Runnable {
 		out.println("match" + Utils.SEPARATOR + "quit" + Utils.SEPARATOR + login );
     	out.flush();
 	}
+
+	public void setMatchInfos(String message) {
+		String[] s = message.split(Utils.SEPARATOR);
+		setLeftScore(Integer.valueOf(s[1]));
+		setRightScore(Integer.valueOf(s[2]));
+		setPause(Boolean.valueOf(s[3]));
+	}
+
+	public int getLeftScore() {
+		return leftScore;
+	}
+
+	public void setLeftScore(int leftScore) {
+		this.leftScore = leftScore;
+	}
+
+	public int getRightScore() {
+		return rightScore;
+	}
+
+	public void setRightScore(int rightScore) {
+		this.rightScore = rightScore;
+	}
+
+	public boolean isPause() {
+		return pause;
+	}
+
+	public void setPause(boolean pause) {
+		this.pause = pause;
+	}
 }
 
 class MatchReceptionMessage implements Runnable{
@@ -224,8 +258,11 @@ class MatchReceptionMessage implements Runnable{
 		try {
 			while(true){
             	String message = in.readLine();
+            	String[] task = message.split(Utils.SEPARATOR, 2);
             	if(message.equals("matchinfo" + Utils.SEPARATOR + "deleted")){
             		matchClient.deleteMatch();
+            	}else if( task[0].equals("matchinfo") ){
+            		matchClient.setMatchInfos(message);
             	}
             	if( ( message.equals("matchlist" + Utils.SEPARATOR + "beginning") || message.equals("matchdata" + Utils.SEPARATOR + "beginning") ) && mode == 0 ){
             		if( message.equals("matchdata" + Utils.SEPARATOR + "beginning") ){

@@ -1,5 +1,6 @@
 package clientGui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -24,6 +25,7 @@ import clientCore.Utils;
 import clientCore.Utils.Sides;
 import clientCore.Utils.Rod;
 import clientNetwork.GameClient;
+import clientNetwork.MatchClient;
 
 
 public class GameZone extends JPanel implements KeyListener, MouseMotionListener, MouseListener {
@@ -37,7 +39,6 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	
 	private Hashtable<Rod, Boolean> rodPositions;
 	
-	
 	Rod rodPosition;
 	
 	private int ballX;
@@ -47,18 +48,17 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	
 	private MainFrame window;
 	private JPanel infoZone;
+	private JLabel leftScore = new JLabel(" Rouge : ");
+	private JLabel rightScore = new JLabel(" Bleue : ");
 	private long shootBeginning;
+	private boolean pause;
 	
 	@SuppressWarnings("unchecked")
 	public GameZone(MainFrame window, boolean testMode){
 		this.window = window;
 		this.testMode = testMode;
-		
-		infoZone = new JPanel();
-		infoZone.add(new JLabel("Coucou"));
-		infoZone.setBackground(Color.BLACK);
-		infoZone.setPreferredSize(new Dimension(100,729));
-		infoZone.setMinimumSize(new Dimension(100,729));
+
+		initInfoZone();
 		
 		yPosition = new Hashtable[2];
 		yPosition[0] = new Hashtable<Rod, Integer>();
@@ -93,12 +93,25 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 		g.setColor(new Color(116,152,29));
 		g.fillRect(0,0,getWidth(),getHeight());
 		
+		initInfoZone();
+		
 		drawLines(g);
 		drawBall(g);
 		drawGoals(g);
 		drawPlayers(g);
 		drawRodPosition(g);
 		
+	}
+	
+	private void initInfoZone(){
+		infoZone = new JPanel();
+		infoZone.add(new JLabel("Le Match"));
+		infoZone.add(leftScore);
+		infoZone.add(rightScore);
+		infoZone.setBackground(Color.BLACK);
+		infoZone.setPreferredSize(new Dimension(100,729));
+		infoZone.setMinimumSize(new Dimension(100,729));
+	    window.getContentPane().add(infoZone,BorderLayout.WEST);
 	}
 	
 	private void drawBall(Graphics g) {
@@ -419,6 +432,36 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 		shootBeginning = 0;
 		getWindow().getMain().getPlayer().sendShoot(duration, rodPosition, getWindow().getMain().getPlayer().getSide() );
 	}
+
+
+	public JLabel getLeftScore() {
+		return leftScore;
+	}
+
+
+	public void setLeftScore(JLabel jLabel) {
+		this.leftScore = jLabel;
+	}
+
+
+	public JLabel getRightScore() {
+		return rightScore;
+	}
+
+
+	public void setRightScore(JLabel rightScore) {
+		this.rightScore = rightScore;
+	}
+
+
+	public boolean isPause() {
+		return pause;
+	}
+
+
+	public void setPause(boolean pause) {
+		this.pause = pause;
+	}
 }
 
 
@@ -430,11 +473,19 @@ class RefreshRods implements Runnable {
 	}
 	
 	public void run() {
+		int i = 0;
 		while(true){
+			i++;
 			//Alias pour faciliter la lecture
 			GameClient gc = gamezone.getWindow().getMain().getClient().getGc();
 			Player p = gamezone.getWindow().getMain().getPlayer();
 			gamezone.refreshPositions( gc.getPositions( p.getLogin(), false ) , p.getSide(), gc.getBallX(), gc.getBallY() );
+			if( i % 10 == 0 ){
+				MatchClient mc = gamezone.getWindow().getMain().getClient().getMc();
+				gamezone.setLeftScore(new JLabel( "Rouge : " + mc.getLeftScore() ));
+				gamezone.setRightScore(new JLabel( "Bleue : " + mc.getLeftScore() ));
+				gamezone.setPause(mc.isPause());
+			}
 			try{
 				Thread.sleep(20);
 			}catch( InterruptedException e ){

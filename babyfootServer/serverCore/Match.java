@@ -40,6 +40,7 @@ public class Match {
 	
 	@SuppressWarnings("unchecked")
 	private Hashtable<Rod, Integer>[] yRodPositions = new Hashtable[2] ;
+	private RefreshBallPosition tRefresh;
 	
 	
 	
@@ -199,11 +200,14 @@ public class Match {
 		if( verifPlayers() ){
 			setBallX(450-Utils.BALL_RADIUS/2);
 			setBallY(350-Utils.BALL_RADIUS/2);
-			//setBallSpeedX(5);
+			//setBallX(130);
+			//setBallY(265);
+			//setBallSpeedX(-5);
 			//setBallSpeedY(0);
 			setBallSpeedX(( Math.random() > 0.5 ? (int)(Math.random()*Utils.MAX_INITIAL_SPEED) + 2 : (-1)*(int)(Math.random()*Utils.MAX_INITIAL_SPEED) - 2 ));
 			setBallSpeedY(( Math.random() > 0.5 ? (int)(Math.random()*Utils.MAX_INITIAL_SPEED) + 2 : (-1)*(int)(Math.random()*Utils.MAX_INITIAL_SPEED) - 2 ));
-			Thread t = new Thread(new RefreshBallPosition(this));
+			tRefresh = new RefreshBallPosition(this);
+			Thread t = new Thread(tRefresh);
 			t.start();
 		}
 	}
@@ -261,11 +265,15 @@ public class Match {
 	}
 
 	public void verifGoal() {
-		if( ballY >= Utils.HEIGHT/2-Utils.GOAL_SIZE/2 && ballY <= Utils.HEIGHT/2+Utils.GOAL_SIZE/2 ){
+		if( ballY >= Utils.HEIGHT/2-Utils.GOAL_SIZE/2+10 && ballY <= Utils.HEIGHT/2+Utils.GOAL_SIZE/2-10 ){
+			System.out.println(leftScore + " - " + rightScore);
 			if( ballX >= Utils.WIDTH / 2 )
 				leftScore++;
 			else
 				rightScore++;
+			tRefresh.setRun(false);
+			start();
+			System.out.println(leftScore + " - " + rightScore);
 		}
 	}
 
@@ -380,14 +388,16 @@ public class Match {
 class RefreshBallPosition implements Runnable {
 	private Match match;
 	private boolean pause;
+	private boolean run;
 	public RefreshBallPosition(Match m){
 		match = m;
+		setRun(true);
 	}
 	
 	@Override
 	public void run() {
 		try{
-			while(true){
+			while(isRun()){
 				if( !pause ){
 					//Si on a atteint le bord extérieur gauche et que la vitesse est bien négative (donc vers la gauche), on change de vitesse.
 					if( ( match.getBallX() -5 - Utils.BALL_RADIUS ) <=  ( Utils.GAP_EDGE + Utils.LINE_STRENGTH )  ) {
@@ -412,9 +422,9 @@ class RefreshBallPosition implements Runnable {
 					
 					CollisionType resultatsCollisions = match.testCollisions();
 					if( resultatsCollisions == CollisionType.SIDES )
-						match.setBallSpeedX((-1)*match.getBallSpeedX()+( match.isSlow() ? 0 : 5*match.getBallSpeedX()/7));
+						match.setBallSpeedX((-1)*match.getBallSpeedX()+( match.isSlow() ? 0 : 1*match.getBallSpeedX()/11));
 					else if( resultatsCollisions == CollisionType.UPANDDOWN )
-						match.setBallSpeedY((-1)*match.getBallSpeedY()+( match.isSlow() ? 0 : 5*match.getBallSpeedY()/7));
+						match.setBallSpeedY((-1)*match.getBallSpeedY()+( match.isSlow() ? 0 : 1*match.getBallSpeedY()/11));
 					
 					match.addBallX(match.getBallSpeedX());
 					match.addBallY(match.getBallSpeedY());
@@ -432,5 +442,13 @@ class RefreshBallPosition implements Runnable {
 
 	public void setPause(boolean pause) {
 		this.pause = pause;
+	}
+
+	public boolean isRun() {
+		return run;
+	}
+
+	public void setRun(boolean run) {
+		this.run = run;
 	}
 }

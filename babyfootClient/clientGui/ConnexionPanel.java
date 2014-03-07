@@ -6,6 +6,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import clientCore.ClientBabyfoot;
+import clientCore.Utils;
 
 
 /** Cette classe s'occupe du premier écran affiché lors du lancement du jeu, c'est-à-dire un écran de connexion qui permet à l'utilisateur de choisir un pseudonyme.
@@ -60,9 +61,9 @@ public class ConnexionPanel extends BPanel implements ActionListener, KeyListene
 		if( !s.equals("") || !fpseudo.getText().equals("") ){
 			if( s.equals("") )
 				s = fpseudo.getText();
-			if( s.split("-").length > 1){
+			if( s.split(Utils.SEPARATOR).length > 1){
 				error.setForeground(Color.RED);
-				error.setText("Login contenant un tiret ce qui n'est pas permis ! ");
+				error.setText("Login contenant un " + Utils.SEPARATOR + " ce qui n'est pas permis ! ");
 			}else if( getWindow().getMain().getPlayer().addPlayer(s) ) {
 				getWindow().setContentPane(new MenuPanel(getWindow()));
 		    	getWindow().setVisible(true);
