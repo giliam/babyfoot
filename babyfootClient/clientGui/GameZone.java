@@ -480,12 +480,10 @@ class RefreshRods implements Runnable {
 			GameClient gc = gamezone.getWindow().getMain().getClient().getGc();
 			Player p = gamezone.getWindow().getMain().getPlayer();
 			gamezone.refreshPositions( gc.getPositions( p.getLogin(), false ) , p.getSide(), gc.getBallX(), gc.getBallY() );
-			if( i % 10 == 0 ){
-				MatchClient mc = gamezone.getWindow().getMain().getClient().getMc();
-				gamezone.setLeftScore(new JLabel( "Rouge : " + mc.getLeftScore() ));
-				gamezone.setRightScore(new JLabel( "Bleue : " + mc.getLeftScore() ));
-				gamezone.setPause(mc.isPause());
-			}
+			MatchClient mc = gamezone.getWindow().getMain().getClient().getMc();
+			gamezone.setLeftScore(new JLabel( " Rouge : " + mc.getLeftScore() ));
+			gamezone.setRightScore(new JLabel( " Bleue : " + mc.getLeftScore() ));
+			gamezone.setPause(mc.isPause());
 			try{
 				Thread.sleep(20);
 			}catch( InterruptedException e ){

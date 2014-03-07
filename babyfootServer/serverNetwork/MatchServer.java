@@ -89,8 +89,6 @@ public class MatchServer extends AbstractServer {
 			out.println("matchinfo" + Utils.SEPARATOR + "deleted");
 			out.flush();
 		}else{
-			out.println("matchinfo" + Utils.SEPARATOR + m.getLeftScore() + Utils.SEPARATOR + m.getRightScore() + Utils.SEPARATOR + m.isPause() );
-			out.flush();
 			out.println("matchdata" + Utils.SEPARATOR + "beginning");
 			String display = String.valueOf( m.getState() == Match.States.PLAYING ? 1 : 0 ) + Utils.SEPARATOR;
 			display += String.valueOf(m.getType() == Match.Types.TWOVSTWO ? 2 : ( m.getType() == Match.Types.ONEVSONE ? 1 : 3 ));
@@ -184,6 +182,9 @@ public class MatchServer extends AbstractServer {
 	}
 
 	public void sendPositions( String login, PrintWriter out){
+		Match m = ServerBabyfoot.tplayer.getPlayer(login).getMatch();
+		out.println("matchinfo" + Utils.SEPARATOR + m.getLeftScore() + Utils.SEPARATOR + m.getRightScore() + Utils.SEPARATOR + m.isPause() );
+		out.flush();
 		int[][] datas = getRodPositions(login);
 		String ballPositions = getBallPositions(login);
 		

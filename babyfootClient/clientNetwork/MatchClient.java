@@ -258,11 +258,8 @@ class MatchReceptionMessage implements Runnable{
 		try {
 			while(true){
             	String message = in.readLine();
-            	String[] task = message.split(Utils.SEPARATOR, 2);
             	if(message.equals("matchinfo" + Utils.SEPARATOR + "deleted")){
             		matchClient.deleteMatch();
-            	}else if( task[0].equals("matchinfo") ){
-            		matchClient.setMatchInfos(message);
             	}
             	if( ( message.equals("matchlist" + Utils.SEPARATOR + "beginning") || message.equals("matchdata" + Utils.SEPARATOR + "beginning") ) && mode == 0 ){
             		if( message.equals("matchdata" + Utils.SEPARATOR + "beginning") ){
