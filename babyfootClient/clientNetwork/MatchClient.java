@@ -272,7 +272,7 @@ class MatchReceptionMessage implements Runnable{
             		if( type == 0)
             			matchClient.setServerList(new String[Integer.valueOf(message)]);
             		mode = 2;
-            	}else if( ( message.equals("matchlist" + Utils.SEPARATOR + "end") || message.equals("matchdata" + Utils.SEPARATOR + "end") )  && mode == 2 ){
+            	}else if( ( message.equals( "matchlist" + Utils.SEPARATOR + "end") || message.equals("matchdata" + Utils.SEPARATOR + "end") )  && mode == 2 ){
             		mode = 0;
             		type = 0;
             		n = 0;

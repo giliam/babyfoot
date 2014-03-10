@@ -128,4 +128,48 @@ public class Player {
 	public void quitMatch() {
 		main.getClient().getMc().quitMatch(login);
 	}
+
+	public void setMatchType(String gameType, int nbPlayers) {
+		if( gameType.equals("1vs1") ){
+			rodAvailables = new Hashtable<Rod, Boolean>();
+			rodAvailables.put(Rod.GARDIEN, true);
+			rodAvailables.put(Rod.DEFENSE, true);
+			rodAvailables.put(Rod.MILIEU, true);
+			rodAvailables.put(Rod.ATTAQUE, true);
+		}else if( gameType.equals("1vs2") && side == Sides.DOWN ){
+			rodAvailables = new Hashtable<Rod, Boolean>();
+			rodAvailables.put(Rod.GARDIEN, true);
+			rodAvailables.put(Rod.DEFENSE, true);
+			rodAvailables.put(Rod.MILIEU, true);
+			rodAvailables.put(Rod.ATTAQUE, true);
+		}else if( gameType.equals("1vs2") && side == Sides.UP ){
+			rodAvailables = new Hashtable<Rod, Boolean>();
+			if( nbPlayers == 1 ){
+				rodAvailables.put(Rod.GARDIEN, true);
+				rodAvailables.put(Rod.DEFENSE, true);
+				rodAvailables.put(Rod.MILIEU, false);
+				rodAvailables.put(Rod.ATTAQUE, false);
+			}else{
+				rodAvailables.put(Rod.GARDIEN, false);
+				rodAvailables.put(Rod.DEFENSE, false);
+				rodAvailables.put(Rod.MILIEU, true);
+				rodAvailables.put(Rod.ATTAQUE, true);
+			}
+		}else if( gameType.equals("2vs2") ){
+			rodAvailables = new Hashtable<Rod, Boolean>();
+			if( nbPlayers % 2 == 1 ){
+				rodAvailables = new Hashtable<Rod, Boolean>();
+				rodAvailables.put(Rod.GARDIEN, false);
+				rodAvailables.put(Rod.DEFENSE, false);
+				rodAvailables.put(Rod.MILIEU, true);
+				rodAvailables.put(Rod.ATTAQUE, true);
+			}else{
+				rodAvailables = new Hashtable<Rod, Boolean>();
+				rodAvailables.put(Rod.GARDIEN, true);
+				rodAvailables.put(Rod.DEFENSE, true);
+				rodAvailables.put(Rod.MILIEU, false);
+				rodAvailables.put(Rod.ATTAQUE, false);
+			}
+		}
+	}
 }

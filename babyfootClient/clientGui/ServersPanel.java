@@ -90,8 +90,12 @@ public class ServersPanel extends BPanel implements ActionListener, MouseListene
 		if (e.getClickCount() == 2 && ( timeFirstClick - System.currentTimeMillis() ) < 1000 ) {
 			if( getWindow().getMain().getPlayer().setServer(selectedGame, listServers) ){
 				String[] datas = listServers[selectedGame].split("-");
+				String gameType = datas[0].trim();
 				String loginHost = datas[1].trim();
+				datas = datas[2].split(" ");
+				int nbPlayers = Integer.valueOf(datas[0]);
 				getWindow().getMain().getChat().setServer(Utils.getChatServerNameFromHost(loginHost));
+				getWindow().getMain().getPlayer().setMatchType(gameType, nbPlayers);
 				getWindow().setContentPane(new WaitingRoomPanel(getWindow()));
 			    getWindow().setVisible(true);
 			}
