@@ -27,6 +27,7 @@ public class MatchClient implements Runnable {
     private int rightScore = 0;
     private boolean pause = false;
     private boolean toDelete = false;
+    private int statusRod = 0; 
 
 	public MatchClient(Socket s){
         socket = s;
@@ -213,6 +214,14 @@ public class MatchClient implements Runnable {
 		setRightScore(Integer.valueOf(s[2]));
 		setPause(Boolean.valueOf(s[3]));
 	}
+	
+	public void setMatchCarac(String message) {
+		try{
+			statusRod = Integer.valueOf(message);
+		}catch(NumberFormatException e){
+			statusRod = 0;
+		}
+	}
 
 	public int getLeftScore() {
 		return leftScore;
@@ -236,6 +245,14 @@ public class MatchClient implements Runnable {
 
 	public void setPause(boolean pause) {
 		this.pause = pause;
+	}
+
+	public int getStatusRod() {
+		return statusRod;
+	}
+
+	public void setStatusRod(int statusRod) {
+		this.statusRod = statusRod;
 	}
 }
 
@@ -269,8 +286,9 @@ class MatchReceptionMessage implements Runnable{
             		}else
             			mode = 1;
             	}else if( mode == 1 ){
-            		if( type == 0)
+            		if( type == 0){
             			matchClient.setServerList(new String[Integer.valueOf(message)]);
+            		}
             		mode = 2;
             	}else if( ( message.equals( "matchlist" + Utils.SEPARATOR + "end") || message.equals("matchdata" + Utils.SEPARATOR + "end") )  && mode == 2 ){
             		mode = 0;
@@ -284,6 +302,7 @@ class MatchReceptionMessage implements Runnable{
             		}
             	}else{
             		matchClient.setOk(message.equals("true"));
+            		matchClient.setMatchCarac(message);
             	}
 			}
         } catch (IOException e) {
