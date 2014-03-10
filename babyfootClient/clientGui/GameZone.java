@@ -46,7 +46,7 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	
 	private boolean testMode;
 	
-	private MainFrame window;
+	private GamePanel gamepanel;
 	private JPanel infoZone;
 	private JLabel leftScore = new JLabel(" Rouge : ");
 	private JLabel rightScore = new JLabel(" Bleue : ");
@@ -54,11 +54,17 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	private boolean pause;
 	
 	@SuppressWarnings("unchecked")
-	public GameZone(MainFrame window, boolean testMode){
-		this.window = window;
+	public GameZone(GamePanel window, boolean testMode){
+		this.gamepanel = window;
 		this.testMode = testMode;
 
-		initInfoZone();
+		infoZone = new JPanel();
+		infoZone.add(new JLabel("Le Match"));
+		infoZone.add(leftScore);
+		infoZone.add(rightScore);
+		infoZone.setBackground(Color.BLACK);
+		infoZone.setPreferredSize(new Dimension(100,729));
+		infoZone.setMinimumSize(new Dimension(100,729));
 		
 		yPosition = new Hashtable[2];
 		yPosition[0] = new Hashtable<Rod, Integer>();
@@ -104,14 +110,9 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	}
 	
 	private void initInfoZone(){
-		infoZone = new JPanel();
-		infoZone.add(new JLabel("Le Match"));
-		infoZone.add(leftScore);
-		infoZone.add(rightScore);
-		infoZone.setBackground(Color.BLACK);
-		infoZone.setPreferredSize(new Dimension(100,729));
-		infoZone.setMinimumSize(new Dimension(100,729));
-	    window.getContentPane().add(infoZone,BorderLayout.WEST);
+		leftScore.setText("aonzeanzeoi");
+		leftScore.setBackground(Color.RED);
+		gamepanel.repaint();
 	}
 	
 	private void drawBall(Graphics g) {
@@ -295,13 +296,13 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 				limiInf = 220;
 				break;
 		}
-		int upOrDown = getWindow().getMain().getPlayer().getSide() == Utils.Sides.DOWN ? 0 : 1;
+		int upOrDown = getGamePanel().getWindow().getMain().getPlayer().getSide() == Utils.Sides.DOWN ? 0 : 1;
 		if( up && yPosition[upOrDown].get(rodPosition) > (limitSup+2*path) ){
 			/*yPosition[upOrDown].put(rodPosition, yPosition[upOrDown].get(rodPosition)-path);
 			Main.getPlayer().setRod(yPosition[upOrDown]);
 			repaint();*/
 			yPosition[upOrDown].put(rodPosition, yPosition[upOrDown].get(rodPosition)-path);
-			getWindow().getMain().getPlayer().setRod(yPosition[upOrDown]);
+			getGamePanel().getWindow().getMain().getPlayer().setRod(yPosition[upOrDown]);
 			repaint();
 		}else if( !up && yPosition[upOrDown].get(rodPosition) < (limiInf-2*path) ){
 			/*
@@ -309,7 +310,7 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 			Main.getPlayer().setRod(yPosition[upOrDown]);
 			repaint();*/
 			yPosition[upOrDown].put(rodPosition, yPosition[upOrDown].get(rodPosition)+path);
-			getWindow().getMain().getPlayer().setRod(yPosition[upOrDown]);
+			getGamePanel().getWindow().getMain().getPlayer().setRod(yPosition[upOrDown]);
 			repaint();
 		}
 	}
@@ -321,22 +322,22 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 
 	public void keyTyped(KeyEvent e) {
 		if( e.getKeyChar() == 'a' || e.getKeyChar() == 'A' ){
-			if( getWindow().getMain().getPlayer().getRodAvailables().get(Rod.GARDIEN) ){
+			if( getGamePanel().getWindow().getMain().getPlayer().getRodAvailables().get(Rod.GARDIEN) ){
 				rodPosition = Rod.GARDIEN;
 				repaint();
 			}
 		}else if( e.getKeyChar() == 'z'|| e.getKeyChar() == 'Z' ){
-			if( getWindow().getMain().getPlayer().getRodAvailables().get(Rod.DEFENSE) ){
+			if( getGamePanel().getWindow().getMain().getPlayer().getRodAvailables().get(Rod.DEFENSE) ){
 				rodPosition = Rod.DEFENSE;
 				repaint();
 			}
 		}else if( e.getKeyChar() == 'e'|| e.getKeyChar() == 'E' ){
-			if( getWindow().getMain().getPlayer().getRodAvailables().get(Rod.MILIEU) ){
+			if( getGamePanel().getWindow().getMain().getPlayer().getRodAvailables().get(Rod.MILIEU) ){
 				rodPosition = Rod.MILIEU;
 				repaint();
 			}
 		}else if( e.getKeyChar() == 'r'|| e.getKeyChar() == 'R' ){
-			if( getWindow().getMain().getPlayer().getRodAvailables().get(Rod.ATTAQUE) ){
+			if( getGamePanel().getWindow().getMain().getPlayer().getRodAvailables().get(Rod.ATTAQUE) ){
 				rodPosition = Rod.ATTAQUE;
 				repaint();
 			}
@@ -372,7 +373,7 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 				yPosition[0].put(Rod.MILIEU, Integer.valueOf(rodPositions[2]));
 				yPosition[0].put(Rod.ATTAQUE, Integer.valueOf(rodPositions[3]));
 			}else{
-				if( rodPositions.length == 8 ){
+				if( rodPositions.length == 8 && rodPositions[4] != null ){
 					yPosition[1].put(Rod.GARDIEN, Integer.valueOf(rodPositions[4]));
 					yPosition[1].put(Rod.DEFENSE, Integer.valueOf(rodPositions[5]));
 					yPosition[1].put(Rod.MILIEU, Integer.valueOf(rodPositions[6]));
@@ -391,13 +392,13 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	}
 
 
-	public MainFrame getWindow() {
-		return window;
+	public GamePanel getGamePanel() {
+		return gamepanel;
 	}
 
 
-	public void setWindow(MainFrame window) {
-		this.window = window;
+	public void setGamePanel(GamePanel window) {
+		this.gamepanel = window;
 	}
 	
 	public JPanel getInfoPanel(){
@@ -430,7 +431,7 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	public void mouseReleased(MouseEvent e) {
 		long duration = System.currentTimeMillis() - shootBeginning;
 		shootBeginning = 0;
-		getWindow().getMain().getPlayer().sendShoot(duration, rodPosition, getWindow().getMain().getPlayer().getSide() );
+		getGamePanel().getWindow().getMain().getPlayer().sendShoot(duration, rodPosition, getGamePanel().getWindow().getMain().getPlayer().getSide() );
 	}
 
 
@@ -477,10 +478,10 @@ class RefreshRods implements Runnable {
 		while(true){
 			i++;
 			//Alias pour faciliter la lecture
-			GameClient gc = gamezone.getWindow().getMain().getClient().getGc();
-			Player p = gamezone.getWindow().getMain().getPlayer();
+			GameClient gc = gamezone.getGamePanel().getWindow().getMain().getClient().getGc();
+			Player p = gamezone.getGamePanel().getWindow().getMain().getPlayer();
 			gamezone.refreshPositions( gc.getPositions( p.getLogin(), false ) , p.getSide(), gc.getBallX(), gc.getBallY() );
-			MatchClient mc = gamezone.getWindow().getMain().getClient().getMc();
+			MatchClient mc = gamezone.getGamePanel().getWindow().getMain().getClient().getMc();
 			gamezone.setLeftScore(new JLabel( " Rouge : " + mc.getLeftScore() ));
 			gamezone.setRightScore(new JLabel( " Bleue : " + mc.getLeftScore() ));
 			gamezone.setPause(mc.isPause());

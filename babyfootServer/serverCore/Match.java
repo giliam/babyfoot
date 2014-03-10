@@ -31,7 +31,7 @@ public class Match {
 	
 	private Collisions collisions;
 
-	private boolean noSlow = false;
+	private boolean noSlow = true;
 	
 	private boolean pause = false;
 

@@ -49,6 +49,10 @@ public abstract class Utils {
 	public static int getYPositionPlayer( Hashtable<Rod, Integer>[] yDecal, Rod rod, int i, int nb, Sides side ){
 		return yDecal[side == Sides.UP ? 1 : 0].get(rod)-Utils.Y_STAGGERING_DEFAULT.get(rod)+i*Utils.HEIGHT/(1+nb)-Utils.IMAGE_PLAYER_Y/2;
 	}
+	
+	public static int getYPositionPlayer( int position, Rod rod, int i, int nb ){
+		return position-Utils.Y_STAGGERING_DEFAULT.get(rod)+i*Utils.HEIGHT/(1+nb)-Utils.IMAGE_PLAYER_Y/2;
+	}
 
 	
 	/** Hache un mot de passe en se basant sur le principe de l'algorithme MD5. Retourne la chaine.

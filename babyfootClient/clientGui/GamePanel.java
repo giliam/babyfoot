@@ -30,7 +30,7 @@ public class GamePanel extends JPanel implements ActionListener {
 		chat.setMinimumSize(new Dimension(300,729));
 		add(chat,BorderLayout.EAST);
 		
-		gameZone = new GameZone(window, testMode);
+		gameZone = new GameZone(this, testMode);
 	    add(gameZone,BorderLayout.CENTER);
 	    add(gameZone.getInfoPanel(),BorderLayout.WEST);
 	    
