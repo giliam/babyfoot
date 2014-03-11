@@ -66,4 +66,40 @@ public class Player {
 		
 		}
 	}
+
+
+	public int updateRods(int status) {
+		switch( match.getType() ){
+			case ONEVSONE:
+				if( (status & 1) == 0 ){
+					status += 3;
+				}else{
+					status += 12;
+				}
+				break;
+			case ONEVSTWO:
+				if( (status & 1) == 0 ){
+					status += 3;
+				}else if( (status & 4) == 0 ){
+					status += 4;
+				}else{
+					status += 8;
+				}
+				break;
+			case TWOVSTWO:
+				if( (status & 1) == 0 ){
+					status += 1;
+				}else if( (status & 2) == 0 ){
+					status += 2;
+				}else if( (status & 4) == 0 ){
+					status += 4;
+				}else{
+					status += 8;
+				}
+				break;
+			default:
+				break;
+		}
+		return status;
+	}
 }

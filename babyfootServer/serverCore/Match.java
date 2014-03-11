@@ -38,6 +38,8 @@ public class Match {
 	private final int STEP_X = 2;
 	private final int STEP_Y = 2;
 	
+	private int status = 0;
+	
 	@SuppressWarnings("unchecked")
 	private Hashtable<Rod, Integer>[] yRodPositions = new Hashtable[2] ;
 	private RefreshBallPosition tRefresh;
@@ -46,9 +48,12 @@ public class Match {
 	
 	@SuppressWarnings("unchecked")
 	public Match(String login, Types type) {
+		this.type = type;
+		
 		this.player1 = ServerBabyfoot.tplayer.getPlayer(login);
 		this.player1.setMatch(this);
-		this.type = type;
+		status = this.player1.updateRods(0);
+		
 		this.yRodPositions = new Hashtable[2];
 		
 		this.yRodPositions[0] = new Hashtable<Rod, Integer>();
@@ -148,25 +153,25 @@ public class Match {
 		this.yRodPositions[i] = yRodPositions;
 	}
 
-	public String addPlayer(Player p) {
+	public int addPlayer(Player p) {
 		if( player1 == null ){
 			player1 = p;
 			p.updateSide(1);
-			return "true";
+			status = p.updateRods(status);
 		}else if( player2 == null ){
 			player2 = p;
 			p.updateSide(2);
-			return "true";
+			status = p.updateRods(status);
 		}else if( player3 == null ){
 			player3 = p;
 			p.updateSide(3);
-			return "true";
+			status = p.updateRods(status);
 		}else if( player4 == null ){
 			player4 = p;
 			p.updateSide(4);
-			return "true";
+			status = p.updateRods(status);
 		}
-		return "false";
+		return status;
 	}
 
 	public void removePlayer(String login) {
@@ -266,7 +271,7 @@ public class Match {
 
 	public void verifGoal() {
 		if( ballY >= Utils.HEIGHT/2-Utils.GOAL_SIZE/2+10 && ballY <= Utils.HEIGHT/2+Utils.GOAL_SIZE/2-10 ){
-			System.out.println(leftScore + " - " + rightScore);
+			//System.out.println(leftScore + " - " + rightScore);
 			if( ballX >= Utils.WIDTH / 2 )
 				leftScore++;
 			else

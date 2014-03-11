@@ -75,6 +75,10 @@ public class Player {
 	}
 
 	public void setRodAvailables(Hashtable<Rod, Boolean> rodAvailables) {
+		System.out.println(rodAvailables.get(Rod.GARDIEN));
+		System.out.println(rodAvailables.get(Rod.DEFENSE));
+		System.out.println(rodAvailables.get(Rod.MILIEU));
+		System.out.println(rodAvailables.get(Rod.ATTAQUE));
 		this.rodAvailables = rodAvailables;
 	}
 	

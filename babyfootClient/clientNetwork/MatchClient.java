@@ -73,7 +73,7 @@ public class MatchClient implements Runnable {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-    	if( isOk() ){
+    	if( statusRod != 0 ){
     		setOk(false);
     		return true;
     	}else{
@@ -110,7 +110,6 @@ public class MatchClient implements Runnable {
 	}
 
 	public void setMatchDatas(String[] md) {
-		
 		switch( Integer.valueOf( md[1] ) ){
 			case 1:
 				matchDatas = new String[4];
@@ -182,7 +181,7 @@ public class MatchClient implements Runnable {
 	public void stopMatch(String login) {
 		out.println("match" + Utils.SEPARATOR + "stop" + Utils.SEPARATOR + login );
     	out.flush();
-		
+    	statusRod = 0;
 	}
 
 	public void deleteMatch() {
