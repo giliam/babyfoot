@@ -297,6 +297,7 @@ class MatchReceptionMessage implements Runnable{
             		if( type == 0)
             			matchClient.getServerList()[n++] = message;
             		else if( type == 1){
+            			System.out.println(message);
             			matchClient.setMatchDatas(message.split(Utils.SEPARATOR));
             		}
             	}else{

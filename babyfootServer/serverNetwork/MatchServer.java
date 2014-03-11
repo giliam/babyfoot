@@ -97,7 +97,11 @@ public class MatchServer extends AbstractServer {
 			}if( m.getPlayer2() != null ){
 				display += Utils.SEPARATOR + ( m.getType() == Match.Types.TWOVSTWO ? "" : " " + Utils.SEPARATOR ) + m.getPlayer2().getLogin();
 			}if( m.getPlayer3() != null ){
-				display += Utils.SEPARATOR + ( m.getType() == Match.Types.TWOVSTWO ? " " + Utils.SEPARATOR : "" ) + m.getPlayer3().getLogin();
+				//display += Utils.SEPARATOR + ( m.getType() == Match.Types.TWOVSTWO ? " " + Utils.SEPARATOR : "" ) + m.getPlayer3().getLogin();
+				if( m.getPlayer2() != null )
+					display += Utils.SEPARATOR + m.getPlayer3().getLogin();
+				else
+					display += Utils.SEPARATOR + ( m.getType() == Match.Types.ONEVSONE ? "" : " " + Utils.SEPARATOR ) + m.getPlayer3().getLogin();
 			}if( m.getPlayer4() != null ){
 				display += Utils.SEPARATOR + m.getPlayer4().getLogin();
 			}

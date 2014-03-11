@@ -49,7 +49,8 @@ public class Chat {
 		String[] s = new String[servers.size()];
 		int n = servers.size();
 		for (int i = 0; i < n; i++)
-		    s[i] = i + " - " + servers.get(i).toString();
+			if( i < servers.size() )
+				s[i] = i + " - " + servers.get(i).toString();
 		return s;
 	}
 

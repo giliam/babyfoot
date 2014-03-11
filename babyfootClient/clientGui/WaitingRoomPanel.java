@@ -122,7 +122,7 @@ public class WaitingRoomPanel extends BPanel implements ActionListener {
 		    		playersTeamOne[0] = datas[2];
 		    		playersTeamTwo = new String[2];
 	    			playersTeamTwo[0] = datas[3];
-	    			playersTeamTwo[0] = datas[4];
+	    			playersTeamTwo[1] = datas[4];
 		    		break;
 		    }
 		}
@@ -222,10 +222,13 @@ class RefreshRoom implements Runnable{
 			waitingroom.refresh();
 			try {
 				Thread.sleep(1000);
+				if( !waitingroom.getbReturn().isEnabled() ){
+					Thread.sleep(1000);
+					waitingroom.getbReturn().setEnabled(true);
+				}
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			waitingroom.getbReturn().setEnabled(true);
 		}
 	}
 }
