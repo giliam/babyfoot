@@ -10,12 +10,17 @@ import javax.swing.JPanel;
  du BorderLayout. */
 public abstract class BPanel extends JPanel {
 	private MainFrame window;
-	public BPanel(MainFrame f){
+
+	public BPanel(MainFrame f, boolean display, int heightHeader ){
 		setWindow(f);
 		getWindow().getMain().actualPanel = this;
 		setLayout(new BorderLayout());
 		setBackground(Color.WHITE);
-		add(new Header(),BorderLayout.NORTH);
+		add(new Header(display, heightHeader),BorderLayout.NORTH);
+	}
+	
+	public BPanel(MainFrame f ){
+		this( f, true, 150 );
 	}
 	public MainFrame getWindow() {
 		return window;

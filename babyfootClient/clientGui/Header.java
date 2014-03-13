@@ -13,20 +13,24 @@ import javax.swing.JPanel;
 /** Cette classe gére le bandeau titre de la fenêtre avec l'affichage du logo (très moche certes). Elle sera appelée par le BPanel qui
 est la classe mère de toutes les autres classes et qui initiliase l'objet afin de conserver le cadre partout. */
 public class Header extends JPanel {
-	public Header(){
+	private boolean displayLogo = true;
+	public Header(boolean display, int height ){
 		super();
-		setPreferredSize(new Dimension(800,150));
-		setMaximumSize(new Dimension(800,150));
+		displayLogo = display;
+		setPreferredSize(new Dimension(800,height));
+		setMaximumSize(new Dimension(800,height));
 		setBackground(Color.WHITE);
 	}
 	public void paintComponent(Graphics g){
 		setSize(800,200);
-		try {
-    		Image img = ImageIO.read(new File("pictures/header.jpg"));
-			g.drawImage(img, (getWidth()-540)/2, 0, this);
-			//Pour une image de fond
-	    } catch (IOException e) {
-	    	e.printStackTrace();
-	    }
+		if( displayLogo ) {
+			try {
+	    		Image img = ImageIO.read(new File("pictures/header.png"));
+				g.drawImage(img, 50, 0, this);
+				//Pour une image de fond
+		    } catch (IOException e) {
+		    	e.printStackTrace();
+		    }
+		}
 	}
 }
