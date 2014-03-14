@@ -4,9 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -16,9 +17,7 @@ import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.Hashtable;
-
 import javax.imageio.ImageIO;
-
 import clientCore.ClientBabyfoot;
 import clientCore.Player;
 import clientCore.Utils;
@@ -44,24 +43,25 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	private int ballX;
 	private int ballY;
 	
-	private boolean testMode;
 	
 	private GamePanel gamepanel;
 	private JPanel infoZone;
 	private JLabel leftScore = new JLabel(" Rouge : ");
 	private JLabel rightScore = new JLabel(" Bleue : ");
+	private JButton askForAPause = new JButton("Pause ?");
 	private long shootBeginning;
 	private boolean pause;
 	
 	@SuppressWarnings("unchecked")
 	public GameZone(GamePanel window, boolean testMode){
 		this.gamepanel = window;
-		this.testMode = testMode;
-
+		
+		
 		infoZone = new JPanel();
 		infoZone.add(new JLabel("Le Match"));
 		infoZone.add(leftScore);
 		infoZone.add(rightScore);
+		infoZone.add(askForAPause);
 		infoZone.setBackground(Color.BLACK);
 		infoZone.setPreferredSize(new Dimension(100,729));
 		infoZone.setMinimumSize(new Dimension(100,729));
@@ -88,6 +88,7 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	    
 	    setFocusable(true);
 	    requestFocus();
+	    
 	    if( !testMode ){
 		    Thread tr = new Thread(new RefreshRods(this));
 		    tr.start();
@@ -110,8 +111,8 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	}
 	
 	private void initInfoZone(){
-		leftScore.setText("aonzeanzeoi");
 		leftScore.setBackground(Color.RED);
+		rightScore.setBackground(Color.BLUE);
 		gamepanel.repaint();
 	}
 	
@@ -321,6 +322,7 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 
 
 	public void keyTyped(KeyEvent e) {
+	  System.out.println(e.getKeyCode());
 		if( e.getKeyChar() == 'a' || e.getKeyChar() == 'A' ){
 			if( getGamePanel().getWindow().getMain().getPlayer().getRodAvailables().get(Rod.GARDIEN) ){
 				rodPosition = Rod.GARDIEN;
@@ -482,8 +484,8 @@ class RefreshRods implements Runnable {
 			Player p = gamezone.getGamePanel().getWindow().getMain().getPlayer();
 			gamezone.refreshPositions( gc.getPositions( p.getLogin(), false ) , p.getSide(), gc.getBallX(), gc.getBallY() );
 			MatchClient mc = gamezone.getGamePanel().getWindow().getMain().getClient().getMc();
-			gamezone.setLeftScore(new JLabel( " Rouge : " + mc.getLeftScore() ));
-			gamezone.setRightScore(new JLabel( " Bleue : " + mc.getLeftScore() ));
+			gamezone.getLeftScore().setText( "Rouge : " + mc.getLeftScore() );
+			gamezone.getRightScore().setText( "Bleue : " + mc.getRightScore() );
 			gamezone.setPause(mc.isPause());
 			try{
 				Thread.sleep(20);
