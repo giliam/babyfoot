@@ -52,6 +52,7 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	private long shootBeginning;
 	private boolean pause;
 	private Sides side;
+	private int lastKeyY;
 	
 	@SuppressWarnings("unchecked")
 	public GameZone(GamePanel window, boolean testMode){
@@ -272,48 +273,44 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 
 
 	public void keyPressed(KeyEvent e) {
-		if( e.getKeyCode() == 38 ){
+		//Pas de gestion du clavier
+		/*if( e.getKeyCode() == 38 ){
 			moveUpAndDown(true,Utils.MOVE_STEP);
 		}else if( e.getKeyCode() == 40 ){
 			moveUpAndDown(false,Utils.MOVE_STEP);
-		}
+		}*/
 	}
 	
-	public void moveUpAndDown(boolean up, int path){
+	public void moveUpAndDown(int y, boolean up, int path){
 		int limitSup = 38;
-		int limiInf = 83;
+		int limitInf = 83;
 		switch(rodPosition){
 			case GARDIEN:
 				limitSup = -5;
-				limiInf = 215;
+				limitInf = 215;
 				break;
 			case DEFENSE:
 				limitSup = -10;
-				limiInf = 300;
+				limitInf = 300;
 				break;
 			case MILIEU:
 				limitSup = 20;
-				limiInf = 180;
+				limitInf = 180;
 				break;
 			case ATTAQUE:
 				limitSup = -10;
-				limiInf = 220;
+				limitInf = 220;
 				break;
 		}
 		int upOrDown = getGamePanel().getWindow().getMain().getPlayer().getSide() == Utils.Sides.DOWN ? 0 : 1;
 		if( up && yPosition[upOrDown].get(rodPosition) > (limitSup+2*path) ){
-			/*yPosition[upOrDown].put(rodPosition, yPosition[upOrDown].get(rodPosition)-path);
-			Main.getPlayer().setRod(yPosition[upOrDown]);
-			repaint();*/
-			yPosition[upOrDown].put(rodPosition, yPosition[upOrDown].get(rodPosition)-path);
+			yPosition[upOrDown].put(rodPosition, yPosition[upOrDown].get(rodPosition)-(int)Math.floor(Math.abs(lastKeyY-y)/4.));
+			this.lastKeyY = y;
 			getGamePanel().getWindow().getMain().getPlayer().setRod(yPosition[upOrDown]);
 			repaint();
-		}else if( !up && yPosition[upOrDown].get(rodPosition) < (limiInf-2*path) ){
-			/*
-			yPosition[upOrDown].put(rodPosition, yPosition[upOrDown].get(rodPosition)+path);
-			Main.getPlayer().setRod(yPosition[upOrDown]);
-			repaint();*/
-			yPosition[upOrDown].put(rodPosition, yPosition[upOrDown].get(rodPosition)+path);
+		}else if( !up && yPosition[upOrDown].get(rodPosition) < (limitInf-2*path) ){
+			yPosition[upOrDown].put(rodPosition, yPosition[upOrDown].get(rodPosition)+(int)Math.round(Math.abs(lastKeyY-y)/4.));
+			lastKeyY = y;
 			getGamePanel().getWindow().getMain().getPlayer().setRod(yPosition[upOrDown]);
 			repaint();
 		}
@@ -362,9 +359,9 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	public void mouseMoved(MouseEvent e) {
 		int y = e.getYOnScreen();
 		if( y > ( 20 + oldY ) ){
-			moveUpAndDown(false, Utils.MOVE_STEP);
+			moveUpAndDown(y, false, Utils.MOVE_STEP);
 		}else if( y < ( oldY - 17 )){
-			moveUpAndDown(true, Utils.MOVE_STEP);
+			moveUpAndDown(y, true, Utils.MOVE_STEP);
 		}
 		if( ( y - oldY ) > 20 || ( oldY - y ) > 20 )
 			oldY = y;
