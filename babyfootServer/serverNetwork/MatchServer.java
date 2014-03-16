@@ -183,7 +183,8 @@ public class MatchServer extends AbstractServer {
 	}
 
 	public void sendPositions( String login, PrintWriter out){
-		Match m = ServerBabyfoot.tplayer.getPlayer(login).getMatch();
+		Player p = ServerBabyfoot.tplayer.getPlayer(login);
+		Match m = p.getMatch();
 		out.println("matchinfo" + Utils.SEPARATOR + m.getLeftScore() + Utils.SEPARATOR + m.getRightScore() + Utils.SEPARATOR + m.isPause() );
 		out.flush();
 		int[][] datas = getRodPositions(login);

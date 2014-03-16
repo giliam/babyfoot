@@ -325,7 +325,6 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 
 
 	public void keyTyped(KeyEvent e) {
-	  System.out.println(e.getKeyCode());
 		if( e.getKeyChar() == 'a' || e.getKeyChar() == 'A' ){
 			Rod rod = ( side == Sides.UP ? Rod.ATTAQUE : Rod.GARDIEN );
 			if( getGamePanel().getWindow().getMain().getPlayer().getRodAvailables().get(rod) ){

@@ -4,6 +4,7 @@ package clientCore;
 import java.util.Hashtable;
 
 import clientCore.Utils.Sides;
+import clientCore.Utils.Types;
 import clientGui.GameZone;
 import clientCore.Utils.Rod;
 
@@ -19,6 +20,8 @@ public class Player {
 	private Utils.Sides side = Utils.Sides.DOWN;
 	private boolean boss;
 	private ClientBabyfoot main;
+	private Types gameType;
+	private int status;
 	public Player(String l, ClientBabyfoot m){
 		main = m;
 		
@@ -53,6 +56,7 @@ public class Player {
 	
 	/** Ajoute un match au serveur. */
 	public boolean addMatch(int type){
+		gameType = ( type == 1 ? Types.ONEVSONE : ( type == 2 ? Types.TWOVSTWO : Types.ONEVSTWO ));
 		return main.getClient().getPc().addMatch(type);
 	}
 	
@@ -74,15 +78,6 @@ public class Player {
 		return rodAvailables;
 	}
 
-	public void setRodAvailables(Hashtable<Rod, Boolean> rodAvailables) {
-		System.out.println(rodAvailables.get(Rod.GARDIEN));
-		System.out.println(rodAvailables.get(Rod.DEFENSE));
-		System.out.println(rodAvailables.get(Rod.MILIEU));
-		System.out.println(rodAvailables.get(Rod.ATTAQUE));
-		this.rodAvailables = rodAvailables;
-	}
-	
-	
 	/** Retourne la liste des parties actuellement disponibles ou en cours en lançant une requête. */
 	public String[] getServers() {
 		return main.getClient().getMc().getServers();
@@ -134,44 +129,59 @@ public class Player {
 	}
 
 	public void setRodAvailablesByMatchType(String gameType, int status) {
+		this.status = status;
 		if( gameType.equals("1vs1") ){
-			rodAvailables = new Hashtable<Rod, Boolean>();
-			rodAvailables.put(Rod.GARDIEN, true);
-			rodAvailables.put(Rod.DEFENSE, true);
-			rodAvailables.put(Rod.MILIEU, true);
-			rodAvailables.put(Rod.ATTAQUE, true);
+			this.gameType = Types.ONEVSONE;
 		}else if( gameType.equals("1vs2") && side == Sides.DOWN ){
-			rodAvailables = new Hashtable<Rod, Boolean>();
-			rodAvailables.put(Rod.GARDIEN, true);
-			rodAvailables.put(Rod.DEFENSE, true);
-			rodAvailables.put(Rod.MILIEU, true);
-			rodAvailables.put(Rod.ATTAQUE, true);
+			this.gameType = Types.ONEVSTWO;
 		}else if( gameType.equals("1vs2") && side == Sides.UP ){
-			rodAvailables = new Hashtable<Rod, Boolean>();
-			if( (status & 4) == 0 ){
-				rodAvailables.put(Rod.GARDIEN, true);
-				rodAvailables.put(Rod.DEFENSE, true);
-				rodAvailables.put(Rod.MILIEU, false);
-				rodAvailables.put(Rod.ATTAQUE, false);
-			}else{
-				rodAvailables.put(Rod.GARDIEN, false);
-				rodAvailables.put(Rod.DEFENSE, false);
-				rodAvailables.put(Rod.MILIEU, true);
-				rodAvailables.put(Rod.ATTAQUE, true);
-			}
+			this.gameType = Types.ONEVSTWO;
 		}else if( gameType.equals("2vs2") ){
-			rodAvailables = new Hashtable<Rod, Boolean>();
-			if( ( (status & 4) == 0 && side == Sides.UP ) || ( (status & 1) == 0 && side == Sides.DOWN ) ){
+			this.gameType = Types.TWOVSTWO;
+		}
+	}
+	
+	
+	public void initRodAvailables() {
+		rodAvailables = new Hashtable<Rod, Boolean>();
+		switch( gameType ){
+			case ONEVSONE:
 				rodAvailables.put(Rod.GARDIEN, true);
 				rodAvailables.put(Rod.DEFENSE, true);
-				rodAvailables.put(Rod.MILIEU, false);
-				rodAvailables.put(Rod.ATTAQUE, false);
-			}else{
-				rodAvailables.put(Rod.GARDIEN, false);
-				rodAvailables.put(Rod.DEFENSE, false);
 				rodAvailables.put(Rod.MILIEU, true);
 				rodAvailables.put(Rod.ATTAQUE, true);
-			}
+				break;
+			case ONEVSTWO:
+				if( side == Sides.DOWN ){
+					rodAvailables.put(Rod.GARDIEN, true);
+					rodAvailables.put(Rod.DEFENSE, true);
+					rodAvailables.put(Rod.MILIEU, true);
+					rodAvailables.put(Rod.ATTAQUE, true);
+				}else if( (status & 4) == 0 ){
+					rodAvailables.put(Rod.GARDIEN, true);
+					rodAvailables.put(Rod.DEFENSE, true);
+					rodAvailables.put(Rod.MILIEU, false);
+					rodAvailables.put(Rod.ATTAQUE, false);
+				}else{
+					rodAvailables.put(Rod.GARDIEN, false);
+					rodAvailables.put(Rod.DEFENSE, false);
+					rodAvailables.put(Rod.MILIEU, true);
+					rodAvailables.put(Rod.ATTAQUE, true);
+				}
+				break;
+			case TWOVSTWO:
+				if( ( (status & 4) == 0 && side == Sides.UP ) || ( (status & 1) == 0 && side == Sides.DOWN ) ){
+					rodAvailables.put(Rod.GARDIEN, true);
+					rodAvailables.put(Rod.DEFENSE, true);
+					rodAvailables.put(Rod.MILIEU, false);
+					rodAvailables.put(Rod.ATTAQUE, false);
+				}else{
+					rodAvailables.put(Rod.GARDIEN, false);
+					rodAvailables.put(Rod.DEFENSE, false);
+					rodAvailables.put(Rod.MILIEU, true);
+					rodAvailables.put(Rod.ATTAQUE, true);
+				}
+				break;
 		}
 	}
 }

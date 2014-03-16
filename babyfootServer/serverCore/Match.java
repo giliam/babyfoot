@@ -52,7 +52,7 @@ public class Match {
 		
 		this.player1 = ServerBabyfoot.tplayer.getPlayer(login);
 		this.player1.setMatch(this);
-		status = this.player1.updateRods(0);
+		setStatus(this.player1.updateRods(0));
 		
 		this.yRodPositions = new Hashtable[2];
 		
@@ -157,21 +157,21 @@ public class Match {
 		if( player1 == null ){
 			player1 = p;
 			p.updateSide(1);
-			status = p.updateRods(status);
+			setStatus(p.updateRods(getStatus()));
 		}else if( player2 == null ){
 			player2 = p;
 			p.updateSide(2);
-			status = p.updateRods(status);
+			setStatus(p.updateRods(getStatus()));
 		}else if( player3 == null ){
 			player3 = p;
 			p.updateSide(3);
-			status = p.updateRods(status);
+			setStatus(p.updateRods(getStatus()));
 		}else if( player4 == null ){
 			player4 = p;
 			p.updateSide(4);
-			status = p.updateRods(status);
+			setStatus(p.updateRods(getStatus()));
 		}
-		return status;
+		return p.getStatus();
 	}
 	
 	
@@ -444,6 +444,14 @@ public class Match {
 	
 	public void setPause(boolean s){
 		pause = s;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
 	}
 }
 

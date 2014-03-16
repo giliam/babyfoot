@@ -178,6 +178,7 @@ public class WaitingRoomPanel extends BPanel implements ActionListener {
 		if( !sideOk ){
 			getWindow().getMain().getPlayer().setSide(Utils.Sides.UP);
 		}
+		getWindow().getMain().getPlayer().initRodAvailables();
 		refreshRoom.run = false;
 		getWindow().getMain().getClient().getGc().startThread();
 		getWindow().setContentPane(new GamePanel(getWindow(),false));

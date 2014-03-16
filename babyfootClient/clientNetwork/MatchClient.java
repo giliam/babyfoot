@@ -110,7 +110,6 @@ public class MatchClient implements Runnable {
 	}
 
 	public void setMatchDatas(String[] md) {
-		Utils.printArray(md);
 		switch( Integer.valueOf( md[1] ) ){
 			case 1:
 				matchDatas = new String[4];
@@ -229,7 +228,6 @@ public class MatchClient implements Runnable {
 		try{
 			statusRod = Integer.valueOf(message);
 		}catch(NumberFormatException e){
-			statusRod = 0;
 		}
 	}
 

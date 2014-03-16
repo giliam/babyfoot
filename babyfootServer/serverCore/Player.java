@@ -10,9 +10,11 @@ public class Player {
 	private String login;
 	private Hashtable<Rod, Boolean> rodAvailables;
 	private Utils.Sides side;
+	private int status;
 	
 	public Player(String login){
 		this.login = login;
+		this.status = 1;
 	}
 	
 	
@@ -69,37 +71,49 @@ public class Player {
 
 
 	public int updateRods(int status) {
+		int adding = 0;
 		switch( match.getType() ){
 			case ONEVSONE:
 				if( (status & 1) == 0 ){
-					status += 3;
+					adding = 3;
 				}else{
-					status += 12;
+					adding = 12;
 				}
 				break;
 			case ONEVSTWO:
 				if( (status & 1) == 0 ){
-					status += 3;
+					adding = 3;
 				}else if( (status & 4) == 0 ){
-					status += 4;
+					adding = 4;
 				}else{
-					status += 8;
+					adding = 8;
 				}
 				break;
 			case TWOVSTWO:
 				if( (status & 1) == 0 ){
-					status += 1;
+					adding = 1;
 				}else if( (status & 2) == 0 ){
-					status += 2;
+					adding = 2;
 				}else if( (status & 4) == 0 ){
-					status += 4;
+					adding = 4;
 				}else{
-					status += 8;
+					adding = 8;
 				}
 				break;
 			default:
 				break;
 		}
+		this.status = adding;
+		return status + adding;
+	}
+
+
+	public int getStatus() {
 		return status;
+	}
+
+
+	public void setStatus(int status) {
+		this.status = status;
 	}
 }
