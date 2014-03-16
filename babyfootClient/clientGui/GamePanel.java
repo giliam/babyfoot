@@ -31,8 +31,8 @@ public class GamePanel extends JPanel implements ActionListener {
 		add(chat,BorderLayout.EAST);
 		
 		gameZone = new GameZone(this, testMode);
-    add(gameZone,BorderLayout.CENTER);
-    add(gameZone.getInfoPanel(),BorderLayout.WEST);
+		add(gameZone.getInfoPanel(),BorderLayout.WEST);
+		add(gameZone,BorderLayout.CENTER);
 	}
 	
 	public void actionPerformed(ActionEvent e) {

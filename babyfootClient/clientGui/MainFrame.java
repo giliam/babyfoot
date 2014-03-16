@@ -6,6 +6,7 @@ import javax.swing.*;
 
 import clientCore.Chat;
 import clientCore.ClientBabyfoot;
+import clientCore.Player;
 
 
 @SuppressWarnings("serial")
@@ -63,6 +64,10 @@ public class MainFrame extends JFrame implements WindowListener {
 	}
 
 	public void windowOpened(WindowEvent e) {
+	}
+	
+	public Player getPlayer(){
+		return main.getPlayer();
 	}
 
 	public ClientBabyfoot getMain() {

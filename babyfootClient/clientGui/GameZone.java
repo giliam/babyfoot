@@ -51,17 +51,20 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	private JButton askForAPause = new JButton("Pause ?");
 	private long shootBeginning;
 	private boolean pause;
+	private Sides side;
 	
 	@SuppressWarnings("unchecked")
 	public GameZone(GamePanel window, boolean testMode){
 		this.gamepanel = window;
 		
+		this.side = getGamePanel().getWindow().getPlayer().getSide();
 		
 		infoZone = new JPanel();
 		infoZone.add(new JLabel("Le Match"));
 		infoZone.add(leftScore);
 		infoZone.add(rightScore);
-		infoZone.add(askForAPause);
+		//infoZone.add(askForAPause);
+		infoZone.setFocusable(false);
 		infoZone.setBackground(Color.BLACK);
 		infoZone.setPreferredSize(new Dimension(100,729));
 		infoZone.setMinimumSize(new Dimension(100,729));
@@ -87,7 +90,7 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	    addMouseMotionListener(this);
 	    
 	    setFocusable(true);
-	    requestFocus();
+	    requestFocusInWindow();
 	    
 	    if( !testMode ){
 		    Thread tr = new Thread(new RefreshRods(this));
@@ -324,23 +327,27 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	public void keyTyped(KeyEvent e) {
 	  System.out.println(e.getKeyCode());
 		if( e.getKeyChar() == 'a' || e.getKeyChar() == 'A' ){
-			if( getGamePanel().getWindow().getMain().getPlayer().getRodAvailables().get(Rod.GARDIEN) ){
-				rodPosition = Rod.GARDIEN;
+			Rod rod = ( side == Sides.UP ? Rod.ATTAQUE : Rod.GARDIEN );
+			if( getGamePanel().getWindow().getMain().getPlayer().getRodAvailables().get(rod) ){
+				rodPosition = rod;
 				repaint();
 			}
 		}else if( e.getKeyChar() == 'z'|| e.getKeyChar() == 'Z' ){
-			if( getGamePanel().getWindow().getMain().getPlayer().getRodAvailables().get(Rod.DEFENSE) ){
-				rodPosition = Rod.DEFENSE;
+			Rod rod = ( side == Sides.UP ? Rod.MILIEU : Rod.DEFENSE );
+			if( getGamePanel().getWindow().getMain().getPlayer().getRodAvailables().get(rod) ){
+				rodPosition = rod;
 				repaint();
 			}
 		}else if( e.getKeyChar() == 'e'|| e.getKeyChar() == 'E' ){
-			if( getGamePanel().getWindow().getMain().getPlayer().getRodAvailables().get(Rod.MILIEU) ){
-				rodPosition = Rod.MILIEU;
+			Rod rod = ( side == Sides.UP ? Rod.DEFENSE : Rod.MILIEU );
+			if( getGamePanel().getWindow().getMain().getPlayer().getRodAvailables().get(rod) ){
+				rodPosition = rod;
 				repaint();
 			}
 		}else if( e.getKeyChar() == 'r'|| e.getKeyChar() == 'R' ){
-			if( getGamePanel().getWindow().getMain().getPlayer().getRodAvailables().get(Rod.ATTAQUE) ){
-				rodPosition = Rod.ATTAQUE;
+			Rod rod = ( side == Sides.UP ? Rod.GARDIEN : Rod.ATTAQUE );
+			if( getGamePanel().getWindow().getMain().getPlayer().getRodAvailables().get(rod) ){
+				rodPosition = rod;
 				repaint();
 			}
 		}

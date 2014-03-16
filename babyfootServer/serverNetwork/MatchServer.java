@@ -32,8 +32,10 @@ public class MatchServer extends AbstractServer {
     		int[] positions = {Integer.valueOf(datas[3]),Integer.valueOf(datas[4]),Integer.valueOf(datas[5]),Integer.valueOf(datas[6])};
     		setRod(login, positions);
     	}else if(task.equals("getpositions")){
-    		String login = datas[2];
-    		sendPositions( login, out );
+    		if( datas.length > 2 ){
+    			String login = datas[2];
+    			sendPositions( login, out );
+    		}
     	}else if(task.equals("getserverslist")){
     		getServersList( out );
     	}else if( task.equals( "getmatchinfo" ) ){
