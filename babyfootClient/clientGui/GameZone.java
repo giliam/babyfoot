@@ -81,7 +81,7 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 		yPosition[1].put(Rod.MILIEU, Utils.Y_STAGGERING_DEFAULT.get(Rod.MILIEU));
 		yPosition[1].put(Rod.ATTAQUE, Utils.Y_STAGGERING_DEFAULT.get(Rod.ATTAQUE));
 		
-		rodPosition = Rod.MILIEU;
+		rodPosition = ( getGamePanel().getWindow().getMain().getPlayer().getRodAvailables().get(Rod.MILIEU) ? Rod.MILIEU : Rod.GARDIEN );
 	    setPreferredSize(new Dimension(900,729));
 	    setMinimumSize(new Dimension(900,729));
 	    

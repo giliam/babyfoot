@@ -26,7 +26,7 @@ public abstract class Utils {
 	public static final int GAP_EDGE = 2*20;
 	public static final int IMAGE_PLAYER_Y = 38;
 	public static final int IMAGE_PLAYER_X = 30;
-	public static final int MOVE_STEP = 20;
+	public static final int MOVE_STEP = 10;
 	public static final int BALL_RADIUS = 15;
 	
 	public static final int HEIGHT = 700;

@@ -24,7 +24,7 @@ public class Player {
 	private int status;
 	public Player(String l, ClientBabyfoot m){
 		main = m;
-		
+		status = 1;
 		rodAvailables = new Hashtable<Rod, Boolean>();
 		//A priori on donne tous les accès, ce qui pourra être modifié par la suite.
 		rodAvailables.put(Rod.GARDIEN, true);
@@ -118,6 +118,7 @@ public class Player {
 
 	public void stopMatch() {
 		main.getClient().getMc().stopMatch(login);
+		status = 1;
 	}
 
 	public void sendShoot(long duration, Rod rodPosition, Sides side) {
@@ -132,9 +133,7 @@ public class Player {
 		this.status = status;
 		if( gameType.equals("1vs1") ){
 			this.gameType = Types.ONEVSONE;
-		}else if( gameType.equals("1vs2") && side == Sides.DOWN ){
-			this.gameType = Types.ONEVSTWO;
-		}else if( gameType.equals("1vs2") && side == Sides.UP ){
+		}else if( gameType.equals("1vs2") ){
 			this.gameType = Types.ONEVSTWO;
 		}else if( gameType.equals("2vs2") ){
 			this.gameType = Types.TWOVSTWO;
