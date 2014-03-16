@@ -260,18 +260,23 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		int decal = 0;
 		switch(rodPosition){
 			case GARDIEN:
-				g.drawImage(img, Utils.GAP_EDGE+30-15, Utils.HEIGHT-64, this);
+				decal = Utils.GAP_EDGE+30-15;
+				g.drawImage(img, ( side == Sides.UP ? Utils.WIDTH - decal : decal ), Utils.HEIGHT-64, this);
 				break;
 			case DEFENSE:
-				g.drawImage(img, Utils.GAP_EDGE+30+100-15, Utils.HEIGHT-64, this);
+				decal = Utils.GAP_EDGE+30+100-15;
+				g.drawImage(img, ( side == Sides.UP ? Utils.WIDTH - decal : decal ), Utils.HEIGHT-64, this);
 				break;
 			case MILIEU:
-				g.drawImage(img, (Utils.WIDTH-Utils.LINE_STRENGTH)/2-70-15, Utils.HEIGHT-64, this);
+				decal = (Utils.WIDTH-Utils.LINE_STRENGTH)/2-70-15;
+				g.drawImage(img, ( side == Sides.UP ? Utils.WIDTH - decal : decal ), Utils.HEIGHT-64, this);
 				break;
 			case ATTAQUE:
-				g.drawImage(img, Utils.WIDTH-Utils.LINE_STRENGTH-Utils.GAP_EDGE-230-15, Utils.HEIGHT-64, this);
+				decal = Utils.WIDTH-Utils.LINE_STRENGTH-Utils.GAP_EDGE-230-15;
+				g.drawImage(img, ( side == Sides.UP ? Utils.WIDTH - decal : decal ), Utils.HEIGHT-64, this);
 				break;
 		}
 	}
