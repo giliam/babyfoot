@@ -133,10 +133,12 @@ class GameReceptionMessage implements Runnable{
 	            	String[] datas = message.split(Utils.SEPARATOR);
 	            	if( datas.length < 9 ){
 	            		datas = null;
-	            		datas = message.split(Utils.SEPARATOR);
-	            		if( datas[0].equals("matchscores") ){
-	                		gc.getMain().getClient().getMc().setMatchInfos(message);
-	                	}
+	            		if( message != null ){
+	            			datas = message.split(Utils.SEPARATOR);
+		            		if( datas[0].equals("matchscores") ){
+		                		gc.getMain().getClient().getMc().setMatchInfos(message);
+		                	}
+	            		}
 	            	}else if( datas != null && datas[0].equals("positions") ){
 	            		gc.setRodPositions(new String[8]);
 	            		for( int i = 0; i<8; i++ ){

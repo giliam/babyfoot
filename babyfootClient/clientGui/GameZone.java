@@ -102,7 +102,13 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 
 	public void paint(Graphics g){
 		g.setColor(new Color(116,152,29));
-		g.fillRect(0,0,getWidth(),getHeight());
+		//g.fillRect(0,0,getWidth(),getHeight());
+		try {
+	      Image img = ImageIO.read(new File("pictures/terrain.png"));
+	      g.drawImage(img, 0, 0, this.getWidth(), this.getHeight(), this);
+		} catch (IOException e) {
+	      e.printStackTrace();
+	    }   
 		
 		initInfoZone();
 		
@@ -145,17 +151,30 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	}
 	
 	private void drawLines(Graphics g){
+		try {
+	      Image img = ImageIO.read(new File("pictures/bordhaut.png"));
+	      g.drawImage(img, 0, 0, this);
+		} catch (IOException e) {
+	      e.printStackTrace();
+	    }
+		try {
+	      Image img = ImageIO.read(new File("pictures/bordbas.png"));
+	      g.drawImage(img, 0, Utils.HEIGHT - 46, this);
+		} catch (IOException e) {
+	      e.printStackTrace();
+	    }
+		
 		g.setColor(Color.WHITE);
 		//Milieu de terrain
-		g.fillRect((Utils.WIDTH-Utils.LINE_STRENGTH)/2,0,Utils.LINE_STRENGTH,Utils.HEIGHT);
+		g.fillRect((Utils.WIDTH-Utils.LINE_STRENGTH)/2,46,Utils.LINE_STRENGTH,Utils.HEIGHT-92);
 		//gauche
-		g.fillRect(Utils.GAP_EDGE,0,Utils.LINE_STRENGTH,Utils.HEIGHT);
+		g.fillRect(Utils.GAP_EDGE,46,Utils.LINE_STRENGTH,Utils.HEIGHT-92);
 		//haut
-		g.fillRect(0,Utils.GAP_EDGE,Utils.WIDTH,Utils.LINE_STRENGTH);
+		//g.fillRect(0,Utils.GAP_EDGE,Utils.WIDTH,Utils.LINE_STRENGTH);
 		//droite
-		g.fillRect(Utils.WIDTH-Utils.GAP_EDGE-Utils.LINE_STRENGTH,0,Utils.LINE_STRENGTH,Utils.HEIGHT);
+		g.fillRect(Utils.WIDTH-Utils.GAP_EDGE-Utils.LINE_STRENGTH,46,Utils.LINE_STRENGTH,Utils.HEIGHT-92);
 		//bas
-		g.fillRect(0,Utils.HEIGHT-Utils.GAP_EDGE-Utils.LINE_STRENGTH,Utils.WIDTH,Utils.LINE_STRENGTH);
+		//g.fillRect(0,Utils.HEIGHT-Utils.GAP_EDGE-Utils.LINE_STRENGTH,Utils.WIDTH,Utils.LINE_STRENGTH);
 	}
 	
 	private void drawPlayers(Graphics g){
@@ -177,7 +196,7 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	
 	private void drawPlayer(Graphics g, int x, int y, int nb, Color color, Sides side, int position, Rod rod ){
 		g.setColor(new Color(192, 192, 192));
-		g.fillRect(x,0,3*Utils.LINE_STRENGTH/2,Utils.HEIGHT);
+		g.fillRect(x,20,3*Utils.LINE_STRENGTH/2,Utils.HEIGHT-92+52);
 		g.setColor(color);
 		for( int i=1; i<=nb;i++){
 			try {
