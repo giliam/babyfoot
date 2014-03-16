@@ -110,6 +110,7 @@ public class MatchClient implements Runnable {
 	}
 
 	public void setMatchDatas(String[] md) {
+		Utils.printArray(md);
 		switch( Integer.valueOf( md[1] ) ){
 			case 1:
 				matchDatas = new String[4];
@@ -140,6 +141,16 @@ public class MatchClient implements Runnable {
 					matchDatas[3] = md[3];
 					matchDatas[4] = md[5];
 					matchDatas[5] = md[6];
+				}else if( md[5].equals(" ") ){
+					matchDatas[2] = md[2];
+					matchDatas[3] = md[3];
+					matchDatas[4] = md[4];
+					matchDatas[5] = "";
+				}else{
+					matchDatas[2] = md[2];
+					matchDatas[3] = md[3];
+					matchDatas[4] = md[4];
+					matchDatas[5] = md[5];
 				}
 				break;
 			case 3:
@@ -297,7 +308,6 @@ class MatchReceptionMessage implements Runnable{
             		if( type == 0)
             			matchClient.getServerList()[n++] = message;
             		else if( type == 1){
-            			System.out.println(message);
             			matchClient.setMatchDatas(message.split(Utils.SEPARATOR));
             		}
             	}else{

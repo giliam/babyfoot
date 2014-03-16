@@ -28,7 +28,6 @@ public class MenuPanel extends BPanel implements ActionListener {
 		try {
 			image = ImageIO.read(new File("pictures/background.png"));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	    JLabel viewer = new JLabel(new ImageIcon(image));

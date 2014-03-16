@@ -173,6 +173,21 @@ public class Match {
 		}
 		return status;
 	}
+	
+	
+	public int countPlayers() {
+		int i = 0;
+		if( player1 != null )
+			i++;
+		if( player2 != null )
+			i++;
+		if( player3 != null )
+			i++;
+		if( player4 != null )
+			i++;
+		
+		return i;
+	}
 
 	public void removePlayer(String login) {
 		if( player1 != null && player1.getLogin().equals(login) ){

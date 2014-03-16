@@ -102,14 +102,15 @@ public class WaitingRoomPanel extends BPanel implements ActionListener {
 				this.type = Utils.Types.TWOVSTWO;
 			else if( type == 3 )
 				this.type = Utils.Types.ONEVSTWO;
-		    switch(type){
-		    	case 1:
+			
+		    switch(this.type){
+		    	case ONEVSONE:
 		    		playersTeamOne = new String[1];
 		    		playersTeamOne[0] = datas[2];
 		    		playersTeamTwo = new String[1];
 	    			playersTeamTwo[0] = datas[3];
 		    		break;
-		    	case 2:
+		    	case TWOVSTWO:
 		    		playersTeamOne = new String[2];
 		    		playersTeamOne[0] = datas[2];
 	    			playersTeamOne[1] = datas[3];
@@ -117,7 +118,7 @@ public class WaitingRoomPanel extends BPanel implements ActionListener {
 	    			playersTeamTwo[0] = datas[4];
 	    			playersTeamTwo[1] = datas[5];
 		    		break;
-		    	case 3:
+		    	case ONEVSTWO:
 		    		playersTeamOne = new String[1];
 		    		playersTeamOne[0] = datas[2];
 		    		playersTeamTwo = new String[2];
@@ -133,7 +134,7 @@ public class WaitingRoomPanel extends BPanel implements ActionListener {
 	    	case ONEVSONE:
 	    		return !playersTeamOne[0].equals(" ") && !playersTeamTwo[0].equals(" "); 
 	    	case TWOVSTWO:
-	    		return !playersTeamOne[0].equals(" ") && !playersTeamOne[1].equals(" ") && !playersTeamTwo[1].equals(" ") && !playersTeamTwo[0].equals(" ");
+	    		return !playersTeamOne[0].equals(" ") && !playersTeamOne[1].equals(" ") && !playersTeamTwo[0].equals(" ") && !playersTeamTwo[1].equals(" ");
 	    	case ONEVSTWO:
 	    		return !playersTeamOne[0].equals(" ") && !playersTeamTwo[0].equals(" ") && !playersTeamTwo[1].equals(" ");
 	    }

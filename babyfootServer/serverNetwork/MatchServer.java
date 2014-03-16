@@ -119,21 +119,16 @@ public class MatchServer extends AbstractServer {
 		while ( it.hasNext() ){
 			Match m = ((Match) it.next());
 			String display = ( m.getType() == Match.Types.ONEVSONE ? "1vs1" : ( m.getType() == Match.Types.TWOVSTWO ? "2vs2" : "1vs2" ) );
-			int i = 0;
 			if( m.getPlayer1() != null ){
-				i++;
 				display += " - " + m.getPlayer1().getLogin();
-			}if( m.getPlayer2() != null ){
-				i++;
+			}else if( m.getPlayer2() != null ){
 				display += " - " + m.getPlayer2().getLogin();
-			}if( m.getPlayer3() != null ){
-				i++;
+			}else if( m.getPlayer3() != null ){
 				display += " - " + m.getPlayer3().getLogin();
-			}if( m.getPlayer4() != null ){
-				i++;
+			}else if( m.getPlayer4() != null ){
 				display += " - " + m.getPlayer4().getLogin();
 			}
-			display += " - " + i + " joueur(s) / " + ( m.getType() == Match.Types.ONEVSONE ? "2" : ( m.getType() == Match.Types.TWOVSTWO ? "4" : "3" ) );
+			display += " - " + m.countPlayers() + " joueur(s) / " + ( m.getType() == Match.Types.ONEVSONE ? "2" : ( m.getType() == Match.Types.TWOVSTWO ? "4" : "3" ) );
 			out.println(display);
 		}
 		out.println("matchlist" + Utils.SEPARATOR + "end");
