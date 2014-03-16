@@ -218,10 +218,12 @@ public class MatchClient implements Runnable {
 	}
 
 	public void setMatchInfos(String message) {
-		String[] s = message.split(Utils.SEPARATOR);
-		setLeftScore(Integer.valueOf(s[1]));
-		setRightScore(Integer.valueOf(s[2]));
-		setPause(Boolean.valueOf(s[3]));
+		if( message != null ){
+			String[] s = message.split(Utils.SEPARATOR);
+			setLeftScore(Integer.valueOf(s[1]));
+			setRightScore(Integer.valueOf(s[2]));
+			setPause(Boolean.valueOf(s[3]));
+		}
 	}
 	
 	public void setMatchCarac(String message) {

@@ -253,22 +253,27 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 		for( int i = 1; i < 4; i++ ){
 			yTopHitBox = position + i*Utils.HEIGHT/4-Utils.IMAGE_PLAYER_Y/2 - Utils.Y_STAGGERING_DEFAULT.get(RodPositions.ATTAQUE);
 			g.fillRect( xLeftHitBox, yTopHitBox, (int)(2*(float)(Utils.IMAGE_PLAYER_X/3)), (int)(2*(float)(Utils.IMAGE_PLAYER_Y/3)) ); 
+		}*/
+		Image img = null;
+		try {
+			img = ImageIO.read(new File("pictures/barrechoisie.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		/*switch(rodPosition){
+		switch(rodPosition){
 			case GARDIEN:
-				g.fillRect(Utils.GAP_EDGE+30,600,50,50);
+				g.drawImage(img, Utils.GAP_EDGE+30-15, Utils.HEIGHT-64, this);
 				break;
 			case DEFENSE:
-				g.fillRect(Utils.GAP_EDGE+30+100,600,50,50);
+				g.drawImage(img, Utils.GAP_EDGE+30+100-15, Utils.HEIGHT-64, this);
 				break;
 			case MILIEU:
-				g.fillRect((Utils.WIDTH-Utils.LINE_STRENGTH)/2-70,600,50,50);
+				g.drawImage(img, (Utils.WIDTH-Utils.LINE_STRENGTH)/2-70-15, Utils.HEIGHT-64, this);
 				break;
 			case ATTAQUE:
-				g.fillRect(Utils.WIDTH-Utils.LINE_STRENGTH-Utils.GAP_EDGE-230,600,50,50);
+				g.drawImage(img, Utils.WIDTH-Utils.LINE_STRENGTH-Utils.GAP_EDGE-230-15, Utils.HEIGHT-64, this);
 				break;
-		}//*/
-		//g.fillRect(1,1,50,50);
+		}
 	}
 
 

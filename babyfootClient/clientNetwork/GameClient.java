@@ -132,7 +132,9 @@ class GameReceptionMessage implements Runnable{
             	if( message != null ){
 	            	String[] datas = message.split(Utils.SEPARATOR);
 	            	if( datas.length < 9 ){
-	            		if( datas[0].equals("matchinfo") ){
+	            		datas = null;
+	            		datas = message.split(Utils.SEPARATOR);
+	            		if( datas[0].equals("matchscores") ){
 	                		gc.getMain().getClient().getMc().setMatchInfos(message);
 	                	}
 	            	}else if( datas != null && datas[0].equals("positions") ){
@@ -143,6 +145,8 @@ class GameReceptionMessage implements Runnable{
             			gc.setBallX(Integer.valueOf(datas[9]));
             			gc.setBallY(Integer.valueOf(datas[10]));
 					}
+	            	message = null;
+	            	datas = null;
             	}
 			}
 		} catch (IOException e) {
