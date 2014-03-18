@@ -16,7 +16,8 @@ public abstract class Utils {
 	public static final int MATCH_END = 100;
 	
 	public static enum Rod { GARDIEN , DEFENSE, MILIEU, ATTAQUE };
-
+	public static enum RodStatus { NORMAL, SHOOTING, HOLDING };  
+	
 	public static enum CollisionType { SIDES, UPANDDOWN };
 	
 	public static final String SEPARATOR = ";";

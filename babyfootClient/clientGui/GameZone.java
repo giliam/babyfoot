@@ -24,6 +24,7 @@ import clientCore.ClientBabyfoot;
 import clientCore.Player;
 import clientCore.Utils;
 import clientCore.Utils.CollisionType;
+import clientCore.Utils.RodStatus;
 import clientCore.Utils.Sides;
 import clientCore.Utils.Rod;
 import clientNetwork.GameClient;
@@ -40,6 +41,8 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	private Hashtable<Rod, Integer>[] yPosition;
 	
 	private Hashtable<Rod, Boolean> rodPositions;
+	
+	private Hashtable<Rod, RodStatus>[] rodStatus;
 	
 	Rod rodPosition;
 	
@@ -63,6 +66,17 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 		setSize(900,729);
 		
 		infoZone = new InfoZone();
+		rodStatus = new Hashtable[2];
+		rodStatus[0] = new Hashtable<Rod, RodStatus>();
+		rodStatus[0].put(Rod.GARDIEN, RodStatus.NORMAL);
+		rodStatus[0].put(Rod.DEFENSE, RodStatus.NORMAL);
+		rodStatus[0].put(Rod.MILIEU, RodStatus.NORMAL);
+		rodStatus[0].put(Rod.ATTAQUE, RodStatus.NORMAL);
+		rodStatus[1] = new Hashtable<Rod, RodStatus>();
+		rodStatus[1].put(Rod.GARDIEN, RodStatus.NORMAL);
+		rodStatus[1].put(Rod.DEFENSE, RodStatus.NORMAL);
+		rodStatus[1].put(Rod.MILIEU, RodStatus.NORMAL);
+		rodStatus[1].put(Rod.ATTAQUE, RodStatus.NORMAL);
 		
 		yPosition = new Hashtable[2];
 		yPosition[0] = new Hashtable<Rod, Integer>();
@@ -489,7 +503,7 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	@Override
 	public void mousePressed(MouseEvent e) {
 		shootBeginning = System.currentTimeMillis();
-		
+		rodStatus[side == Sides.UP ? 1 : 0].put(rodPosition,RodStatus.HOLDING);
 	}
 
 
@@ -497,7 +511,9 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	public void mouseReleased(MouseEvent e) {
 		long duration = System.currentTimeMillis() - shootBeginning;
 		shootBeginning = 0;
+		rodStatus[side == Sides.UP ? 1 : 0].put(rodPosition,RodStatus.SHOOTING);
 		getGamePanel().getWindow().getMain().getPlayer().sendShoot(duration, rodPosition, getGamePanel().getWindow().getMain().getPlayer().getSide() );
+		rodStatus[side == Sides.UP ? 1 : 0].put(rodPosition,RodStatus.NORMAL);
 	}
 
 
