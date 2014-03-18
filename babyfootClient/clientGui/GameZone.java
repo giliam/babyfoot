@@ -21,6 +21,7 @@ import javax.imageio.ImageIO;
 import clientCore.ClientBabyfoot;
 import clientCore.Player;
 import clientCore.Utils;
+import clientCore.Utils.CollisionType;
 import clientCore.Utils.Sides;
 import clientCore.Utils.Rod;
 import clientNetwork.GameClient;
@@ -111,13 +112,11 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	    }   
 		
 		initInfoZone();
-		
 		drawLines(g);
 		drawBall(g);
 		drawGoals(g);
 		drawPlayers(g);
 		drawRodPosition(g);
-		
 	}
 	
 	private void initInfoZone(){
@@ -217,8 +216,47 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 		}
 	}
 	
+	
+	private void testCollisionsBottom(Integer position, Rod rod, Graphics g){
+		float yTopHitBox = position + Utils.GAP_EDGE;
+		float xLeftHitBox = 0;
+		switch(rod){
+			case GARDIEN:
+				yTopHitBox = Utils.getYPositionPlayer( position, rod, 1, 1 );
+				xLeftHitBox = Utils.GARDIEN_POSITION-(float)(Utils.IMAGE_PLAYER_X/3);
+				g.fillRect( (int)xLeftHitBox, (int)yTopHitBox, Utils.IMAGE_PLAYER_X, Utils.IMAGE_PLAYER_Y );
+				break;
+			case DEFENSE:
+				yTopHitBox = Utils.getYPositionPlayer( position, rod, 1, 2 );
+				xLeftHitBox = Utils.DEFENSE_POSITION-(float)(Utils.IMAGE_PLAYER_X/3);
+				g.fillRect( (int)xLeftHitBox, (int)yTopHitBox, Utils.IMAGE_PLAYER_X, Utils.IMAGE_PLAYER_Y );
+				yTopHitBox = Utils.getYPositionPlayer( position, rod, 2, 2 );
+				g.fillRect( (int)xLeftHitBox, (int)yTopHitBox, Utils.IMAGE_PLAYER_X, Utils.IMAGE_PLAYER_Y );
+				break;
+			case MILIEU:
+				xLeftHitBox = Utils.MILIEU_POSITION-(float)(Utils.IMAGE_PLAYER_X/3);
+				for( int i = 1; i < 6; i++ ){
+					yTopHitBox = Utils.getYPositionPlayer( position, rod, i, 5 );
+					g.fillRect( (int)xLeftHitBox, (int)yTopHitBox, Utils.IMAGE_PLAYER_X, Utils.IMAGE_PLAYER_Y );
+				}
+				break;
+			case ATTAQUE:
+				xLeftHitBox = Utils.ATTAQUE_POSITION-(float)(Utils.IMAGE_PLAYER_X/3);
+				for( int i = 1; i < 4; i++ ){
+					yTopHitBox = Utils.getYPositionPlayer( position, rod, i, 3 );
+					g.fillRect( (int)xLeftHitBox, (int)yTopHitBox, Utils.IMAGE_PLAYER_X, Utils.IMAGE_PLAYER_Y );
+				}
+				break;
+		}
+	}
+	
+	
 	private void drawRodPosition(Graphics g){
 		g.setColor(Color.BLACK);
+		testCollisionsBottom(yPosition[0].get(Rod.GARDIEN), Rod.GARDIEN, g);
+		testCollisionsBottom(yPosition[0].get(Rod.DEFENSE), Rod.DEFENSE, g);
+		testCollisionsBottom(yPosition[0].get(Rod.ATTAQUE), Rod.ATTAQUE, g);
+		testCollisionsBottom(yPosition[0].get(Rod.MILIEU), Rod.MILIEU, g);
 		/*int position = 0;
 		int yTopHitBox = 0;
 		int xLeftHitBox = 0;
