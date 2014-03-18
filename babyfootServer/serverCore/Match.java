@@ -329,8 +329,8 @@ public class Match {
 				if( ballX >= Utils.GARDIEN_POSITION && ballX <= Utils.GARDIEN_POSITION + Utils.IMAGE_PLAYER_SHOOTING_X + Utils.BALL_RADIUS 
 						//&& ballSpeedX <= 0
 						&& ballY >= yPosition && ballY <= Utils.IMAGE_PLAYER_Y + yPosition ){
-					ballSpeedX = 15;
-					ballSpeedY *= -1/(Math.abs(ballSpeedY)+2);
+					ballSpeedX = Utils.MAX_INITIAL_SPEED;
+					ballSpeedY *= -0.1;
 				}
 			}else if( rod.equals("DEFENSE") ){
 				boolean test = false;
@@ -342,7 +342,7 @@ public class Match {
 				if( ballX >= Utils.DEFENSE_POSITION && ballX <= Utils.DEFENSE_POSITION + Utils.IMAGE_PLAYER_SHOOTING_X + Utils.BALL_RADIUS 
 						//&& ballSpeedX <= 0
 						&& test ){
-					ballSpeedX = 15;
+					ballSpeedX = Utils.MAX_INITIAL_SPEED;
 					ballSpeedY *= -0.1;
 				}
 			}else if( rod.equals("MILIEU") ){
@@ -355,7 +355,7 @@ public class Match {
 				if( ballX >= Utils.MILIEU_POSITION && ballX <= Utils.MILIEU_POSITION + Utils.IMAGE_PLAYER_SHOOTING_X + Utils.BALL_RADIUS 
 						//&& ballSpeedX <= 0
 						&& test ){
-					ballSpeedX = 15;
+					ballSpeedX = Utils.MAX_INITIAL_SPEED;
 					ballSpeedY *= -0.1;
 				}
 			}else if( rod.equals("ATTAQUE") ){
@@ -368,7 +368,7 @@ public class Match {
 				if( ballX >= Utils.ATTAQUE_POSITION && ballX <= Utils.ATTAQUE_POSITION + Utils.IMAGE_PLAYER_SHOOTING_X + Utils.BALL_RADIUS 
 						//&& ballSpeedX <= 0
 						&& test ){
-					ballSpeedX = 15;
+					ballSpeedX = Utils.MAX_INITIAL_SPEED;
 					ballSpeedY *= -0.1;
 				}
 			}
@@ -378,7 +378,7 @@ public class Match {
 				if( ballX + Utils.IMAGE_PLAYER_SHOOTING_X + Utils.BALL_RADIUS >= Utils.GARDIEN_POSITION  && ballX <= Utils.GARDIEN_POSITION 
 						//&& ballSpeedX <= 0
 						&& ballY >= yPosition && ballY <= Utils.IMAGE_PLAYER_Y + yPosition ){
-					ballSpeedX = 15;
+					ballSpeedX = Utils.MAX_INITIAL_SPEED;
 					ballSpeedY *= -0.1;
 				}
 			}else if( rod.equals("DEFENSE") ){
@@ -391,8 +391,8 @@ public class Match {
 				if( ballX + Utils.IMAGE_PLAYER_SHOOTING_X + Utils.BALL_RADIUS >= Utils.DEFENSE_POSITION && ballX <= Utils.DEFENSE_POSITION 
 						//&& ballSpeedX <= 0
 						&& test ){
-					ballSpeedX = 15;
-					ballSpeedY *= -1;
+					ballSpeedX = Utils.MAX_INITIAL_SPEED;
+					ballSpeedY *= -0.1;
 				}
 			}else if( rod.equals("MILIEU") ){
 				boolean test = false;
@@ -404,8 +404,8 @@ public class Match {
 				if( ballX + Utils.IMAGE_PLAYER_SHOOTING_X + Utils.BALL_RADIUS >= Utils.MILIEU_POSITION && ballX <= Utils.MILIEU_POSITION 
 						//&& ballSpeedX <= 0
 						&& test ){
-					ballSpeedX = 15;
-					ballSpeedY *= -1;
+					ballSpeedX = Utils.MAX_INITIAL_SPEED;
+					ballSpeedY *= -0.1;
 				}
 			}else if( rod.equals("ATTAQUE") ){
 				boolean test = false;
@@ -417,8 +417,8 @@ public class Match {
 				if( ballX + Utils.IMAGE_PLAYER_SHOOTING_X + Utils.BALL_RADIUS >= Utils.ATTAQUE_POSITION && ballX <= Utils.ATTAQUE_POSITION 
 						//&& ballSpeedX <= 0
 						&& test ){
-					ballSpeedX = 15;
-					ballSpeedY *= -1;
+					ballSpeedX = Utils.MAX_INITIAL_SPEED;
+					ballSpeedY *= -0.1;
 				}
 			}
 		}
@@ -498,7 +498,7 @@ class RefreshBallPosition implements Runnable {
 					
 					match.addBallX(match.getBallSpeedX());
 					match.addBallY(match.getBallSpeedY());
-					Thread.sleep(50);
+					Thread.sleep(20);
 				}
 			}
 		}catch(InterruptedException e){
