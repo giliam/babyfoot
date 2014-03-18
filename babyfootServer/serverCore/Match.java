@@ -330,7 +330,7 @@ public class Match {
 						//&& ballSpeedX <= 0
 						&& ballY >= yPosition && ballY <= Utils.IMAGE_PLAYER_Y + yPosition ){
 					ballSpeedX = 15;
-					ballSpeedY *= -1;
+					ballSpeedY *= -1/(Math.abs(ballSpeedY)+2);
 				}
 			}else if( rod.equals("DEFENSE") ){
 				boolean test = false;
@@ -343,7 +343,7 @@ public class Match {
 						//&& ballSpeedX <= 0
 						&& test ){
 					ballSpeedX = 15;
-					ballSpeedY *= -1;
+					ballSpeedY *= -0.1;
 				}
 			}else if( rod.equals("MILIEU") ){
 				boolean test = false;
@@ -356,7 +356,7 @@ public class Match {
 						//&& ballSpeedX <= 0
 						&& test ){
 					ballSpeedX = 15;
-					ballSpeedY *= -1;
+					ballSpeedY *= -0.1;
 				}
 			}else if( rod.equals("ATTAQUE") ){
 				boolean test = false;
@@ -369,7 +369,7 @@ public class Match {
 						//&& ballSpeedX <= 0
 						&& test ){
 					ballSpeedX = 15;
-					ballSpeedY *= -1;
+					ballSpeedY *= -0.1;
 				}
 			}
 		}else{
@@ -379,7 +379,7 @@ public class Match {
 						//&& ballSpeedX <= 0
 						&& ballY >= yPosition && ballY <= Utils.IMAGE_PLAYER_Y + yPosition ){
 					ballSpeedX = 15;
-					ballSpeedY *= -1;
+					ballSpeedY *= -0.1;
 				}
 			}else if( rod.equals("DEFENSE") ){
 				boolean test = false;

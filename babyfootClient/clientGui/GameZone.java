@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+
+import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -46,10 +48,8 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	
 	
 	private GamePanel gamepanel;
-	private JPanel infoZone;
-	private JLabel leftScore = new JLabel(" Rouge : ");
-	private JLabel rightScore = new JLabel(" Bleue : ");
-	private JButton askForAPause = new JButton("Pause ?");
+	private InfoZone infoZone;
+	
 	private long shootBeginning;
 	private boolean pause;
 	private Sides side;
@@ -60,16 +60,9 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 		this.gamepanel = window;
 		
 		this.side = getGamePanel().getWindow().getPlayer().getSide();
+		setSize(900,729);
 		
-		infoZone = new JPanel();
-		infoZone.add(new JLabel("Le Match"));
-		infoZone.add(leftScore);
-		infoZone.add(rightScore);
-		//infoZone.add(askForAPause);
-		infoZone.setFocusable(false);
-		infoZone.setBackground(Color.BLACK);
-		infoZone.setPreferredSize(new Dimension(100,729));
-		infoZone.setMinimumSize(new Dimension(100,729));
+		infoZone = new InfoZone();
 		
 		yPosition = new Hashtable[2];
 		yPosition[0] = new Hashtable<Rod, Integer>();
@@ -120,8 +113,8 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	}
 	
 	private void initInfoZone(){
-		leftScore.setBackground(Color.RED);
-		rightScore.setBackground(Color.BLUE);
+		infoZone.getLeftScore().setBackground(Color.RED);
+		infoZone.getRightScore().setBackground(Color.BLUE);
 		gamepanel.repaint();
 	}
 	
@@ -217,7 +210,7 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	}
 	
 	
-	private void testCollisionsBottom(Integer position, Rod rod, Graphics g){
+	/*private void testCollisionsBottom(Integer position, Rod rod, Graphics g){
 		float yTopHitBox = position + Utils.GAP_EDGE;
 		float xLeftHitBox = 0;
 		switch(rod){
@@ -248,15 +241,15 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 				}
 				break;
 		}
-	}
+	}*/
 	
 	
 	private void drawRodPosition(Graphics g){
-		g.setColor(Color.BLACK);
+		/*g.setColor(Color.BLACK);
 		testCollisionsBottom(yPosition[0].get(Rod.GARDIEN), Rod.GARDIEN, g);
 		testCollisionsBottom(yPosition[0].get(Rod.DEFENSE), Rod.DEFENSE, g);
 		testCollisionsBottom(yPosition[0].get(Rod.ATTAQUE), Rod.ATTAQUE, g);
-		testCollisionsBottom(yPosition[0].get(Rod.MILIEU), Rod.MILIEU, g);
+		testCollisionsBottom(yPosition[0].get(Rod.MILIEU), Rod.MILIEU, g);//*/
 		/*int position = 0;
 		int yTopHitBox = 0;
 		int xLeftHitBox = 0;
@@ -473,7 +466,7 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 		this.gamepanel = window;
 	}
 	
-	public JPanel getInfoPanel(){
+	public InfoZone getInfoPanel(){
 		return infoZone;
 	}
 
@@ -496,6 +489,7 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	@Override
 	public void mousePressed(MouseEvent e) {
 		shootBeginning = System.currentTimeMillis();
+		
 	}
 
 
@@ -507,26 +501,6 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	}
 
 
-	public JLabel getLeftScore() {
-		return leftScore;
-	}
-
-
-	public void setLeftScore(JLabel jLabel) {
-		this.leftScore = jLabel;
-	}
-
-
-	public JLabel getRightScore() {
-		return rightScore;
-	}
-
-
-	public void setRightScore(JLabel rightScore) {
-		this.rightScore = rightScore;
-	}
-
-
 	public boolean isPause() {
 		return pause;
 	}
@@ -534,6 +508,17 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 
 	public void setPause(boolean pause) {
 		this.pause = pause;
+	}
+
+
+	public JLabel getLeftScore() {
+		return infoZone.getLeftScore();
+	}
+
+
+	public JLabel getRightScore() {
+		// TODO Auto-generated method stub
+		return infoZone.getRightScore();
 	}
 }
 
@@ -565,4 +550,42 @@ class RefreshRods implements Runnable {
 		}
 	}
 	
+}
+
+
+class InfoZone extends JPanel{
+	
+	private JLabel leftScore = new JLabel(" Rouge : ");
+	private JLabel rightScore = new JLabel(" Bleue : ");
+	private JButton askForAPause = new JButton("Pause ?");
+	
+	public InfoZone(){
+		add(new JLabel("Le Match"));
+		add(leftScore);
+		add(rightScore);
+		//infoZone.add(askForAPause);
+		setFocusable(false);
+		setBackground(Color.BLACK);
+		setPreferredSize(new Dimension(100,729));
+		setMinimumSize(new Dimension(100,729));
+	}
+	
+	public JLabel getLeftScore() {
+		return leftScore;
+	}
+
+
+	public void setLeftScore(JLabel jLabel) {
+		this.leftScore = jLabel;
+	}
+
+
+	public JLabel getRightScore() {
+		return rightScore;
+	}
+
+
+	public void setRightScore(JLabel rightScore) {
+		this.rightScore = rightScore;
+	}
 }

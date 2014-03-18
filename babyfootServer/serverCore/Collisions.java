@@ -201,7 +201,7 @@ public class Collisions {
 	
 	public boolean verifWhichSide( float xb, float yb, float xc, float yc )
 	{
-		return ( Math.abs(( xb - xc ) / ( yb - yc )) >= 1 );
+		return ( Math.abs(( xb - xc ) / ( yb - yc )) <= 1 );
 	}
 
 	public void setBallPosition(float ballX, float ballY, float ballSpeedX, float ballSpeedY) {
