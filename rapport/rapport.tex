@@ -1,9 +1,14 @@
 \documentclass[a4paper,12pt]{report}
-\usepackage[utf8]{inputenc}
+\usepackage[utf8x]{inputenc}
 \usepackage[francais]{babel}
 \usepackage[top=2cm, bottom=2cm, left=2cm, right=2cm]{geometry}
 \usepackage{graphicx}
 \usepackage{float}
+\usepackage{listings} %Pour le code
+\usepackage{ifthen}
+\usepackage{color}
+\usepackage{textcomp}
+
 
 \title{Rapport du projet informatique}
 \author{Matthieu Denoux - Groupe 1}
@@ -183,7 +188,7 @@ Gère les différentes requêtes et les redirige vers les autres entités du ser
 	public static ChatServer tchat;
     
 	public static PlayerServer tplayer;
-    b
+    
 	public static MatchServer tmatch;
 \end{quote}
 \paragraph{PlayerServer.java}
@@ -249,6 +254,72 @@ Gère la base de données PostGreSQL ou bien textuelle qui pourrait être utilis
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Le réseau}
 \paragraph{}
+Le réseau est au coeur de mon projet et j'ai donc développé plusieurs Thread en parallèle pour pouvoir gérer plus facilement l'envoi de messages par mon application.
+\section{La gestion du jeu}
+\paragraph{}
+Pour calculer la position de la balle au cours du temps, j'ai utilisé un Thread qui s'actualise toutes les 10ms et qui effectue à chaque tour d'horloge
+l'actualisation de la position à partir de la vitesse et des tests de collisions. Les tests de collisions sont calculés à part dans une classe appelée Collision.
+Je vérifie ainsi la position de la balle par rapport aux bords et détermine si une collision a eu lieu avec une de ces limites. Une fonction est appelée aussi afin de
+déterminer si il n'y a pas eu de contact avec un des joueurs du terrain.
+\paragraph{}
+La principale difficulté algorithmique vient de cet aspect justement. Parvenir à prévoir les différents comportements de la balle par rapport aux
+joueurs. Les coordonnées utilisées par ces calculs diffèrent en plus parfois de celles d'affichage et il faut prendre en compte la taille de l'écran ainsi que les imprécisions dues au caractère discret du calcul. J'ai encore parfois des problèmes de collisions qui se produisent trop tôt, c'est-à-dire que le joueur humain a l'impression qu'elle se cogne contre un objet invisible, ou encore des collisions gérées trop tard auquel cas la balle rentre partiellement dans le joueur en plastique.
 
+\lstset
+{
+	numberstyle=\footnotesize,
+	basicstyle=\ttfamily\footnotesize,
+	numbers=left,
+	stepnumber=1,
+	showstringspaces=false,
+	showspaces=false,
+	breaklines=true,
+	frame=single,
+	framexleftmargin=1mm,
+	framextopmargin=1mm
+}
 
+\definecolor{gray}{gray}{0.5}
+\definecolor{green}{rgb}{0,0.5,0}
+
+\lstloadlanguages{Java}
+\lstset{language=Java}
+\lstset{%
+    inputencoding=utf8,
+	extendedchars=true,
+	literate=%
+	{é}{{\'{e}}}1
+	{è}{{\`{e}}}1
+	{ê}{{\^{e}}}1
+	{ë}{{\¨{e}}}1
+	{û}{{\^{u}}}1
+	{ù}{{\`{u}}}1
+	{â}{{\^{a}}}1
+	{à}{{\`{a}}}1
+	{î}{{\^{i}}}1
+	{ô}{{\^{o}}}1
+	{ç}{{\c{c}}}1
+	{Ç}{{\c{C}}}1
+	{É}{{\'{E}}}1
+	{Ê}{{\^{E}}}1
+	{À}{{\`{A}}}1
+	{Â}{{\^{A}}}1
+	{Î}{{\^{I}}}1
+}
+\lstset
+{
+	language=java,
+	basicstyle=\ttfamily\footnotesize,
+	stringstyle=\color{red},
+	alsoletter={1234567890},
+	otherkeywords={\ , \}, \{},
+	keywordstyle=\color{blue},
+	upquote=true,
+	morecomment=[s]{"""}{"""},
+	commentstyle=\color{gray}\slshape
+}
+
+\part{Le code du programme}
+	\setcounter{chapter}{0}
+	\input{code/test}
 \end{document}          
