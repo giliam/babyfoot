@@ -14,7 +14,7 @@ import clientCore.Utils;
 
 @SuppressWarnings("serial")
 public class MenuPanel extends BPanel implements ActionListener {
-	JButton bQuit = new JButton("Quitter");
+	JButton bQuit = new JButton("Quitter le jeu");
 	JButton bNewGame = new JButton("Nouvelle partie");
 	JButton bJoinGame = new JButton("Rejoindre une partie");
 	JButton bSettings = new JButton("Options");
@@ -97,6 +97,8 @@ public class MenuPanel extends BPanel implements ActionListener {
 			getWindow().setContentPane(new ServersPanel(getWindow()));
 		    getWindow().setVisible(true);
 		}else if( e.getSource() == bSettings ){
+			getWindow().setContentPane(new SettingsPanel(getWindow()));
+		    getWindow().setVisible(true);
 		}
 	}
 }
