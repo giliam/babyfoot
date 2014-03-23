@@ -71,6 +71,21 @@ public class Match {
 		this.yRodPositions[1].put( Rod.MILIEU, 100 );
 		this.yRodPositions[1].put( Rod.ATTAQUE, 100 );
 		
+		this.rodStatus = new Hashtable[2];
+		
+		this.rodStatus[0] = new Hashtable<Rod, RodStatus>();
+		this.rodStatus[1] = new Hashtable<Rod, RodStatus>();
+		
+		this.rodStatus[0].put( Rod.GARDIEN, RodStatus.NORMAL );
+		this.rodStatus[0].put( Rod.DEFENSE, RodStatus.NORMAL );
+		this.rodStatus[0].put( Rod.MILIEU, RodStatus.NORMAL );
+		this.rodStatus[0].put( Rod.ATTAQUE, RodStatus.NORMAL );
+		
+		this.rodStatus[1].put( Rod.GARDIEN, RodStatus.NORMAL );
+		this.rodStatus[1].put( Rod.DEFENSE, RodStatus.NORMAL );
+		this.rodStatus[1].put( Rod.MILIEU, RodStatus.NORMAL );
+		this.rodStatus[1].put( Rod.ATTAQUE, RodStatus.NORMAL );
+		
 		this.collisions = new Collisions();
 	}
 
@@ -329,20 +344,22 @@ public class Match {
 		return null;
 	}
 
-	public void shoot(String rod, String side) {
-		if( side.equals("DOWN") ){
-			if( rod.equals("GARDIEN") ){
-				int yPosition = Utils.getYPositionPlayer(yRodPositions, Rod.GARDIEN, 1, 1, Sides.DOWN);
+	public void shoot(String r, String s) {
+		Sides side = Sides.valueOf(s);
+		Rod rod = Rod.valueOf(r);
+		if( side == Sides.DOWN ){
+			if( rod == Rod.GARDIEN ){
+				int yPosition = Utils.getYPositionPlayer(yRodPositions, Rod.GARDIEN, 1, 1, side );
 				if( ballX >= Utils.GARDIEN_POSITION && ballX <= Utils.GARDIEN_POSITION + Utils.IMAGE_PLAYER_SHOOTING_X + Utils.BALL_RADIUS 
 						//&& ballSpeedX <= 0
 						&& ballY >= yPosition && ballY <= Utils.IMAGE_PLAYER_Y + yPosition ){
 					ballSpeedX = Utils.MAX_INITIAL_SPEED;
 					ballSpeedY *= -0.1;
 				}
-			}else if( rod.equals("DEFENSE") ){
+			}else if( rod == Rod.DEFENSE ){
 				boolean test = false;
 				for( int i = 1; i <= 2; i++ ){
-					int yPosition = Utils.getYPositionPlayer(yRodPositions, Rod.DEFENSE, i, 2, Sides.DOWN);
+					int yPosition = Utils.getYPositionPlayer(yRodPositions, Rod.DEFENSE, i, 2, side );
 					test |= ( ballY >= yPosition && ballY <= Utils.IMAGE_PLAYER_Y + yPosition );
 					if( test ) break;
 				}
@@ -352,10 +369,10 @@ public class Match {
 					ballSpeedX = Utils.MAX_INITIAL_SPEED;
 					ballSpeedY *= -0.1;
 				}
-			}else if( rod.equals("MILIEU") ){
+			}else if( rod == Rod.MILIEU ){
 				boolean test = false;
 				for( int i = 1; i <= 5; i++ ){
-					int yPosition = Utils.getYPositionPlayer(yRodPositions, Rod.MILIEU, i, 5, Sides.DOWN);
+					int yPosition = Utils.getYPositionPlayer(yRodPositions, Rod.MILIEU, i, 5, side );
 					test |= ( ballY >= yPosition && ballY <= Utils.IMAGE_PLAYER_Y + yPosition );
 					if( test ) break;
 				}
@@ -365,10 +382,10 @@ public class Match {
 					ballSpeedX = Utils.MAX_INITIAL_SPEED;
 					ballSpeedY *= -0.1;
 				}
-			}else if( rod.equals("ATTAQUE") ){
+			}else if( rod == Rod.ATTAQUE ){
 				boolean test = false;
 				for( int i = 1; i <= 3; i++ ){
-					int yPosition = Utils.getYPositionPlayer(yRodPositions, Rod.ATTAQUE, i, 3, Sides.DOWN);
+					int yPosition = Utils.getYPositionPlayer(yRodPositions, Rod.ATTAQUE, i, 3, side );
 					test |= ( ballY >= yPosition - Utils.BALL_RADIUS && ballY <= Utils.BALL_RADIUS + Utils.IMAGE_PLAYER_Y + yPosition );
 					if( test ) break;
 				}
@@ -380,18 +397,18 @@ public class Match {
 				}
 			}
 		}else{
-			if( rod.equals("GARDIEN") ){
-				int yPosition = Utils.getYPositionPlayer(yRodPositions, Rod.GARDIEN, 1, 1, Sides.UP);
+			if( rod == Rod.GARDIEN ){
+				int yPosition = Utils.getYPositionPlayer(yRodPositions, Rod.GARDIEN, 1, 1, side);
 				if( ballX + Utils.IMAGE_PLAYER_SHOOTING_X + Utils.BALL_RADIUS >= Utils.GARDIEN_POSITION  && ballX <= Utils.GARDIEN_POSITION 
 						//&& ballSpeedX <= 0
 						&& ballY >= yPosition && ballY <= Utils.IMAGE_PLAYER_Y + yPosition ){
 					ballSpeedX = Utils.MAX_INITIAL_SPEED;
 					ballSpeedY *= -0.1;
 				}
-			}else if( rod.equals("DEFENSE") ){
+			}else if( rod == Rod.DEFENSE ){
 				boolean test = false;
 				for( int i = 1; i <= 2; i++ ){
-					int yPosition = Utils.getYPositionPlayer(yRodPositions, Rod.DEFENSE, i, 2, Sides.UP);
+					int yPosition = Utils.getYPositionPlayer(yRodPositions, Rod.DEFENSE, i, 2, side);
 					test |= ( ballY >= yPosition && ballY <= Utils.IMAGE_PLAYER_Y + yPosition );
 					if( test ) break;
 				}
@@ -401,10 +418,10 @@ public class Match {
 					ballSpeedX = Utils.MAX_INITIAL_SPEED;
 					ballSpeedY *= -0.1;
 				}
-			}else if( rod.equals("MILIEU") ){
+			}else if( rod == Rod.MILIEU ){
 				boolean test = false;
 				for( int i = 1; i <= 5; i++ ){
-					int yPosition = Utils.getYPositionPlayer(yRodPositions, Rod.MILIEU, i, 5, Sides.UP);
+					int yPosition = Utils.getYPositionPlayer(yRodPositions, Rod.MILIEU, i, 5, side);
 					test |= ( ballY >= yPosition && ballY <= Utils.IMAGE_PLAYER_Y + yPosition );
 					if( test ) break;
 				}
@@ -414,10 +431,10 @@ public class Match {
 					ballSpeedX = Utils.MAX_INITIAL_SPEED;
 					ballSpeedY *= -0.1;
 				}
-			}else if( rod.equals("ATTAQUE") ){
+			}else if( rod == Rod.ATTAQUE ){
 				boolean test = false;
 				for( int i = 1; i <= 3; i++ ){
-					int yPosition = Utils.getYPositionPlayer(yRodPositions, Rod.ATTAQUE, i, 3, Sides.UP);
+					int yPosition = Utils.getYPositionPlayer(yRodPositions, Rod.ATTAQUE, i, 3, side);
 					test |= ( ballY >= yPosition - Utils.BALL_RADIUS && ballY <= Utils.BALL_RADIUS + Utils.IMAGE_PLAYER_Y + yPosition );
 					if( test ) break;
 				}
@@ -429,6 +446,7 @@ public class Match {
 				}
 			}
 		}
+		rodStatus[side == Sides.UP ? 1 : 0].put(rod, RodStatus.SHOOTING);
 	}
 	
 	
@@ -464,7 +482,6 @@ public class Match {
 
 class RefreshBallPosition implements Runnable {
 	private Match match;
-	private boolean pause;
 	private boolean run;
 	public RefreshBallPosition(Match m){
 		match = m;
@@ -475,7 +492,7 @@ class RefreshBallPosition implements Runnable {
 	public void run() {
 		try{
 			while(isRun()){
-				if( !pause ){
+				if( !match.isPause() ){
 					//Si on a atteint le bord extérieur gauche et que la vitesse est bien négative (donc vers la gauche), on change de vitesse.
 					if( ( match.getBallX() -5 - Utils.BALL_RADIUS ) <=  ( Utils.GAP_EDGE + Utils.LINE_STRENGTH )  ) {
 						if( match.getBallSpeedX() < 0 )
@@ -505,20 +522,12 @@ class RefreshBallPosition implements Runnable {
 					
 					match.addBallX(match.getBallSpeedX());
 					match.addBallY(match.getBallSpeedY());
-					Thread.sleep(20);
+					Thread.sleep(25);
 				}
 			}
 		}catch(InterruptedException e){
 			e.printStackTrace();
 		}
-	}
-
-	public boolean isPause() {
-		return pause;
-	}
-
-	public void setPause(boolean pause) {
-		this.pause = pause;
 	}
 
 	public boolean isRun() {

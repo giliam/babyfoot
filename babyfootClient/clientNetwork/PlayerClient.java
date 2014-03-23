@@ -81,7 +81,8 @@ class PlayerReceptionMessage implements Runnable{
 		try {
 			while(true){
             	message = in.readLine();
-            	PlayerClient.ok = message.equals("true");
+            	if( message != null )
+            		PlayerClient.ok = message.equals("true");
 			}
 		} catch (IOException e) {
                 e.printStackTrace();

@@ -3,6 +3,7 @@ GAMEPLAY
 ===========
 	-- Pause convenue entre les joueurs ?
 	-- Plusieurs types de gameplay à implémenter
+	-- Régler bug : quand joueur tire, il faut qu'il redéplace sa barre pour que l'information soit envoyée au serveur et que les joueurs se remettent en mode normal.
 
 ===========
 OPTIONS

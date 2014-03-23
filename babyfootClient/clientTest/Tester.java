@@ -46,6 +46,7 @@ class TesterThread implements Runnable {
     	out.flush();
 		((WaitingRoomPanel) main.actualPanel).getWindow().getMain().getClient().getGc().startThread();
 		((WaitingRoomPanel) main.actualPanel).getWindow().setContentPane(new GamePanel(((WaitingRoomPanel) main.actualPanel).getWindow(),false));
+		((WaitingRoomPanel) main.actualPanel).getWindow().getContentPane().requestFocusInWindow();
 		((WaitingRoomPanel) main.actualPanel).getWindow().setVisible(true);
 	}
 }

@@ -21,7 +21,8 @@ public class GamePanel extends JPanel implements ActionListener {
 		window = f;
 		//Nécessaire de mettre 729 car décalage inhérent à l'affichage
 		Toolkit tk = Toolkit.getDefaultToolkit();  
-		f.setSize((int)tk.getScreenSize().getWidth(),(int)tk.getScreenSize().getHeight());
+		int height = 1200;
+		f.setSize(1300,height);
 		setLayout(new BorderLayout());
 		JPanel chat = null;
 		if( !testMode ){
@@ -29,22 +30,29 @@ public class GamePanel extends JPanel implements ActionListener {
 		}else{
 			chat = new JPanel();
 		}
+		/*
+		int widthPanels = ((int)tk.getScreenSize().getWidth()-900)/2;
+		int widthCenter = 900;*/
+		int widthPanel = 100;
+		int widthChat = 300;
+		int widthCenter = 900;
+		
 		chat.setBackground(Color.BLACK);
-		chat.setPreferredSize(new Dimension(((int)tk.getScreenSize().getWidth()-900)/2,(int)tk.getScreenSize().getHeight()));
-		chat.setMinimumSize(new Dimension(((int)tk.getScreenSize().getWidth()-900)/2,(int)tk.getScreenSize().getHeight()));
+		chat.setPreferredSize(new Dimension(widthChat,height));
+		chat.setMinimumSize(new Dimension(widthChat,height));
 		add(chat,BorderLayout.EAST);
 		
-		gameZone = new GameZone(this, testMode);
-		gameZone.getInfoPanel().setPreferredSize(new Dimension(((int)tk.getScreenSize().getWidth()-900)/2,(int)tk.getScreenSize().getHeight()));
-		gameZone.getInfoPanel().setMinimumSize(new Dimension(((int)tk.getScreenSize().getWidth()-900)/2,(int)tk.getScreenSize().getHeight()));
+		gameZone = new GameZone(this, testMode, widthCenter);
+		gameZone.getInfoPanel().setPreferredSize(new Dimension(widthPanel,height));
+		gameZone.getInfoPanel().setMinimumSize(new Dimension(widthPanel,height));
 		add(gameZone.getInfoPanel(),BorderLayout.WEST);
 		
 		PublicPanel topOfGameZone = new PublicPanel("top");
-		topOfGameZone.setPreferredSize(new Dimension(900, ((int)tk.getScreenSize().getHeight()-gameZone.getHeight())/2-50));
-		topOfGameZone.setMinimumSize(new Dimension(900, ((int)tk.getScreenSize().getHeight()-gameZone.getHeight())/2-50));
+		topOfGameZone.setPreferredSize(new Dimension(widthCenter, (height-gameZone.getHeight())/2-50));
+		topOfGameZone.setMinimumSize(new Dimension(widthCenter, (height-gameZone.getHeight())/2-50));
 		PublicPanel botOfGameZone = new PublicPanel("bot");
-		botOfGameZone.setPreferredSize(new Dimension(900, ((int)tk.getScreenSize().getHeight()-gameZone.getHeight())/2));
-		botOfGameZone.setMinimumSize(new Dimension(900, ((int)tk.getScreenSize().getHeight()-gameZone.getHeight())/2));
+		botOfGameZone.setPreferredSize(new Dimension(widthCenter, (height-gameZone.getHeight())/2));
+		botOfGameZone.setMinimumSize(new Dimension(widthCenter, (height-gameZone.getHeight())/2));
 		
 		JPanel centerZone = new JPanel();
 		centerZone.add(topOfGameZone);

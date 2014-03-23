@@ -48,6 +48,10 @@ public class Player {
 		this.login = login;
 		return main.getClient().getPc().addPlayer();
 	}
+	
+	public boolean askForPause(boolean currentState){
+		return main.getClient().getMc().askForPause(login, currentState);
+	}
 
 	/** Déconnecte le joueur. */
 	public void removePlayer(String login) {

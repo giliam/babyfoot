@@ -54,19 +54,20 @@ public class Collisions {
 		if( rodTop != null || rodBottom != null ){
 			Sides side = ( rodTop != null ? Sides.UP : Sides.DOWN );
 			Sides otherSide = ( rodTop != null ? Sides.DOWN : Sides.UP );
-			/*if( (lastCollision.get(side)).get(rod) > 0L && System.currentTimeMillis() - (lastCollision.get(side)).get(rod) < 1500 ){
-				System.out.println("Avortée !" + side + " - " + rod);
-				if( (lastCollision.get(otherSide)).get(rod) > System.currentTimeMillis() - 3000 ) {
+			if( (lastCollision.get(side)).get(rod) > 0L && System.currentTimeMillis() - (lastCollision.get(side)).get(rod) < 500 ){
+				if( (lastCollision.get(otherSide)).get(rod) > System.currentTimeMillis() - 500 ) {
 					(lastCollision.get(otherSide)).put(rod,System.currentTimeMillis());
 				}else{
+					//System.out.println("Avortée !" + side + " - " + rod);
 					return null;
 				}
+				//System.out.println("Avortée - " + side + " - " + rod);
 				return null;
 			}
 			else{
-				zeroLast();
+				//zeroLast();
 				(lastCollision.get(side)).put(rod,System.currentTimeMillis());
-			}*/
+			}//*/
 		}
 		return ( rodTop == null ? rodBottom : rodTop );
 	}

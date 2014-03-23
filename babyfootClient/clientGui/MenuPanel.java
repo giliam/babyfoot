@@ -98,6 +98,7 @@ public class MenuPanel extends BPanel implements ActionListener {
 		    getWindow().setVisible(true);
 		}else if( e.getSource() == bSettings ){
 			getWindow().setContentPane(new SettingsPanel(getWindow()));
+			getWindow().getContentPane().requestFocusInWindow(); 
 		    getWindow().setVisible(true);
 		}
 	}

@@ -40,6 +40,14 @@ public class MatchServer extends AbstractServer {
     		}
     	}else if(task.equals("getserverslist")){
     		getServersList( out );
+    	}else if(task.equals("askforpause")){
+    		ServerBabyfoot.tplayer.getPlayer(datas[2]).getMatch().setPause(true);
+    		out.println("true");
+    		out.flush();
+    	}else if(task.equals("startagain")){
+    		ServerBabyfoot.tplayer.getPlayer(datas[2]).getMatch().setPause(false);
+    		out.println("false");
+    		out.flush();
     	}else if( task.equals( "getmatchinfo" ) ){
     		String login = datas[2];
     		getMatchInfo( login, out );

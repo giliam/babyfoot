@@ -266,6 +266,23 @@ public class MatchClient implements Runnable {
 	public void setStatusRod(int statusRod) {
 		this.statusRod = statusRod;
 	}
+
+	public boolean askForPause(String login, boolean currentState) {
+		out.println("match" + Utils.SEPARATOR + ( currentState ? "startagain" : "askforpause" ) + Utils.SEPARATOR + login );
+    	out.flush();
+		try {
+			Thread.currentThread();
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		if( ok ){
+			setOk(false);
+    		return true;
+		}
+		else
+			return false;
+	}
 }
 
 class MatchReceptionMessage implements Runnable{

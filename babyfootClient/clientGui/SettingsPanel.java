@@ -4,10 +4,14 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -26,11 +30,12 @@ import javax.swing.event.ChangeListener;
 import clientCore.Utils;
 
 public class SettingsPanel extends BPanel implements ActionListener {
-	JButton bQuit = new JButton("Quitter le jeu");
-	JButton bSave = new JButton("Sauvegarder et retour");
-	JPanel centralMenu;
-	JLabel label = new JLabel("Sensibilité (%) : " + Utils.getSensibility());
-	JSlider slide;
+	private JButton bQuit = new JButton("Quitter le jeu");
+	private JButton bSave = new JButton("Sauver");
+	private JButton bSaveAndQuit = new JButton("<html>Sauver<br />Retour</html>");
+	private DemonstratorPanel centralMenu;
+	private JLabel label = new JLabel("Sensibilité (%) : " + Utils.getSensibility());
+	private JSlider slide;
 	
 	public SettingsPanel(MainFrame f) {
 		super(f, false, 200);
@@ -59,14 +64,18 @@ public class SettingsPanel extends BPanel implements ActionListener {
 	    right.setBackground(Color.WHITE);
 	    right.setPreferredSize(new Dimension(250,200));
 	    add(right,BorderLayout.EAST);
-	    //Gestion du menu central
-	    centralMenu = new JPanel();
-	    centralMenu.setBackground(Color.WHITE);
-	    centralMenu.setPreferredSize(new Dimension(400,100));
-	    centralMenu.setMaximumSize(new Dimension(400,100));
-	    add(centralMenu, BorderLayout.CENTER);
 	    
 	    slide = new JSlider();
+	    
+	    
+	    //Gestion du menu central
+	    centralMenu = new DemonstratorPanel(slide);
+	    centralMenu.setBackground(Color.WHITE);
+	    centralMenu.setPreferredSize(new Dimension(800,100));
+	    centralMenu.setMaximumSize(new Dimension(800,100));
+	    add(centralMenu, BorderLayout.CENTER);
+	    
+	    
 	    slide.setBackground(Color.white);
 	    slide.setMaximum(100);
 	    slide.setMinimum(0);
@@ -86,14 +95,24 @@ public class SettingsPanel extends BPanel implements ActionListener {
 	    centralMenu.add(label, BorderLayout.SOUTH); 
 	    
 	    //Gestion des boutons
-	    bSave.setPreferredSize(new Dimension(200,50));
-	    bQuit.setPreferredSize(new Dimension(200,50));
-		
-	    centralMenu.add(bSave,new Dimension(0,0));
+	    bSave.setPreferredSize(new Dimension(100,50));
+	    bSaveAndQuit.setPreferredSize(new Dimension(100,50));
+	    bQuit.setPreferredSize(new Dimension(206,50));
+	    
+	    bSave.setFocusable(false);
+	    bSaveAndQuit.setFocusable(false);
+	    bQuit.setFocusable(false);
+		slide.setFocusable(false);
+
+		centralMenu.add(bSave,new Dimension(0,0));
+	    centralMenu.add(bSaveAndQuit,new Dimension(0,1));
 	    centralMenu.add(bQuit,new Dimension(3,0));
 		
 	    bSave.addActionListener(this);
+	    bSaveAndQuit.addActionListener(this);
 		bQuit.addActionListener(this);
+		
+		addKeyListener(centralMenu);
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -101,8 +120,60 @@ public class SettingsPanel extends BPanel implements ActionListener {
 			getWindow().getMain().closeWindow();
 		}else if( e.getSource() == bSave ){
 			Utils.setSensibility(slide.getValue());
+		}else if( e.getSource() == bSaveAndQuit ){
+			Utils.setSensibility(slide.getValue());
 			getWindow().setContentPane(new MenuPanel(getWindow()));
 	    	getWindow().setVisible(true);
 		}
+	}
+}
+
+
+class DemonstratorPanel extends JPanel implements MouseMotionListener, KeyListener {
+	private int lastkey = 0;
+	private int demonstratorY = 0;
+	private JSlider slide;
+	
+	public DemonstratorPanel(JSlider slide){
+		this.slide = slide;
+		addMouseMotionListener(this);
+	}
+	
+	public void paintComponent(Graphics g){
+		g.setColor(Color.black);
+		g.drawOval(0, demonstratorY, 20, 20);
+	}
+	
+	
+	
+	@Override
+	public void mouseDragged(MouseEvent arg0) {
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		int y = e.getY();
+		int mov = (int)Math.ceil( ( Math.abs( ( lastkey - y ) * slide.getValue() / ( 1 + slide.getValue() ) ) ) );
+		if( lastkey < y )
+			demonstratorY += mov;
+		else
+			demonstratorY -= mov;
+		lastkey = y;
+		updateUI();
+	}
+
+	@Override
+	public void keyPressed(KeyEvent arg0) {
+		if( arg0.getKeyCode() == 32 ){
+			demonstratorY = lastkey;
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+	}
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {
 	}
 }
