@@ -5,6 +5,7 @@ import java.util.Hashtable;
 import clientCore.Utils;
 import clientCore.Utils.Rod;
 import clientCore.Utils.CollisionType;
+import clientCore.Utils.RodStatus;
 import clientCore.Utils.Sides;
 
 import serverNetwork.ServerBabyfoot;
@@ -41,8 +42,9 @@ public class Match {
 	private int status = 0;
 	
 	@SuppressWarnings("unchecked")
-	private Hashtable<Rod, Integer>[] yRodPositions = new Hashtable[2] ;
+	private Hashtable<Rod, Integer>[] yRodPositions = new Hashtable[2];
 	private RefreshBallPosition tRefresh;
+	private Hashtable<Rod, RodStatus>[] rodStatus = new Hashtable[2];
 	
 	
 	
@@ -149,8 +151,9 @@ public class Match {
 		this.yRodPositions = yRodPositions;
 	}*/
 	
-	public void setRodPositions(Hashtable<Rod, Integer> yRodPositions, int i) {
+	public void setRodPositions(Hashtable<Rod, Integer> yRodPositions, Hashtable<Rod, RodStatus> statusPositions, int i) {
 		this.yRodPositions[i] = yRodPositions;
+		this.rodStatus[i] = statusPositions;
 	}
 
 	public int addPlayer(Player p) {
@@ -203,6 +206,10 @@ public class Match {
 
 	public int getRodPosition(boolean b, Rod i) {
 		return yRodPositions[b ? 1 : 0].get(i);
+	}
+	
+	public RodStatus getRodStatus(boolean b, Rod i) {
+		return rodStatus[b ? 1 : 0].get(i);
 	}
 
 	public void stop() {

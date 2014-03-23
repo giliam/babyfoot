@@ -33,12 +33,15 @@ public abstract class Utils {
 	public static final int HEIGHT = 700;
 	public static final int WIDTH = 900;
 
-	public static final int MAX_INITIAL_SPEED = 15;
+	public static final int MAX_INITIAL_SPEED = 4;
 	
 	public static final int GARDIEN_POSITION = GAP_EDGE+30;
 	public static final int DEFENSE_POSITION = GAP_EDGE+30+100;
 	public static final int MILIEU_POSITION = (WIDTH-LINE_STRENGTH)/2-70;
-	public static final int ATTAQUE_POSITION = WIDTH-Utils.LINE_STRENGTH-Utils.GAP_EDGE-230;	
+	public static final int ATTAQUE_POSITION = WIDTH-Utils.LINE_STRENGTH-Utils.GAP_EDGE-230;
+	
+	
+	private static int sensibility = 30;
 	
 	
 	@SuppressWarnings("serial")
@@ -133,5 +136,13 @@ public abstract class Utils {
 				System.out.println(i + ". " + s[i][j] );
 			}
 		}
+	}
+
+	public static int getSensibility() {
+		return sensibility;
+	}
+
+	public static void setSensibility(int sensibility) {
+		Utils.sensibility = sensibility;
 	}
 }

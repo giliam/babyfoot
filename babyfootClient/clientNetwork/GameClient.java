@@ -14,7 +14,7 @@ public class GameClient implements Runnable {
     private PrintWriter out = null;
     private BufferedReader in = null;
     private GameReceptionMessage grc;
-    String[] rodPositions;
+    public String[] rodPositionsAndStatus;
     private int ballX;
     private int ballY;
 	public boolean go;
@@ -25,16 +25,16 @@ public class GameClient implements Runnable {
     	setMain(m);
         socket = s;
         go = false;
-        rodPositions = new String[8];
+        rodPositionsAndStatus = new String[8];
         System.out.println("Update");
-        rodPositions[0] = "100";
-        rodPositions[1] = "150";
-        rodPositions[2] = "100";
-        rodPositions[3] = "100";
-        rodPositions[4] = "100";
-        rodPositions[5] = "150";
-        rodPositions[6] = "100";
-        rodPositions[7] = "100";
+        rodPositionsAndStatus[0] = "100";
+        rodPositionsAndStatus[1] = "150";
+        rodPositionsAndStatus[2] = "100";
+        rodPositionsAndStatus[3] = "100";
+        rodPositionsAndStatus[4] = "100";
+        rodPositionsAndStatus[5] = "150";
+        rodPositionsAndStatus[6] = "100";
+        rodPositionsAndStatus[7] = "100";
         
         ballX = 450;
         ballY = 350;
@@ -60,7 +60,7 @@ public class GameClient implements Runnable {
 			out.println("match" + Utils.SEPARATOR + "getpositions" + Utils.SEPARATOR + login );
 	    	out.flush();
     	}
-    	return rodPositions;
+    	return rodPositionsAndStatus;
 	}
     
     public int getBallX() {
@@ -79,12 +79,12 @@ public class GameClient implements Runnable {
 		this.ballY = ballY;
 	}
 
-	public String[] getRodPositions() {
-		return rodPositions;
+	public String[] getRodPositionsAndStatus() {
+		return rodPositionsAndStatus;
 	}
 
-	public void setRodPositions(String[] rodPositions) {
-		this.rodPositions = rodPositions;
+	public void setRodPositionsAndStatus(String[] rodPositions) {
+		this.rodPositionsAndStatus = rodPositions;
 	}
 
 	public Thread gettReceptionMessage() {
@@ -140,12 +140,15 @@ class GameReceptionMessage implements Runnable{
 		                	}
 	            		}
 	            	}else if( datas != null && datas[0].equals("positions") ){
-	            		gc.setRodPositions(new String[8]);
+	            		gc.setRodPositionsAndStatus(new String[16]);
 	            		for( int i = 0; i<8; i++ ){
-	            			gc.rodPositions[i] = datas[i+1];
+	            			gc.rodPositionsAndStatus[i] = datas[i+1];
 	            		}
             			gc.setBallX(Integer.valueOf(datas[9]));
             			gc.setBallY(Integer.valueOf(datas[10]));
+            			for( int i = 0; i<8; i++ ){
+	            			gc.rodPositionsAndStatus[8+i] = datas[11+i];
+	            		}
 					}
 	            	message = null;
 	            	datas = null;

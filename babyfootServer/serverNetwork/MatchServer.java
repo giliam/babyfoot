@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import clientCore.Utils;
+import clientCore.Utils.RodStatus;
 import serverCore.Match;
 import serverCore.Player;
 import clientCore.Utils.Rod;
@@ -30,7 +31,8 @@ public class MatchServer extends AbstractServer {
     	}else if(task.equals("setrod")){
     		String login = datas[2];
     		int[] positions = {Integer.valueOf(datas[3]),Integer.valueOf(datas[4]),Integer.valueOf(datas[5]),Integer.valueOf(datas[6])};
-    		setRod(login, positions);
+    		RodStatus[] status = { RodStatus.valueOf(datas[7]),RodStatus.valueOf(datas[8]),RodStatus.valueOf(datas[9]),RodStatus.valueOf(datas[10])};
+    		setRod(login, positions, status);
     	}else if(task.equals("getpositions")){
     		if( datas.length > 2 ){
     			String login = datas[2];
@@ -152,12 +154,27 @@ public class MatchServer extends AbstractServer {
 		return r;
 	}
 	
+	private String[][] getRodStatus(String login) {
+		Match m = ServerBabyfoot.tplayer.getPlayer(login).getMatch();
+		String[][] r = new String[2][4];
+		r[0][0] = String.valueOf(m.getRodStatus(false,Rod.GARDIEN));
+		r[0][1] = String.valueOf(m.getRodStatus(false,Rod.DEFENSE));
+		r[0][2] = String.valueOf(m.getRodStatus(false,Rod.MILIEU));
+		r[0][3] = String.valueOf(m.getRodStatus(false,Rod.ATTAQUE));
+		
+		r[1][0] = String.valueOf(m.getRodStatus(true,Rod.GARDIEN));
+		r[1][1] = String.valueOf(m.getRodStatus(true,Rod.DEFENSE));
+		r[1][2] = String.valueOf(m.getRodStatus(true,Rod.MILIEU));
+		r[1][3] = String.valueOf(m.getRodStatus(true,Rod.ATTAQUE));
+		return r;
+	}
+	
 	private String getBallPositions(String login) {
 		Match m = ServerBabyfoot.tplayer.getPlayer(login).getMatch();
 		return Math.abs((int)m.getBallX()) + Utils.SEPARATOR + Math.abs((int)m.getBallY());
 	}
 
-	private void setRod(String login, int[] positions) {
+	private void setRod(String login, int[] positions, RodStatus[] status) {
 		Match m = ServerBabyfoot.tplayer.getPlayer(login).getMatch();
 		Hashtable<Rod, Integer> positionsToSend = new Hashtable<Rod, Integer>();
 		
@@ -166,7 +183,15 @@ public class MatchServer extends AbstractServer {
 		positionsToSend.put(Rod.MILIEU, positions[2]);
 		positionsToSend.put(Rod.ATTAQUE, positions[3]);
 		
-		m.setRodPositions( positionsToSend, ServerBabyfoot.tplayer.getPlayer(login).getSide() );
+		Hashtable<Rod, RodStatus> statusToSend = new Hashtable<Rod, RodStatus>();
+		
+		statusToSend.put(Rod.GARDIEN, status[0]);
+		statusToSend.put(Rod.DEFENSE, status[1]);
+		statusToSend.put(Rod.MILIEU, status[2]);
+		statusToSend.put(Rod.ATTAQUE, status[3]);
+		
+		
+		m.setRodPositions( positionsToSend, statusToSend, ServerBabyfoot.tplayer.getPlayer(login).getSide() );
 	}
 
 	private boolean addMatch(int type, String login){
@@ -188,6 +213,7 @@ public class MatchServer extends AbstractServer {
 		out.println("matchscores" + Utils.SEPARATOR + m.getLeftScore() + Utils.SEPARATOR + m.getRightScore() + Utils.SEPARATOR + m.isPause() );
 		out.flush();
 		int[][] datas = getRodPositions(login);
+		String[][] status = getRodStatus(login);
 		String ballPositions = getBallPositions(login);
 		
 		String display = "positions";
@@ -196,7 +222,15 @@ public class MatchServer extends AbstractServer {
 				display += Utils.SEPARATOR + Math.abs( datas[i][j] );
 			}
 		}
+		
 		display += Utils.SEPARATOR + ballPositions;
+		
+		for( int i = 0; i < 2; i++ ){
+			for( int j = 0; j < 4; j++ ){
+				display += Utils.SEPARATOR + status[i][j];
+			}
+		}
+		
 		out.println(display);
 		out.flush();
 	}

@@ -3,6 +3,7 @@ package clientCore;
 
 import java.util.Hashtable;
 
+import clientCore.Utils.RodStatus;
 import clientCore.Utils.Sides;
 import clientCore.Utils.Types;
 import clientGui.GameZone;
@@ -61,9 +62,10 @@ public class Player {
 	}
 	
 	/** Envoie les modifications de positions des barres au serveur pour le joueur actuel. */
-	public void setRod(Hashtable<Rod, Integer> rodPositionsHash){
+	public void setRod(Hashtable<Rod, Integer> rodPositionsHash, Hashtable<Rod, RodStatus> rodStatusHash){
 		int[] rodPositions = { rodPositionsHash.get(Rod.GARDIEN), rodPositionsHash.get(Rod.DEFENSE),rodPositionsHash.get(Rod.MILIEU),rodPositionsHash.get(Rod.ATTAQUE) };
-		main.getClient().getMc().setRodPositions(login, rodPositions);
+		RodStatus[] rodStatus = { rodStatusHash.get(Rod.GARDIEN), rodStatusHash.get(Rod.DEFENSE),rodStatusHash.get(Rod.MILIEU),rodStatusHash.get(Rod.ATTAQUE) };
+		main.getClient().getMc().setRodPositions(login, rodPositions, rodStatus );
 	}
 
 	public String getLogin() {

@@ -336,19 +336,19 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 		switch(rodPosition){
 			case GARDIEN:
 				decal = Utils.GAP_EDGE+30-15;
-				g.drawImage(img, ( getSide() == Sides.UP ? Utils.WIDTH - decal : decal ), Utils.HEIGHT-64, this);
+				g.drawImage(img, ( getSide() == Sides.UP ? Utils.WIDTH - decal - 35 : decal ), Utils.HEIGHT-64, this);
 				break;
 			case DEFENSE:
 				decal = Utils.GAP_EDGE+30+100-15;
-				g.drawImage(img, ( getSide() == Sides.UP ? Utils.WIDTH - decal : decal ), Utils.HEIGHT-64, this);
+				g.drawImage(img, ( getSide() == Sides.UP ? Utils.WIDTH - decal - 35 : decal ), Utils.HEIGHT-64, this);
 				break;
 			case MILIEU:
 				decal = (Utils.WIDTH-Utils.LINE_STRENGTH)/2-70-15;
-				g.drawImage(img, ( getSide() == Sides.UP ? Utils.WIDTH - decal : decal ), Utils.HEIGHT-64, this);
+				g.drawImage(img, ( getSide() == Sides.UP ? Utils.WIDTH - decal - 35 : decal ), Utils.HEIGHT-64, this);
 				break;
 			case ATTAQUE:
 				decal = Utils.WIDTH-Utils.LINE_STRENGTH-Utils.GAP_EDGE-230-15;
-				g.drawImage(img, ( getSide() == Sides.UP ? Utils.WIDTH - decal : decal ), Utils.HEIGHT-64, this);
+				g.drawImage(img, ( getSide() == Sides.UP ? Utils.WIDTH - decal - 35 : decal ), Utils.HEIGHT-64, this);
 				break;
 		}
 	}
@@ -363,7 +363,7 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 		}*/
 	}
 	
-	public void moveUpAndDown(int y, boolean up, int path){
+	public void moveUpAndDown(int y, boolean up){
 		int limitSup = 38;
 		int limitInf = 83;
 		switch(rodPosition){
@@ -384,16 +384,25 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 				limitInf = 220;
 				break;
 		}
+		int mov = 0;
+		if( lastKeyY > y )
+			mov = (int)Math.ceil((Math.abs(lastKeyY-y)/20.));
+		else 
+			mov = (int)Math.floor((Math.abs(lastKeyY-y)/20.));
 		int upOrDown = getGamePanel().getWindow().getMain().getPlayer().getSide() == Utils.Sides.DOWN ? 0 : 1;
-		if( up && yPosition[upOrDown].get(rodPosition) > (limitSup+2*path) ){
-			yPosition[upOrDown].put(rodPosition, yPosition[upOrDown].get(rodPosition)-(int)Math.floor(Math.abs(lastKeyY-y)/4.));
+		if( up && yPosition[upOrDown].get(rodPosition) 
+				> (limitSup+mov) ){
+			yPosition[upOrDown].put(rodPosition, 
+					yPosition[upOrDown].get(rodPosition)-mov);
 			this.lastKeyY = y;
-			getGamePanel().getWindow().getMain().getPlayer().setRod(yPosition[upOrDown]);
+			getGamePanel().getWindow().getMain().getPlayer().setRod(yPosition[upOrDown], rodStatus[upOrDown]);
 			repaint();
-		}else if( !up && yPosition[upOrDown].get(rodPosition) < (limitInf-2*path) ){
-			yPosition[upOrDown].put(rodPosition, yPosition[upOrDown].get(rodPosition)+(int)Math.round(Math.abs(lastKeyY-y)/4.));
+		}else if( !up && yPosition[upOrDown].get(rodPosition) 
+				< (limitInf-mov) ){
+			yPosition[upOrDown].put(rodPosition, 
+					yPosition[upOrDown].get(rodPosition)+mov);
 			lastKeyY = y;
-			getGamePanel().getWindow().getMain().getPlayer().setRod(yPosition[upOrDown]);
+			getGamePanel().getWindow().getMain().getPlayer().setRod(yPosition[upOrDown], rodStatus[upOrDown]);
 			repaint();
 		}
 	}
@@ -441,9 +450,9 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 	public void mouseMoved(MouseEvent e) {
 		int y = e.getYOnScreen();
 		if( y > ( 20 + oldY ) ){
-			moveUpAndDown(y, false, Utils.MOVE_STEP);
+			moveUpAndDown(y, false);
 		}else if( y < ( oldY - 17 )){
-			moveUpAndDown(y, true, Utils.MOVE_STEP);
+			moveUpAndDown(y, true);
 		}
 		if( ( y - oldY ) > 20 || ( oldY - y ) > 20 )
 			oldY = y;
@@ -454,18 +463,26 @@ public class GameZone extends JPanel implements KeyListener, MouseMotionListener
 		
 		if( rodPositions.length > 1 ){
 			//On met à jour les autres barres
-			if( s == Utils.Sides.UP ){
-				yPosition[0].put(Rod.GARDIEN, Integer.valueOf(rodPositions[0]));
-				yPosition[0].put(Rod.DEFENSE, Integer.valueOf(rodPositions[1]));
-				yPosition[0].put(Rod.MILIEU, Integer.valueOf(rodPositions[2]));
-				yPosition[0].put(Rod.ATTAQUE, Integer.valueOf(rodPositions[3]));
-			}else{
-				if( rodPositions.length == 8 && rodPositions[4] != null && rodPositions[7] != null ){
-					yPosition[1].put(Rod.GARDIEN, Integer.valueOf(rodPositions[4]));
-					yPosition[1].put(Rod.DEFENSE, Integer.valueOf(rodPositions[5]));
-					yPosition[1].put(Rod.MILIEU, Integer.valueOf(rodPositions[6]));
-					yPosition[1].put(Rod.ATTAQUE, Integer.valueOf(rodPositions[7]));
-				}
+			yPosition[0].put(Rod.GARDIEN, Integer.valueOf(rodPositions[0]));
+			yPosition[0].put(Rod.DEFENSE, Integer.valueOf(rodPositions[1]));
+			yPosition[0].put(Rod.MILIEU, Integer.valueOf(rodPositions[2]));
+			yPosition[0].put(Rod.ATTAQUE, Integer.valueOf(rodPositions[3]));
+			if( rodPositions[4] != null && rodPositions[7] != null ){
+				yPosition[1].put(Rod.GARDIEN, Integer.valueOf(rodPositions[4]));
+				yPosition[1].put(Rod.DEFENSE, Integer.valueOf(rodPositions[5]));
+				yPosition[1].put(Rod.MILIEU, Integer.valueOf(rodPositions[6]));
+				yPosition[1].put(Rod.ATTAQUE, Integer.valueOf(rodPositions[7]));
+			}
+			
+			rodStatus[0].put(Rod.GARDIEN, RodStatus.valueOf(rodPositions[8]));
+			rodStatus[0].put(Rod.DEFENSE, RodStatus.valueOf(rodPositions[9]));
+			rodStatus[0].put(Rod.MILIEU, RodStatus.valueOf(rodPositions[10]));
+			rodStatus[0].put(Rod.ATTAQUE, RodStatus.valueOf(rodPositions[11]));
+			if( rodPositions[4] != null && rodPositions[7] != null ){
+				rodStatus[1].put(Rod.GARDIEN, RodStatus.valueOf(rodPositions[12]));
+				rodStatus[1].put(Rod.DEFENSE, RodStatus.valueOf(rodPositions[13]));
+				rodStatus[1].put(Rod.MILIEU, RodStatus.valueOf(rodPositions[14]));
+				rodStatus[1].put(Rod.ATTAQUE, RodStatus.valueOf(rodPositions[15]));
 			}
 			repaint();
 		}

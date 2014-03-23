@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 import clientCore.Utils;
+import clientCore.Utils.RodStatus;
 import clientCore.Utils.Sides;
 import clientCore.Utils.Rod;
 
@@ -46,9 +47,10 @@ public class MatchClient implements Runnable {
         }
     }
     
-	public void setRodPositions(String login, int[] rodPositions) {
+	public void setRodPositions(String login, int[] rodPositions, RodStatus[] rodStatus) {
 		out.println("match" + Utils.SEPARATOR + "setrod" + Utils.SEPARATOR + login + Utils.SEPARATOR 
-				+ rodPositions[0] + Utils.SEPARATOR + rodPositions[1] + Utils.SEPARATOR + rodPositions[2] + Utils.SEPARATOR + rodPositions[3] );
+				+ rodPositions[0] + Utils.SEPARATOR + rodPositions[1] + Utils.SEPARATOR + rodPositions[2] + Utils.SEPARATOR + rodPositions[3]
+				+ Utils.SEPARATOR + rodStatus[0] + Utils.SEPARATOR + rodStatus[1] + Utils.SEPARATOR + rodStatus[2] + Utils.SEPARATOR + rodStatus[3]);
     	out.flush();
 	}
 
