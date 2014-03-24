@@ -32,7 +32,7 @@ public class MatchServer extends AbstractServer {
     		String login = datas[2];
     		int[] positions = {Integer.valueOf(datas[3]),Integer.valueOf(datas[4]),Integer.valueOf(datas[5]),Integer.valueOf(datas[6])};
     		RodStatus[] status = { RodStatus.valueOf(datas[7]),RodStatus.valueOf(datas[8]),RodStatus.valueOf(datas[9]),RodStatus.valueOf(datas[10])};
-    		setRod(login, positions, status);
+    		setRod(login, positions, status, out);
     	}else if(task.equals("getpositions")){
     		if( datas.length > 2 ){
     			String login = datas[2];
@@ -56,43 +56,61 @@ public class MatchServer extends AbstractServer {
     		runMatch( login, out );
     	}else if( task.equals( "stop" ) ){
     		String login = datas[2];
-    		stopMatch( login );
+    		stopMatch( login, out );
     	}else if( task.equals( "quit" ) ){
     		String login = datas[2];
-    		quitMatch( login );
+    		quitMatch( login, out );
     	}else if(task.equals("shoot")){
     		String login = datas[2];
     		String rod = datas[3];
     		String side = datas[4];
-    		shoot(login, rod, side);
+    		shoot(login, rod, side, out);
     	}
 	}
 	
-	private void quitMatch(String login) {
+	private void quitMatch(String login, PrintWriter out) {
 		Player p = ServerBabyfoot.tplayer.getPlayer(login);
 		Match m = p.getMatch();
 		if( m != null ){
 			m.removePlayer(login);
 			p.setMatch(null);
+		}else{
+			out.println("matchinfo" + Utils.SEPARATOR + "deleted");
+			out.flush();
 		}
 	}
 
-	private void shoot(String login, String rod, String side) {
+	private void shoot(String login, String rod, String side, PrintWriter out) {
 		Match m = ServerBabyfoot.tplayer.getPlayer(login).getMatch();
-		m.shoot(rod, side);
+		if( m != null )
+			m.shoot(rod, side);
+		else{
+			out.println("matchinfo" + Utils.SEPARATOR + "deleted");
+			out.flush();
+		}
 	}
 
-	private void stopMatch(String login) {
+	private void stopMatch(String login, PrintWriter out) {
 		Match m = ServerBabyfoot.tplayer.getPlayer(login).getMatch();
-		ServerBabyfoot.tchat.getChat().deleteServerFromMatch(m.getBoss());
-		m.stop();
-		liste.remove(m);
+		if( m != null ){
+			ServerBabyfoot.tchat.getChat().deleteServerFromMatch(m.getBoss());
+			m.stop();
+			liste.remove(m);
+		}else{
+			out.println("matchinfo" + Utils.SEPARATOR + "deleted");
+			out.flush();
+		}
 	}
 
 	private void runMatch(String login, PrintWriter out) {
 		Match m = ServerBabyfoot.tplayer.getPlayer(login).getMatch();
-		m.setState(Match.States.PLAYING);
-		m.start();
+		if( m != null ){
+			m.setState(Match.States.PLAYING);
+			m.start();
+		}else{
+			out.println("matchinfo" + Utils.SEPARATOR + "deleted");
+			out.flush();
+		}
 	}
 
 	private void getMatchInfo(String login, PrintWriter out) {
@@ -182,24 +200,24 @@ public class MatchServer extends AbstractServer {
 		return Math.abs((int)m.getBallX()) + Utils.SEPARATOR + Math.abs((int)m.getBallY());
 	}
 
-	private void setRod(String login, int[] positions, RodStatus[] status) {
+	private void setRod(String login, int[] positions, RodStatus[] status, PrintWriter out) {
 		Match m = ServerBabyfoot.tplayer.getPlayer(login).getMatch();
-		Hashtable<Rod, Integer> positionsToSend = new Hashtable<Rod, Integer>();
-		
-		positionsToSend.put(Rod.GARDIEN, positions[0]);
-		positionsToSend.put(Rod.DEFENSE, positions[1]);
-		positionsToSend.put(Rod.MILIEU, positions[2]);
-		positionsToSend.put(Rod.ATTAQUE, positions[3]);
-		
-		Hashtable<Rod, RodStatus> statusToSend = new Hashtable<Rod, RodStatus>();
-		
-		statusToSend.put(Rod.GARDIEN, status[0]);
-		statusToSend.put(Rod.DEFENSE, status[1]);
-		statusToSend.put(Rod.MILIEU, status[2]);
-		statusToSend.put(Rod.ATTAQUE, status[3]);
-		
-		
-		m.setRodPositions( positionsToSend, statusToSend, ServerBabyfoot.tplayer.getPlayer(login).getSide() );
+		if( m != null ){
+			Hashtable<Rod, Integer> positionsToSend = new Hashtable<Rod, Integer>();
+			positionsToSend.put(Rod.GARDIEN, positions[0]);
+			positionsToSend.put(Rod.DEFENSE, positions[1]);
+			positionsToSend.put(Rod.MILIEU, positions[2]);
+			positionsToSend.put(Rod.ATTAQUE, positions[3]);
+			Hashtable<Rod, RodStatus> statusToSend = new Hashtable<Rod, RodStatus>();
+			statusToSend.put(Rod.GARDIEN, status[0]);
+			statusToSend.put(Rod.DEFENSE, status[1]);
+			statusToSend.put(Rod.MILIEU, status[2]);
+			statusToSend.put(Rod.ATTAQUE, status[3]);
+			m.setRodPositions( positionsToSend, statusToSend, ServerBabyfoot.tplayer.getPlayer(login).getSide() );
+		}else{
+			out.println("matchinfo" + Utils.SEPARATOR + "deleted");
+			out.flush();
+		}
 	}
 
 	private boolean addMatch(int type, String login){
@@ -218,29 +236,34 @@ public class MatchServer extends AbstractServer {
 	public void sendPositions( String login, PrintWriter out){
 		Player p = ServerBabyfoot.tplayer.getPlayer(login);
 		Match m = p.getMatch();
-		out.println("matchscores" + Utils.SEPARATOR + m.getLeftScore() + Utils.SEPARATOR + m.getRightScore() + Utils.SEPARATOR + m.isPause() );
-		out.flush();
-		int[][] datas = getRodPositions(login);
-		String[][] status = getRodStatus(login);
-		String ballPositions = getBallPositions(login);
-		
-		String display = "positions";
-		for( int i = 0; i < 2; i++ ){
-			for( int j = 0; j < 4; j++ ){
-				display += Utils.SEPARATOR + Math.abs( datas[i][j] );
+		if( m != null ){
+			out.println("matchscores" + Utils.SEPARATOR + m.getLeftScore() + Utils.SEPARATOR + m.getRightScore() + Utils.SEPARATOR + m.isPause() );
+			out.flush();
+			int[][] datas = getRodPositions(login);
+			String[][] status = getRodStatus(login);
+			String ballPositions = getBallPositions(login);
+			
+			String display = "positions";
+			for( int i = 0; i < 2; i++ ){
+				for( int j = 0; j < 4; j++ ){
+					display += Utils.SEPARATOR + Math.abs( datas[i][j] );
+				}
 			}
-		}
-		
-		display += Utils.SEPARATOR + ballPositions;
-		
-		for( int i = 0; i < 2; i++ ){
-			for( int j = 0; j < 4; j++ ){
-				display += Utils.SEPARATOR + status[i][j];
+			
+			display += Utils.SEPARATOR + ballPositions;
+			
+			for( int i = 0; i < 2; i++ ){
+				for( int j = 0; j < 4; j++ ){
+					display += Utils.SEPARATOR + status[i][j];
+				}
 			}
+			
+			out.println(display);
+			out.flush();
+		}else{
+			out.println("matchinfo" + Utils.SEPARATOR + "deleted");
+			out.flush();
 		}
-		
-		out.println(display);
-		out.flush();
 	}
 	
 	public LinkedList<Match> getListe() {

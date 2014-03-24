@@ -56,7 +56,7 @@ public class Chat {
 
 	public void deleteServerFromMatch(String name) {
 		int i = serversNames.indexOf( "Partie de " + name );
-		if( i > -1 ){
+		if( i > -1 && servers.get(i) != null ){
 			servers.remove(i);
 		}
 	}

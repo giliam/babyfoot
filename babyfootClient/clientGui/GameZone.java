@@ -660,6 +660,11 @@ class RefreshRods implements Runnable {
 		while(true){
 			//Alias pour faciliter la lecture
 			GameClient gc = gamezone.getGamePanel().getWindow().getMain().getClient().getGc();
+			if( gamezone.getGamePanel().getWindow().getMain().getClient().getMc().isToDelete() ){
+				gamezone.getGamePanel().getWindow().setContentPane(new MenuPanel(gamezone.getGamePanel().getWindow()));
+				gamezone.getGamePanel().getWindow().setVisible(true);
+				break;
+			}
 			Player p = gamezone.getGamePanel().getWindow().getMain().getPlayer();
 			gamezone.refreshPositions( gc.getPositions( p.getLogin(), false ) , p.getSide(), gc.getBallX(), gc.getBallY() );
 			MatchClient mc = gamezone.getGamePanel().getWindow().getMain().getClient().getMc();
@@ -693,6 +698,7 @@ class InfoZone extends JPanel implements ActionListener{
 	private JLabel leftScore = new JLabel(" 0 ");
 	private JLabel rightScore = new JLabel(" 0 ");
 	public JButton askForAPause;
+	private JButton bQuit;
 	
 	private GameZone gamezone;
 	
@@ -717,6 +723,10 @@ class InfoZone extends JPanel implements ActionListener{
 		add(askForAPause);
 		askForAPause.setFocusable(false);
 		askForAPause.addActionListener(this);
+		bQuit = new JButton("Quitter");
+		add(bQuit);
+		bQuit.setFocusable(false);
+		bQuit.addActionListener(this);
 		setFocusable(false);
 		setBackground(Color.BLACK);
 		setPreferredSize(new Dimension(100,729));
@@ -749,6 +759,10 @@ class InfoZone extends JPanel implements ActionListener{
 			if( gamezone.isPause() ){
 				askForAPause.setText("Relancer");
 			}
+		}else if( arg0.getSource() == bQuit ){
+			gamezone.getGamePanel().getWindow().getMain().getPlayer().stopMatch();
+			gamezone.getGamePanel().getWindow().setContentPane(new MenuPanel(gamezone.getGamePanel().getWindow()));
+			gamezone.getGamePanel().getWindow().setVisible(true);
 		}
 	}
 }

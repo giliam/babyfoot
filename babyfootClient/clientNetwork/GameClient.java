@@ -130,6 +130,9 @@ class GameReceptionMessage implements Runnable{
 				gc.getPositions( gc.getMain().getPlayer().getLogin(), true );
             	message = in.readLine();
             	if( message != null ){
+            		if( message.equals("matchinfo" + Utils.SEPARATOR + "deleted") ){
+                		gc.getMain().getClient().getMc().deleteMatch();
+            		}
 	            	String[] datas = message.split(Utils.SEPARATOR);
 	            	if( datas.length < 9 ){
 	            		datas = null;
