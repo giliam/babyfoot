@@ -16,7 +16,8 @@
 
 \begin{document}
 \maketitle
-
+\tableofcontents
+\newpage
 
 \part{Analyse du travail effectué}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -213,7 +214,9 @@ Le bloc de base du c\oe{}ur algorithmique est le joueur. Il est instancié par l
 \paragraph{Utils.java}
 Est une classe abstraite qui gère les fonctions utilitaires comme la mise-en-forme de la date, la mise-en-forme des requêtes, les fonctions de hash utilisées pour vérifier la validité des requêtes, etc. Commune au client et au serveur.
 \paragraph{Match.java}
-Contient les données principales pour une partie, notamment l'avancement de la partie, l'état des scores, les joueurs y participant, etc. Sera appelée par le serveur. Cette classe contient aussi toutes les informations sur les données factuelles d'une partie, à savoir la position de la balle, la position des barres, etc.
+Contient les données principales pour une partie, notamment l'avancement de la partie, l'état des scores, les joueurs y participant, etc. Sera appelée par le serveur. Cette classe contient aussi toutes les informations sur les données factuelles d'une partie, à savoir la position de la balle, la position des barres, etc. Elle se charge d'effectuer l'ensemble des calculs de déplacements de la balle, comptabilise les buts, met en place les pauses.
+\paragraph{Collisions.java}
+Gère tout ce qui touche aux collisions, avec les joueurs ou les bords. C'est là que se situe toute la difficulté de calcul.
 \begin{quote}
     private int leftScore;
     
@@ -232,14 +235,14 @@ Contient les données principales pour une partie, notamment l'avancement de la 
 	private Player player4;
 \end{quote}
 \paragraph{Database.java}
-Gère la base de données PostGreSQL ou bien textuelle qui pourrait être utilisée par le programme pour stocker des informations. A priori, seul le serveur interviendra sur la base de données et y entrera les informations relatives à l'historique des tchats et des matchs. Peut être utile d'entrer directement depuis les clients les données dans la base sans passer au préalable par le serveur (exemple : connexion d'un joueur, tchat, etc.). L'intérêt est de n'avoir qu'une seule connexion.
-
+Aucune base de données n'a finalement été utilisée. Le serveur stocke donc ses données dans la RAM puis les supprime lors de sa fermeture. Dans un souci de pérennité et de performances, il serait intéressant de les stocker dans des fichiers textes que l'on puisse ainsi conserver des archives.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%                              %%
 %%   ------------------------   %%
 %%                              %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Échéancier}
+\paragraph{Ce qui était prévu}
 \begin{enumerate}
     \item \textbf{Fin Décembre} : rédiger l'avant-projet.
     \item \textbf{Début/Mi Janvier} : obtenir la validation et les annotations sur la structure choisie.
@@ -247,7 +250,14 @@ Gère la base de données PostGreSQL ou bien textuelle qui pourrait être utilis
     \item \textbf{Fin Février} : développer le serveur et la gestion des différents types de requêtes. Mettre au point le tchat et la gestion des joueurs avec la base de données.
     \item \textbf{Mi Mars} : dresser les liens entre serveur et jeu. Tester.
 \end{enumerate}
-
+\paragraph{Ce qui a été fait}
+\begin{enumerate}
+    \item \textbf{Fin Décembre} : rédiger l'avant-projet.
+    \item \textbf{Fin décembre/Début Janvier} : développer la partie réseau et l'architecture de base des requêtes.
+    \item \textbf{Fin Janvier} : réalisation de l'interface graphique et des premiers calculs pour la mise-en-place de matchs.
+    \item \textbf{Février} : ajout des collisions et corrections des principaux bugs liés à la gestion des joueurs, matchs et chat.
+    \item \textbf{Mars} : débuguer le reste du programme et ajouter les fonctionnalités supplémentaires nécessaires à un bon fonctionnement.
+\end{enumerate}
 \part{Explications des choix techniques}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%   ------------------------   %%
@@ -319,7 +329,8 @@ joueurs. Les coordonnées utilisées par ces calculs diffèrent en plus parfois 
 	commentstyle=\color{gray}\slshape
 }
 
-\part{Le code du programme}
+\part{Le code partiel du programme}
 	\setcounter{chapter}{0}
-	\input{code/test}
+	\input{code/client}
+	\input{code/serveur}
 \end{document}          
