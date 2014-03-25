@@ -58,13 +58,9 @@ Si l'on commence une nouvelle partie en ligne, on se retrouve dans une \og salle
 \paragraph{Rejoindre une partie}
 On peut aussi sélectionner une partie dans la liste des parties déjà commencées, dans la limite des places disponibles. On rejoint alors une \og salle d'attente \fg semblable à celle décrit dans la section précédente où l'on attend que la partie soit complète avant que le meneur, celui qui a créé la partie, ne lance le jeu. C'est le seul qui dispose de cette possibilité.
 \paragraph{Déroulement d'une partie}
-Il y aurait deux gameplays différents : 
-\begin{itemize}
-    \item l'un entièrement manuel verrait le joueur maître de ses possibilités. Ainsi, les touches \og A \fg, \og Z \fg, \og E \fg, \og R \fg permettraient de sélectionner la canne que l'on souhaiterait manier. Le déplacement de la souris latéralement permettraient quant à elle de déplacer les cannes tandis que la barre espace commanderait le tir. Je ne pense pas réaliser plusieurs puissances de tir possibles mais cela pourrait consister en une amélioration de la richesse du gameplay.
-    \item l'autre, principalement rencontrée dans les autres jeux de babyfoot trouvés en ligne, serait plus automatisée : les cannes se déplaceraient toutes ensemble de manière synchronisée avec les déplacements de la souris. Le tir pourrait être ou non automatisé selon que j'aurais le temps pour configurer cette fonctionnalité supplémentaire.
-\end{itemize}
+Le gameplay est entièrement manuel et voit le joueur maître de ses possibilités. Ainsi, les touches \og A \fg, \og Z \fg, \og E \fg, \og R \fg permettent de sélectionner la canne que l'on souhaiterait manier. Le déplacement de la souris vers l'avant et l'arrière permettent quant à elle de déplacer les cannes tandis que les deux clics commandent le tir. Je n'ai pas eu le temps réaliser plusieurs puissances de tir possibles mais cela pourrait consister en une amélioration de la richesse du gameplay. Il est toutefois possible de retenir son tir.
 \paragraph{Options}
-Un petit menu sera consacré aux options, notamment le type de jeu que l'on souhaite utiliser (manuel ou automatisé, auquel cas jusqu'à quel point).
+Un petit menu sera consacré aux options, notamment la sensibilité du déplacement des barres que l'on souhaite utiliser. Un petit démonstrateur a été fait à côté afin de tester cette sensibilité.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -212,11 +208,70 @@ Le bloc de base du c\oe{}ur algorithmique est le joueur. Il est instancié par l
 	private String login;
 \end{quote}
 \paragraph{Utils.java}
-Est une classe abstraite qui gère les fonctions utilitaires comme la mise-en-forme de la date, la mise-en-forme des requêtes, les fonctions de hash utilisées pour vérifier la validité des requêtes, etc. Commune au client et au serveur.
+Est une classe abstraite qui gère les fonctions utilitaires comme la mise-en-forme de la date, la mise-en-forme des requêtes, les fonctions de hash utilisées pour vérifier la validité des requêtes, etc. Commune au client et au serveur. Cette classe contient surtout les constantes du programme ainsi que les types créés (enum) pour repérer le côté du joueur, les barres, le statut du match, le type de collision, etc.
+\begin{quote}
+	public static enum Types { ONEVSONE, TWOVSTWO, ONEVSTWO };
+	
+	public static enum States { WAITING, FULL, PLAYING, FINISHED };  
+	
+	public static enum Sides { DOWN, UP };
+	
+	
+	
+	public static final int MATCH\_END = 100;
+	
+	
+	
+	public static enum Rod { GARDIEN , DEFENSE, MILIEU, ATTAQUE };
+	
+	public static enum RodStatus { NORMAL, SHOOTING, HOLDING };  
+	
+	
+	
+	public static enum CollisionType { SIDES, UPANDDOWN };
+	
+	
+	
+	public static final String SEPARATOR = ";";
+	
+	
+	
+	public static final int GOAL\_SIZE = 2*100;
+	
+	public static final int LINE\_STRENGTH = 4;
+	
+	public static final int GAP\_EDGE = 2*20;
+	
+	public static final int IMAGE\_PLAYER\_Y = 38;
+	
+	public static final int IMAGE\_PLAYER\_X = 30;
+	
+	public static final int MOVE\_STEP = 10;
+	
+	public static final int BALL\_RADIUS = 15;
+	
+	
+	
+	public static final int HEIGHT = 700;
+	
+	public static final int WIDTH = 900;
+
+
+
+	public static final int MAX\_INITIAL\_SPEED = 4;
+
+	
+
+	public static final int GARDIEN\_POSITION = GAP\_EDGE+30;
+
+	public static final int DEFENSE\_POSITION = GAP\_EDGE+30+100;
+
+	public static final int MILIEU\_POSITION = (WIDTH-LINE\_STRENGTH)/2-70;
+
+	public static final int ATTAQUE\_POSITION = WIDTH-Utils.LINE\_STRENGTH-Utils.GAP\_EDGE-230;
+\end{quote}
 \paragraph{Match.java}
 Contient les données principales pour une partie, notamment l'avancement de la partie, l'état des scores, les joueurs y participant, etc. Sera appelée par le serveur. Cette classe contient aussi toutes les informations sur les données factuelles d'une partie, à savoir la position de la balle, la position des barres, etc. Elle se charge d'effectuer l'ensemble des calculs de déplacements de la balle, comptabilise les buts, met en place les pauses.
-\paragraph{Collisions.java}
-Gère tout ce qui touche aux collisions, avec les joueurs ou les bords. C'est là que se situe toute la difficulté de calcul.
 \begin{quote}
     private int leftScore;
     
@@ -226,13 +281,61 @@ Gère tout ce qui touche aux collisions, avec les joueurs ou les bords. C'est l�
 	
 	private States state;
 	
+	
 	private Player player1;
-    
+	
 	private Player player2;
-    
+	
 	private Player player3;
-    
+	
 	private Player player4;
+	
+	
+	
+	private float ballX;
+	
+	private float ballY;
+	
+	private float ballSpeedX;
+	
+	private float ballSpeedY;
+	
+	
+	private Collisions collisions;
+
+
+
+	private boolean noSlow = true;
+
+	
+
+	private boolean pause = false;
+
+
+
+	private final int STEP\_X = 2;
+
+	private final int STEP\_Y = 2;
+
+	
+
+	private int status = 0;
+\end{quote}
+
+\paragraph{Collisions.java}
+Gère tout ce qui touche aux collisions, avec les joueurs ou les bords. C'est là que se situe toute la difficulté de calcul. Elle contient donc des attributs pour la gestion de la balle ainsi qu'une Hashtable à deux niveaux stockant les dernières collisions. L'intérêt de la HashTable est ici clairement qu'elle permet de stocker les temps en fonction de la barre et du côté où est situé le joueur.
+\begin{quote}
+	private float ballX;
+	
+	private float ballY;
+	
+	private float ballSpeedX;
+	
+	private float ballSpeedY;
+	
+	
+	
+	private Hashtable\textless Sides, Hashtable\textless Rod, Long\textgreater\textgreater lastCollision;
 \end{quote}
 \paragraph{Database.java}
 Aucune base de données n'a finalement été utilisée. Le serveur stocke donc ses données dans la RAM puis les supprime lors de sa fermeture. Dans un souci de pérennité et de performances, il serait intéressant de les stocker dans des fichiers textes que l'on puisse ainsi conserver des archives.
@@ -265,6 +368,7 @@ Aucune base de données n'a finalement été utilisée. Le serveur stocke donc s
 \section{Le réseau}
 \paragraph{}
 Le réseau est au coeur de mon projet et j'ai donc développé plusieurs Thread en parallèle pour pouvoir gérer plus facilement l'envoi de messages par mon application.
+Il a fallu mettre au point une nomenclature des messages afin d'obtenir successivement le type 
 \section{La gestion du jeu}
 \paragraph{}
 Pour calculer la position de la balle au cours du temps, j'ai utilisé un Thread qui s'actualise toutes les 10ms et qui effectue à chaque tour d'horloge
@@ -274,7 +378,12 @@ déterminer si il n'y a pas eu de contact avec un des joueurs du terrain.
 \paragraph{}
 La principale difficulté algorithmique vient de cet aspect justement. Parvenir à prévoir les différents comportements de la balle par rapport aux
 joueurs. Les coordonnées utilisées par ces calculs diffèrent en plus parfois de celles d'affichage et il faut prendre en compte la taille de l'écran ainsi que les imprécisions dues au caractère discret du calcul. J'ai encore parfois des problèmes de collisions qui se produisent trop tôt, c'est-à-dire que le joueur humain a l'impression qu'elle se cogne contre un objet invisible, ou encore des collisions gérées trop tard auquel cas la balle rentre partiellement dans le joueur en plastique.
-
+\paragraph{}
+Une autre difficulté a été de déterminer dans quel sens va la balle après le rebond. En effet, il faut parvenir à placer la balle dans une des quatre zones déterminées par les bissectrices issues des coins du joueur. Si la balle arrive sur les faces avant ou arrière du joueur, elle doit donc voir sa vitesse horizontale changer de sens. Si elle arrive sur les faces de côté, elle doit alors voir sa vitesse verticale changer. Il faut donc calculer la pente de la droite formée par les deux points suivants, le centre de la balle et un des quatre coins du joueur que l'on cherche à étudier, puis la comparer avec la pente de la droite qui marque la séparation, c'est-à-dire 
+\paragraph{}
+Un des derniers défis techniques a été de régler la sensibilité des barres afin de permettre aux joueurs d'avoir à la fois un jeu réactif, confortable, c'est-à-dire où la souris n'a pas besoin de beaucoup bouger, et en même temps quelque chose de suffisamment précis pour pouvoir shooter dans la balle au bon endroit au bon moment.
+\paragraph{}
+J'ai essayé de mettre au point un amortissement de la vitesse de la balle au cours du jeu. Il est difficile de s'en occuper car, en conservant quelque chose de significatif, il arrive que la balle s'immobilise ce qui est légérement problématique.
 \lstset
 {
 	numberstyle=\footnotesize,
