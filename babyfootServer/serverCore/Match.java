@@ -350,9 +350,9 @@ public class Match {
 		if( side == Sides.DOWN ){
 			if( rod == Rod.GARDIEN ){
 				int yPosition = Utils.getYPositionPlayer(yRodPositions, Rod.GARDIEN, 1, 1, side );
-				if( ballX >= Utils.GARDIEN_POSITION && ballX <= Utils.GARDIEN_POSITION + Utils.IMAGE_PLAYER_SHOOTING_X + Utils.BALL_RADIUS 
+				if( ballX >= Utils.GARDIEN_POSITION - 5 && ballX <= Utils.GARDIEN_POSITION + Utils.IMAGE_PLAYER_SHOOTING_X + 5 + Utils.BALL_RADIUS 
 						//&& ballSpeedX <= 0
-						&& ballY >= yPosition && ballY <= Utils.IMAGE_PLAYER_Y + yPosition ){
+						&& ballY >= yPosition - 5 && ballY <= Utils.IMAGE_PLAYER_Y + yPosition + 5 ){
 					ballSpeedX = Utils.MAX_INITIAL_SPEED;
 					ballSpeedY *= -0.1;
 				}
@@ -360,7 +360,7 @@ public class Match {
 				boolean test = false;
 				for( int i = 1; i <= 2; i++ ){
 					int yPosition = Utils.getYPositionPlayer(yRodPositions, Rod.DEFENSE, i, 2, side );
-					test |= ( ballY >= yPosition && ballY <= Utils.IMAGE_PLAYER_Y + yPosition );
+					test |= ( ballY >= yPosition -5 && ballY <= Utils.IMAGE_PLAYER_Y + yPosition +5 );
 					if( test ) break;
 				}
 				if( ballX >= Utils.DEFENSE_POSITION && ballX <= Utils.DEFENSE_POSITION + Utils.IMAGE_PLAYER_SHOOTING_X + Utils.BALL_RADIUS 

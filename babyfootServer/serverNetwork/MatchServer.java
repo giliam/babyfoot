@@ -20,6 +20,8 @@ public class MatchServer extends AbstractServer {
 	public void handle(BufferedReader in, PrintWriter out){
 		String[] datas = query.split(Utils.SEPARATOR);
 		String task = datas[1];
+		
+		//Ajout d'un match
     	if( task.equals("add") ){
     		int type = Integer.valueOf(datas[3]);
     		String login = datas[2];
@@ -28,38 +30,58 @@ public class MatchServer extends AbstractServer {
     		else
     			out.println("false");
     		out.flush();
+    		
+    	//Déplacement d'une barre
     	}else if(task.equals("setrod")){
     		String login = datas[2];
     		int[] positions = {Integer.valueOf(datas[3]),Integer.valueOf(datas[4]),Integer.valueOf(datas[5]),Integer.valueOf(datas[6])};
     		RodStatus[] status = { RodStatus.valueOf(datas[7]),RodStatus.valueOf(datas[8]),RodStatus.valueOf(datas[9]),RodStatus.valueOf(datas[10])};
     		setRod(login, positions, status, out);
+    		
+    	//Récupération des positions des barres
     	}else if(task.equals("getpositions")){
     		if( datas.length > 2 ){
     			String login = datas[2];
     			sendPositions( login, out );
     		}
+    		
+    	//Récupération de la liste des parties disponibles
     	}else if(task.equals("getserverslist")){
     		getServersList( out );
+    		
+    	//Demande de pause
     	}else if(task.equals("askforpause")){
     		ServerBabyfoot.tplayer.getPlayer(datas[2]).getMatch().setPause(true);
     		out.println("true");
     		out.flush();
+    		
+    	//Demande de relance du jeu
     	}else if(task.equals("startagain")){
     		ServerBabyfoot.tplayer.getPlayer(datas[2]).getMatch().setPause(false);
     		out.println("false");
     		out.flush();
+    	
+    	//Récupération des informations sur le jeu (score, statut des barres, etc.)
     	}else if( task.equals( "getmatchinfo" ) ){
     		String login = datas[2];
     		getMatchInfo( login, out );
+    	
+    	//Lancement d'une partie
     	}else if( task.equals( "run" ) ){
     		String login = datas[2];
     		runMatch( login, out );
+    		
+    	//Fin d'une partie
     	}else if( task.equals( "stop" ) ){
     		String login = datas[2];
     		stopMatch( login, out );
+    	
+    	//Départ d'un joueur
     	}else if( task.equals( "quit" ) ){
     		String login = datas[2];
     		quitMatch( login, out );
+    		
+    	//Tir d'un joueur
     	}else if(task.equals("shoot")){
     		String login = datas[2];
     		String rod = datas[3];
