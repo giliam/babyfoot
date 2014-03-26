@@ -10,7 +10,7 @@
 \usepackage{ifthen}
 \usepackage{color}
 \usepackage{textcomp}
-
+\usepackage[babel=true]{csquotes}
 
 \title{Rapport du projet informatique}
 \author{Matthieu Denoux - Groupe 1}
@@ -399,7 +399,9 @@ L'\emph{architecture}, bien que réfléchie lors de l'avant-projet, n'est peut-�
 \paragraph{Pour ce qui est de la structure}
 J'ai rajouté quelques classes au projet initial mais toutes n'ont pas été mentionnées ci-dessus car certaines ne sont parfois que des classes implantant l'interface Runnable et initiant des Thread. Globalement, la structure est restée la même, en séparant toutefois bien client et serveur néanmoins, afin de laisser la possibilité que le serveur soit lancé sur une machine indépendante tandis que le client est distribué.
 \paragraph{Pour ce qui est du code}
-J'ai essayé d'utiliser le plus souvent possible des variables de type \emph{enumerate} afin de rendre plus facile la lecture du code du programme.
+J'ai essayé d'utiliser le plus souvent possible des variables de type \emph{enumerate} afin de rendre plus facile la lecture du code du programme. Il y a relativement peu de commentaires sur l'ensemble du projet car il y a très peu de points très techniques méritant une explication. Le plus difficile est de comprendre l'agencement des classes et leur hiérarchie dans la chaîne aboutissant au jeu.
+\paragraph{Choix techniques}
+J'ai bien sûr utilisé \textbf{Swing} pour réaliser l'interface graphique : d'abord pour la simple raison que le double-buffering est automatiquement utilisé par Swing, ensuite parce que la structure d'une fenêtre est beaucoup plus souple en ce qui concerne la réalisation de quelque chose d'un peu plus complet.
 
 \part{Explications des choix techniques}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -423,7 +425,18 @@ Un point a été intéressant du point de vue algorithmique, c'est la gestion de
 \paragraph{}
 Pour cela, ma technique a été très simple, c'est d'utiliser la notation pour binaire et associer à chaque bit une autorisation particulière. Je code ici les autorisations sur quatre bits, chacun représentant deux barres, d'un côté ou d'un autre. Ainsi, les deux premiers bits (valeurs correspondant à \(2^0\) et \(2^1\)) correspondent aux barres du bas et les deux autres à celles du haut. Lorsque le statut des barres est actualisé, \emph{i.e. } qu'un joueur entre dans la partie, cet entier est testé pour situer dans quel cas se situe le jeu et où des barres sont disponibles puis l'entier d'utilisation est mis à jour en ajoutant 1, 2, 3, 4, etc. pour signifier quelles barres va prendre le joueur. De même lorsqu'un joueur quitte la partie, l'entier voit sa valeur soustraite par celle représentant le joueur. On a ainsi une façon simple d'accéder à la possibilité pour un joueur de toucher à une barre puisqu'il s'agit d'utiliser les opérateurs binaires pour tester une autorisation. Ce nombre est stocké par le serveur et est transmis très facilement aux clients qui stockent eux les autorisations dans une Hashtable.
 \paragraph{}
-Il eut été possible de s'affranchir de toutes ces considérations en réalisant un écran supplémentaire avant le début de la partie où le joueur hôte de la partie aurait tout simplement assigné telle ou telle barre à tel ou tel joueur. La gestion se serait alors faite avec une Hashtable contenant des noms de joueurs par exemple. Il aurait été toutefois intéressant de stocker la même information de \og l'utilisation \fg des barres afin de vérifier que toutes les barres ont bien été assignées à quelqu'un.
+Il eut été possible de s'affranchir de toutes ces considérations en réalisant un écran supplémentaire avant le début de la partie où le joueur hôte de la partie aurait tout simplement assigné telle ou telle barre à tel ou tel joueur. La gestion se serait alors faite avec une Hashtable contenant des noms de joueurs par exemple. Il aurait été toutefois intéressant de stocker la même information de \og l'utilisation \fg  des barres afin de vérifier que toutes les barres ont bien été assignées à quelqu'un.
+\paragraph{}
+La sensibilité d'une barre est aussi très difficile à régler. J'utilise le déplacement relatif de la souris, c'est-à-dire les mouvements \enquote{verticaux} de la souris pour calculer les déplacements des barres. Néanmoins c'est assez difficile car pour une raison que j'ignore, ces déplacements sont asymétriques : la sensibilité est plus grande du haut vers le bas et moins du bas vers le haut. Il faut donc trouver une équation de déplacement qui permette à la fois d'être précis et réactif. L'équation de la différence entre la position après calcul et avant calcul est donnée par la formule ci-dessous :
+\begin{quote}
+mov = (int)Math.ceil( ( Math.abs( lastKeyY-y )* Utils.getSensibility() / ( 1.+Utils.getSensibility() ) ) );
+\end{quote}
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=4cm]{pictures/mouse.png} 
+	\end{center}
+	\caption{Déplacements de la souris servant à mouvoir les barres.}
+    \end{figure}
 \section{La gestion du jeu}
 \paragraph{}
 Pour calculer la position de la balle au cours du temps, j'ai utilisé un Thread qui s'actualise toutes les 10ms et qui effectue à chaque tour d'horloge
