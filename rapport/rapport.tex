@@ -1,3 +1,5 @@
+%%\lstinputlisting[language=Java, firstline=11, lastline=58]{../babyfootClient/clientCore/ClientBabyfoot.java}
+
 \documentclass[a4paper,12pt]{report}
 \usepackage[utf8x]{inputenc}
 \usepackage[francais]{babel}
@@ -68,7 +70,7 @@ Un petit menu sera consacré aux options, notamment la sensibilité du déplacem
 %%   ------------------------   %%
 %%                              %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Analyse de la solution envisagée}
+\chapter{Analyse de la solution envisagée et mise-à-jour}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -81,6 +83,12 @@ Je prévois de découper le code en deux grandes parties :
     \item Partie client
     \item Partie serveur
 \end{itemize}
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=07cm]{pictures/structure.png} 
+	\end{center}
+	\caption{Structure des fichiers du projet.}
+    \end{figure}
 Les deux parties (client/serveur) seront elles-mêmes séparées en plusieurs modules.
 \begin{itemize}
     \item L'interface graphique (rangée dans /gui) qui sera absente du serveur
@@ -116,7 +124,12 @@ Zone de dessin chargée de représenter le terrain, les joueurs, etc. Fichier as
 Une partie un peu à part qui est chargée de gérer l'affichage du chat. Celui-ci sera présent à de nombreux endroits : la liste des parties disponibles, la salle d'attente, la création d'une partie et durant le jeu lui-même. Or, tous ces affichages sont centralisés dans cet unique fichier qui centralise ainsi le traitement et l'affichage et permet de réutiliser à plusieurs endroits ces données.
 \paragraph{SettingsPanel.java}
 Cette classe assez light donne la possibilité de configurer les options du jeu. Je n'ai pas pris le temps d'en configurer beaucoup et il n'est pour l'instant disponible que la modification de sensibilité du jeu. Un démonstrateur a d'ailleurs été inclus à côté des boutons de modification pour tester la sensibilité. Deux boutons sont ensuite possibles : un qui sauvegarde la modification de sensibilité et un autre qui la sauvegarde et revient au menu principal simultanément.
-
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=8cm]{pictures/settings.png} 
+	\end{center}
+	\caption{Image des options de l'écran de configuration avec la présence d'un démonstrateur à gauche pour tester la sensibilité.}
+    \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%   ------------------------   %%
@@ -169,6 +182,12 @@ Procède de la même façon que PlayerClient pour les matchs, envoie les requêt
 \paragraph{ChatClient.java}
 S'occupe de gérer la partie client du tchat : une fois instanciée par le ChatPanel, elle permet d'envoyer des données au serveur et de récupérer la liste des messages disponibles dans le salon. Elle permet aussi de changer de salon, d'afficher la liste des salons et celle des joueurs connectés sur le jeu.
 \subsection{La partie serveur}
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=07cm]{pictures/structureserveur.png} 
+	\end{center}
+	\caption{Structure des fichiers du serveur.}
+    \end{figure}
 \paragraph{AbstractServer.java}
 Classe abstraite qui gère quelques méthodes de base que doivent toutes présenter les classes gérant les serveurs.
 \paragraph{ServerBabyfoot.java}
@@ -363,6 +382,25 @@ Aucune base de données n'a finalement été utilisée. Le serveur stocke donc s
     \item \textbf{Février} : ajout des collisions et corrections des principaux bugs liés à la gestion des joueurs, matchs et chat.
     \item \textbf{Mars} : débuguer le reste du programme et ajouter les fonctionnalités supplémentaires nécessaires à un bon fonctionnement.
 \end{enumerate}
+
+
+
+\part{Évolutions vis-à-vis de l'avant-projet}
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=15cm]{pictures/jeu.png} 
+	\end{center}
+	\caption{Capture d'écran du jeu lui-même et de son aspect.}
+    \end{figure}
+\paragraph{}
+Le projet a été globalement mené à son terme bien qu'il subsiste de nombreux points à améliorer. La programmation de ce projet relativement ambitieux (quelques $5000$ lignes de code jusque là) m'a toutefois permis d'appréhender la mise-en-place d'un réseau en java et le dessin d'une interface graphique. Il aurait pu être intéressant, devant l'envergure que peut prendre un tel projet, de chercher à implanter une stratégie \emph{MVC}, Modèle Vue Controleur, sur le client afin de faciliter l'édition de l'interface graphique et la gestion des données reçues du serveur.
+\paragraph{Au niveau du développement lui-même}
+L'\emph{architecture}, bien que réfléchie lors de l'avant-projet, n'est peut-être pas suffisamment stable pour supporter une plus grande charge des clients. Les requêtes peuvent se télescoper, arriver au mauvais client, être redirigée vers le mauvais serveur et des accès simultanés peuvent mal modifier les mêmes informations. L'\emph{interface graphique} doit pouvoir être redessinée, d'abord par souci esthétique et ensuite afin d'intégrer la possibilité pour l'utilisateur de la redimensionner, pour l'adapter à un écran de tablette par exemple.
+\paragraph{Pour ce qui est de la structure}
+J'ai rajouté quelques classes au projet initial mais toutes n'ont pas été mentionnées ci-dessus car certaines ne sont parfois que des classes implantant l'interface Runnable et initiant des Thread. Globalement, la structure est restée la même, en séparant toutefois bien client et serveur néanmoins, afin de laisser la possibilité que le serveur soit lancé sur une machine indépendante tandis que le client est distribué.
+\paragraph{Pour ce qui est du code}
+J'ai essayé d'utiliser le plus souvent possible des variables de type \emph{enumerate} afin de rendre plus facile la lecture du code du programme.
+
 \part{Explications des choix techniques}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%   ------------------------   %%
@@ -373,6 +411,12 @@ Le réseau est au coeur de mon projet et j'ai donc développé plusieurs Thread 
 Il a fallu mettre au point une nomenclature des messages afin d'obtenir successivement le type de message envoyé et le domaine qui est atteint, donc la classe effectuant le traitement de la requête, puis le joueur concerné (c'est le login qui est utilisé ici bien qu'un système d'ID aurait pu être mis en place) et enfin les données propres à la requête.
 \paragraph{}
 De plus, le serveur recevant un grand nombre de requêtes, j'ai séparé le serveur en plusieurs entités afin de faciliter le traitement. On trouve ainsi une classe dédiée entièrement à la gestion du Chat et des requêtes échangées. Il y a aussi un serveur se chargeant de gérer les joueurs et enfin, le plus gros des trois, un serveur s'occupant des requêtes de jeux. Il est assez sollicité puisqu'une requête est envoyée aux 2, 3, 4 clients toutes les 20 ms environ (un peu plus parfois). Ces requêtes peuvent être assez longues puisqu'elles contiennent de nombreuses informations : la position des barres, leur statut (normal, levée, tirant) ce qui représente 16 coordonnées puis les huit barres.
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=12cm]{pictures/switch.png} 
+	\end{center}
+	\caption{Sorte de \emph{switch} du projet, permettant de séparer les requêtes selon les différents \og serveurs \fg.}
+    \end{figure}
 \section{La gestion des barres}
 \paragraph{}
 Un point a été intéressant du point de vue algorithmique, c'est la gestion des barres. Suivant le type de match, un joueur a accès à certaines barres. Par exemple, quand il est seul contre deux joueurs, il a accès à toutes les barres. Par contre, s'il n'est pas seul, le calcul est fait automatiquement selon l'ordre d'arrivée des joueurs dans la partie. Ce qui a été intéressant, c'est de trouver une façon de stocker ces informations. Il fallait ici obtenir une méthode simple pour définir \og l'utilisation \fg des barres, lesquelles sont occupées et lesquelles sont libres. Ce problème est très similaire à un problème d'autorisations et de droits. En effet, a-t-on le droit ou non de bouger les barres ?
@@ -443,6 +487,7 @@ J'ai essayé de mettre au point un amortissement de la vitesse de la balle au co
 	language=java,
 	basicstyle=\ttfamily\footnotesize,
 	stringstyle=\color{red},
+	identifierstyle=\color{black}, %
 	alsoletter={1234567890},
 	otherkeywords={\ , \}, \{},
 	keywordstyle=\color{blue},
