@@ -56,11 +56,11 @@ déjà en cours, de modifier les quelques options disponibles ou bien de quitter
 	\caption{Header du programme, très peu de recherche esthétique, simplement une image de base.}
     \end{figure}
 \paragraph{Commencer une partie}
-Si l'on commence une nouvelle partie en ligne, on se retrouve dans une \og salle de configuration \fg. Là, il est possible de configurer la partie que l'on souhaite lancer, l'ouvrir à d'autres joueurs, ce qui nous fait arriver dans une \og salle d'attente \fg puis d'attendre que d'autres joueurs rejoignent la partie. Une fois que les équipes sont complètes, on peut lancer le jeu.
+Si l'on commence une nouvelle partie en ligne, on se retrouve dans une \og salle de configuration \fg. Là, il est possible de configurer la partie que l'on souhaite lancer, l'ouvrir à d'autres joueurs, ce qui nous fait arriver dans une \og salle d'attente \fg pour permettre d'attendre que d'autres joueurs rejoignent la partie. Une fois que les équipes sont complètes, on peut lancer le jeu.
 \paragraph{Rejoindre une partie}
 On peut aussi sélectionner une partie dans la liste des parties déjà commencées, dans la limite des places disponibles. On rejoint alors une \og salle d'attente \fg semblable à celle décrit dans la section précédente où l'on attend que la partie soit complète avant que le meneur, celui qui a créé la partie, ne lance le jeu. C'est le seul qui dispose de cette possibilité.
 \paragraph{Déroulement d'une partie}
-Le gameplay est entièrement manuel et voit le joueur maître de ses possibilités. Ainsi, les touches \og A \fg, \og Z \fg, \og E \fg, \og R \fg permettent de sélectionner la canne que l'on souhaiterait manier. Le déplacement de la souris vers l'avant et l'arrière permettent quant à elle de déplacer les cannes tandis que les deux clics commandent le tir. Je n'ai pas eu le temps réaliser plusieurs puissances de tir possibles mais cela pourrait consister en une amélioration de la richesse du gameplay. Il est toutefois possible de retenir son tir.
+Le gameplay est entièrement manuel et voit le joueur maître de ses possibilités. Ainsi, les touches \og A \fg, \og Z \fg, \og E \fg, \og R \fg permettent de sélectionner la barre que l'on souhaiterait manier. Le déplacement de la souris vers l'avant et l'arrière permettent quant à elle de déplacer les barres tandis que les deux clics commandent le tir. Je n'ai pas eu le temps de réaliser plusieurs puissances de tir possibles mais cela pourrait consister en une amélioration de la richesse du gameplay. Il est toutefois possible de retenir son tir.
 \paragraph{Options}
 Un petit menu sera consacré aux options, notamment la sensibilité du déplacement des barres que l'on souhaite utiliser. Un petit démonstrateur a été fait à côté afin de tester cette sensibilité.
 
@@ -78,7 +78,7 @@ Un petit menu sera consacré aux options, notamment la sensibilité du déplacem
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Découpage en modules}
 \paragraph{}
-Je prévois de découper le code en deux grandes parties :
+J'ai donc découpé le code en deux grandes parties :
 \begin{itemize}
     \item Partie client
     \item Partie serveur
@@ -91,9 +91,9 @@ Je prévois de découper le code en deux grandes parties :
     \end{figure}
 Les deux parties (client/serveur) seront elles-mêmes séparées en plusieurs modules.
 \begin{itemize}
-    \item L'interface graphique (rangée dans /gui) qui sera absente du serveur
+    \item L'interface graphique (rangée dans /gui) qui sera absente du serveur mais qui consiste en une énorme part du client.
     \item La partie réseau de l'application (rangée dans /network), responsable de l'émission et de la réception des requêtes.
-    \item Le c\oe{}ur algorithmique de l'application (rangée dans /core) contenant les classes gérant les matchs, les joueurs, etc.
+    \item Le c\oe{}ur algorithmique de l'application (rangée dans /core) contenant les classes gérant les matchs, les joueurs, etc. C'est dans le c\oe{}ur du serveur que se font l'ensemble des calculs du jeu.
 \end{itemize}
 Chaque partie et chaque module comporteront donc plusieurs classes qui se chargeront chacune d'une des tâches du module parent.
 
@@ -101,7 +101,7 @@ Chaque partie et chaque module comporteront donc plusieurs classes qui se charge
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%   ------------------------   %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{L'interface graphique}
+\section{L'interface graphique (client)}
 \paragraph{MainFrame.java}
 Gère la fenêtre qui englobe tout le reste. On utilisera en fait des JPanel pour modifier le contenu de cette fenêtre. J'empêcherai dans un premier temps de modifier la taille de la fenêtre pour éviter d'avoir des problèmes de dessin du terrain de babyfoot à gérer. Cette classe contient le \textbf{main} du programme. Elle permet d'accéder aux différents éléments : le client récepteur, les informations sur le joueur lui-même, etc.
 \paragraph{BPanel.java}
@@ -393,7 +393,7 @@ Aucune base de données n'a finalement été utilisée. Le serveur stocke donc s
 	\caption{Capture d'écran du jeu lui-même et de son aspect.}
     \end{figure}
 \paragraph{}
-Le projet a été globalement mené à son terme bien qu'il subsiste de nombreux points à améliorer. La programmation de ce projet relativement ambitieux (quelques $5000$ lignes de code jusque là) m'a toutefois permis d'appréhender la mise-en-place d'un réseau en java et le dessin d'une interface graphique. Il aurait pu être intéressant, devant l'envergure que peut prendre un tel projet, de chercher à implanter une stratégie \emph{MVC}, Modèle Vue Controleur, sur le client afin de faciliter l'édition de l'interface graphique et la gestion des données reçues du serveur.
+Le projet a été globalement mené à son terme bien qu'il subsiste de nombreux points à améliorer. La programmation de ce projet relativement ambitieux (quelques $5000$ lignes de code jusque là) m'a toutefois permis d'appréhender la mise-en-place d'un réseau en java et le dessin d'une interface graphique. Il aurait pu être intéressant, devant l'envergure que peut prendre un tel projet, de chercher à implanter une stratégie \emph{MVC}, Modèle Vue Controleur, sur le client afin de faciliter l'édition de l'interface graphique et la gestion des données reçues du serveur. C'est ce qui a été partiellement fait : les fichiers Gui sont stockés dans un dossier, les classes gérant les modèles sont faites dans Core et les classes récupérant les données sont dans Network. Néanmoins, la partie logique est en bonne partie gérée dans les vues et non dans les contrôleurs, ce qui gâche toute la logique du MVC.
 \paragraph{Au niveau du développement lui-même}
 L'\emph{architecture}, bien que réfléchie lors de l'avant-projet, n'est peut-être pas suffisamment stable pour supporter une plus grande charge des clients. Les requêtes peuvent se télescoper, arriver au mauvais client, être redirigée vers le mauvais serveur et des accès simultanés peuvent mal modifier les mêmes informations. L'\emph{interface graphique} doit pouvoir être redessinée, d'abord par souci esthétique et ensuite afin d'intégrer la possibilité pour l'utilisateur de la redimensionner, pour l'adapter à un écran de tablette par exemple.
 \paragraph{Pour ce qui est de la structure}
@@ -419,9 +419,11 @@ De plus, le serveur recevant un grand nombre de requêtes, j'ai séparé le serv
 	\end{center}
 	\caption{Sorte de \emph{switch} du projet, permettant de séparer les requêtes selon les différents \og serveurs \fg.}
     \end{figure}
+\paragraph{}
+Afin d'envoyer un message au serveur, depuis l'interface Gui, par exemple lorsqu'une demande de pause est faite, le schéma est simple. L'interface appelle, via la classe Main, une des classes du Core du client, Player.java par exemple. Cette classe se charge ensuite d'appeler la bonne fonction de la partie Network afin d'envoyer les informations au serveur. Elle récupère par la valeur retournée par la méthode la réponse du serveur et la renvoie à l'interface, en l'ayant traitée au préalable si nécessaire.
 \section{La gestion des barres}
 \paragraph{}
-Un point a été intéressant du point de vue algorithmique, c'est la gestion des barres. Suivant le type de match, un joueur a accès à certaines barres. Par exemple, quand il est seul contre deux joueurs, il a accès à toutes les barres. Par contre, s'il n'est pas seul, le calcul est fait automatiquement selon l'ordre d'arrivée des joueurs dans la partie. Ce qui a été intéressant, c'est de trouver une façon de stocker ces informations. Il fallait ici obtenir une méthode simple pour définir \og l'utilisation \fg des barres, lesquelles sont occupées et lesquelles sont libres. Ce problème est très similaire à un problème d'autorisations et de droits. En effet, a-t-on le droit ou non de bouger les barres ?
+Un point a été intéressant du point de vue algorithmique, c'est la gestion des barres. Suivant le type de match, un joueur a accès à certaines barres. Par exemple, quand il est seul contre deux joueurs, il a accès à toutes les barres. Par contre, s'il n'est pas seul, le calcul est fait automatiquement selon l'ordre d'arrivée des joueurs dans la partie. Ce qui a été intéressant, c'est de trouver une façon de stocker ces informations. Il fallait ici obtenir une méthode simple pour définir \og l'utilisation \fg des barres, lesquelles sont occupées et lesquelles sont libres. Ce problème est très similaire à un problème d'autorisations et de droits. En effet, a-t-on le droit ou non de bouger les barres ? Comment stocker cette donnée ?
 \paragraph{}
 Pour cela, ma technique a été très simple, c'est d'utiliser la notation pour binaire et associer à chaque bit une autorisation particulière. Je code ici les autorisations sur quatre bits, chacun représentant deux barres, d'un côté ou d'un autre. Ainsi, les deux premiers bits (valeurs correspondant à \(2^0\) et \(2^1\)) correspondent aux barres du bas et les deux autres à celles du haut. Lorsque le statut des barres est actualisé, \emph{i.e. } qu'un joueur entre dans la partie, cet entier est testé pour situer dans quel cas se situe le jeu et où des barres sont disponibles puis l'entier d'utilisation est mis à jour en ajoutant 1, 2, 3, 4, etc. pour signifier quelles barres va prendre le joueur. De même lorsqu'un joueur quitte la partie, l'entier voit sa valeur soustraite par celle représentant le joueur. On a ainsi une façon simple d'accéder à la possibilité pour un joueur de toucher à une barre puisqu'il s'agit d'utiliser les opérateurs binaires pour tester une autorisation. Ce nombre est stocké par le serveur et est transmis très facilement aux clients qui stockent eux les autorisations dans une Hashtable.
 \paragraph{}
