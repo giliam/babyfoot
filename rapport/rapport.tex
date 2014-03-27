@@ -401,7 +401,7 @@ J'ai rajouté quelques classes au projet initial mais toutes n'ont pas été men
 \paragraph{Pour ce qui est du code}
 J'ai essayé d'utiliser le plus souvent possible des variables de type \emph{enumerate} afin de rendre plus facile la lecture du code du programme. Il y a relativement peu de commentaires sur l'ensemble du projet car il y a très peu de points très techniques méritant une explication. Le plus difficile est de comprendre l'agencement des classes et leur hiérarchie dans la chaîne aboutissant au jeu.
 \paragraph{Choix techniques}
-J'ai bien sûr utilisé \textbf{Swing} pour réaliser l'interface graphique : d'abord pour la simple raison que le double-buffering est automatiquement utilisé par Swing, ensuite parce que la structure d'une fenêtre est beaucoup plus souple en ce qui concerne la réalisation de quelque chose d'un peu plus complet.
+J'ai bien sûr utilisé \textbf{Swing} pour réaliser l'interface graphique : d'abord pour la simple raison que le double-buffering est automatiquement utilisé par Swing, ensuite parce que la structure d'une fenêtre est beaucoup plus souple en ce qui concerne la réalisation de quelque chose d'un peu plus complet. En ce qui concerne le système réseau, j'ai tout simplement utilisé des sockets ainsi qu'elles sont décrites dans le polycopié du cours d'informatique.
 
 \part{Explications des choix techniques}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -413,6 +413,8 @@ Le réseau est au coeur de mon projet et j'ai donc développé plusieurs Thread 
 Il a fallu mettre au point une nomenclature des messages afin d'obtenir successivement le type de message envoyé et le domaine qui est atteint, donc la classe effectuant le traitement de la requête, puis le joueur concerné (c'est le login qui est utilisé ici bien qu'un système d'ID aurait pu être mis en place) et enfin les données propres à la requête.
 \paragraph{}
 De plus, le serveur recevant un grand nombre de requêtes, j'ai séparé le serveur en plusieurs entités afin de faciliter le traitement. On trouve ainsi une classe dédiée entièrement à la gestion du Chat et des requêtes échangées. Il y a aussi un serveur se chargeant de gérer les joueurs et enfin, le plus gros des trois, un serveur s'occupant des requêtes de jeux. Il est assez sollicité puisqu'une requête est envoyée aux 2, 3, 4 clients toutes les 20 ms environ (un peu plus parfois). Ces requêtes peuvent être assez longues puisqu'elles contiennent de nombreuses informations : la position des barres, leur statut (normal, levée, tirant) ce qui représente 16 coordonnées puis les huit barres.
+\paragraph{}
+L'intervalle de temps entre l'envoi de la requête et la réception est aussi légérement variable et est difficilement quantifiable puisque cela dépend de la charge de l'ordinateur, de la longueur du message et de l'utilisation du client au moment de la réception du message. Il m'a donc fallu faire patienter le client ou le faire utiliser des données \og périmées \fg.
 \begin{figure}[H]
 	\begin{center}
 	\includegraphics[width=12cm]{pictures/switch.png} 
